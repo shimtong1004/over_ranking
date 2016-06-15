@@ -1,9 +1,11 @@
 #encoding: utf-8
 require 'open-uri'
 
-TIME_OUT = 5
+TIME_OUT = 20
 
 class OverTag < ActiveRecord::Base
+  has_one :over_all_hero
+  
   def self.set_data(tag)
     over_tag = OverTag.create(tag: tag)
     get_achievement(tag, over_tag.id)

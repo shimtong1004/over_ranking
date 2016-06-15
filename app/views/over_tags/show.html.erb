@@ -1,4 +1,19 @@
-<p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_over_tag_path(@over_tag) %> |
-<%= link_to 'Back', over_tags_path %>
+<table>
+	<tr>
+		<td>태그</td>
+		<td>점수</td>
+	</tr>
+	<tr>
+		<td><%= @tag_data.tag %></td>
+		<td>
+			<% if @tag_data.over_all_hero %>
+				<%= @tag_data.over_all_hero.Score %>
+			<% else %>
+				데이터 획득 실패
+			<% end %>
+		</td>
+	</tr>
+</table>
+	
+

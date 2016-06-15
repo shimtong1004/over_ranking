@@ -15,13 +15,12 @@ class OverTagsController < ApplicationController
   # GET /over_tags/new
   def new
     tag = params[:tag]
-    tag_data = OverTag.find_by_tag(tag)
-    if tag_data
-      @over_tag = OverTag.new
-    else
+    @tag_data = OverTag.find_by_tag(tag)
+    unless @tag_data
       OverTag.set_data(tag)
-      @over_tag = OverTag.new
     end
+    
+    render 'show'
   end
 
   # GET /over_tags/1/edit
