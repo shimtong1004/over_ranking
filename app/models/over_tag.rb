@@ -137,7 +137,7 @@ class OverTag < ActiveRecord::Base
       SoundBarriersProvided_MostinGame: data["SoundBarriersProvided-MostinGame"], 
       MeleeFinalBlows_MostinGame: data["MeleeFinalBlows-MostinGame"], 
       SoundBarriersProvided_Average: data["SoundBarriersProvided-Average"], 
-      Eliminations: data["Eliminations"], 
+      # Eliminations: data["Eliminations"], 
       FinalBlows: data["FinalBlows"],
       SoloKills: data["SoloKills"],
       ShotsFired: data["ShotsFired"], 
