@@ -3,7 +3,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   if Rails.env == 'development'
     OmniAuth.config.full_host = "https://localhost:3000"
   else
-    OmniAuth.config.full_host = "https://happyhouse.me"
+    OmniAuth.config.full_host = "https://www.happyhouse.me"
   end
   
 
