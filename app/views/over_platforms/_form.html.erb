@@ -1,0 +1,17 @@
+<%= form_for(@over_platform) do |f| %>
+  <% if @over_platform.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@over_platform.errors.count, "error") %> prohibited this over_platform from being saved:</h2>
+
+      <ul>
+      <% @over_platform.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

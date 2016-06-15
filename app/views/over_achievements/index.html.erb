@@ -1,0 +1,4 @@
+<%= form_tag({:action=>"new"}, {:method=>"get"}) do %>
+	<%= text_field_tag "tag", "", :placeholder=>"배틀테그 입력" %>
+	<%= submit_tag "확인"  %>
+<% end %>

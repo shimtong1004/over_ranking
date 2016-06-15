@@ -1,0 +1,17 @@
+<%= form_for(@over_hero) do |f| %>
+  <% if @over_hero.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@over_hero.errors.count, "error") %> prohibited this over_hero from being saved:</h2>
+
+      <ul>
+      <% @over_hero.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

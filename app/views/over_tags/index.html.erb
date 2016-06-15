@@ -1,0 +1,5 @@
+<%= form_tag({:action=>"new"}, {:method=>"get"}) do %>
+	<%= text_field_tag "tag", session[:btag], :placeholder=>"배틀테그 입력" %>
+	<%= submit_tag "확인"  %><br />
+	<%= link_to "배틀넷 로그인", "/auth/bnet" %>
+<% end %>

@@ -1,0 +1,17 @@
+<%= form_for(@over_tag) do |f| %>
+  <% if @over_tag.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@over_tag.errors.count, "error") %> prohibited this over_tag from being saved:</h2>
+
+      <ul>
+      <% @over_tag.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

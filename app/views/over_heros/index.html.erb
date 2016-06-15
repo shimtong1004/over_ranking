@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Over Heros</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @over_heros.each do |over_hero| %>
+      <tr>
+        <td><%= link_to 'Show', over_hero %></td>
+        <td><%= link_to 'Edit', edit_over_hero_path(over_hero) %></td>
+        <td><%= link_to 'Destroy', over_hero, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Over hero', new_over_hero_path %>
