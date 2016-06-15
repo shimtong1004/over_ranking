@@ -18,8 +18,9 @@ class OverTagsController < ApplicationController
     @tag_data = OverTag.find_by_tag(tag)
     unless @tag_data
       OverTag.set_data(tag)
+    else
     end
-    
+    @tag = tag
     render 'show'
   end
 
