@@ -15,6 +15,7 @@ class OverTag < ActiveRecord::Base
     get_hero(tag, over_tag.id)
     get_allHeroes(tag, over_tag.id)
     
+    return over_tag
   end
   def self.get_achievement(tag, tag_id)
     # tag = "아아아퍼때리지마#3725"    
