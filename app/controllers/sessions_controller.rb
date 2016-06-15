@@ -8,7 +8,11 @@ class SessionsController < ApplicationController
     session[:user_info] = auth["info"]
     session[:debug] = auth.to_yaml
     session[:btag] = auth.info.battletag
-    redirect_to root_path
+    if Rails.env == 'development'
+      redirect_to root_path
+    else
+      redirect_to "https://www.happyhouse.me"
+    end
     # redirect_to OmniAuth.config.full_host
     # auth_hash = request.env['omniauth.auth']
 #  
