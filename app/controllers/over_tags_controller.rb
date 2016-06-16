@@ -17,7 +17,7 @@ class OverTagsController < ApplicationController
     tag = params[:tag]
     @tag_data = OverTag.find_by_tag(tag)
     unless @tag_data
-      @tag_data = OverTag.set_data(tag)
+      @tag_data, @status = OverTag.set_data(tag)
     end
     render 'show'
   end

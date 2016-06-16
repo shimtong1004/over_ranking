@@ -8,19 +8,19 @@ class OverTag < ActiveRecord::Base
   
   def self.set_data(tag)
     over_tag = OverTag.create(tag: tag)
-    get_achievement(tag, over_tag.id)
-    get_profile(tag, over_tag.id)
-    # get_platforms(tag, over_tag.id)
-    get_heroes(tag, over_tag.id)
-    get_hero(tag, over_tag.id)
-    get_allHeroes(tag, over_tag.id)
+    status = get_achievement(tag, over_tag.id)
+    status = get_profile(tag, over_tag.id) if status == 200
+    # status = get_platforms(tag, over_tag.id) if status == 200
+    status = get_heroes(tag, over_tag.id) if status == 200
+    status = get_hero(tag, over_tag.id) if status == 200
+    status = get_allHeroes(tag, over_tag.id) if status == 200
     
-    return over_tag
+    return over_tag, status
   end
   def self.get_achievement(tag, tag_id)
     begin
       timeout(TIME_OUT) {
-        # tag = "아아아퍼때리지마#3725"    
+        # tag = "아아아퍼때리지마#3725"
         tag.gsub!(/#/, '-')
         url = "https://api.lootbox.eu/pc/kr/#{tag}/achievements"
         uri = Addressable::URI.parse(url)
@@ -28,12 +28,17 @@ class OverTag < ActiveRecord::Base
         url.gsub!(/%/, '%25')
         
         data = JSON.load(open(url))
-        finished_achievements = data["finishedAchievements"]
-        data["achievements"].each do |d|
-          name = d["name"]
-          finished = d["finished"]
-          image = d["image"]
-          OverAchievement.create(over_tag_id: tag_id, finishedAchievements: finished_achievements, name: name, finished: finished, image: image)
+        if data["statusCode"] != 404
+          finished_achievements = data["finishedAchievements"]
+          data["achievements"].each do |d|
+            name = d["name"]
+            finished = d["finished"]
+            image = d["image"]
+            OverAchievement.create(over_tag_id: tag_id, finishedAchievements: finished_achievements, name: name, finished: finished, image: image)
+          end
+          return 404
+        else
+          return 200
         end
       }
     rescue
@@ -51,19 +56,24 @@ class OverTag < ActiveRecord::Base
         url.gsub!(/%/, '%25')
       
         data = JSON.load(open(url))
-        data = data["data"]
-        user_name = data["username"]
-        level = data["level"]
-        playtime = data["playtime"]
-        avatar = data["avatar"]
-        
-        d = data["games"]
-        win_percentage = d["win_percentage"]
-        wins = d["wins"]
-        lost = d["lost"]
-        played = d["played"]
-        
-        OverProfile.create(over_tag_id: tag_id, username: user_name, level: level, playtime: playtime, avatar: avatar, win_percentage: win_percentage, wins: wins, lost: lost, played: played)
+        if data["statusCode"] != 404
+          data = data["data"]
+          user_name = data["username"]
+          level = data["level"]
+          playtime = data["playtime"]
+          avatar = data["avatar"]
+          
+          d = data["games"]
+          win_percentage = d["win_percentage"]
+          wins = d["wins"]
+          lost = d["lost"]
+          played = d["played"]
+          
+          OverProfile.create(over_tag_id: tag_id, username: user_name, level: level, playtime: playtime, avatar: avatar, win_percentage: win_percentage, wins: wins, lost: lost, played: played)
+          return 200
+        else
+          return 404
+        end
       }
     rescue
     end
@@ -80,12 +90,17 @@ class OverTag < ActiveRecord::Base
         url.gsub!(/%/, '%25')
     
         data = JSON.load(open(url))
-        profile = data["profile"]
-        profile.each do |p|
-          platform = p["platform"]
-          region = p["region"]
-          has_account = p["hasAccount"]
-          OverPlatform.create(over_tag_id: tag_id, platform: platform, region: region, hasAccount: has_account)
+        if data["statusCode"] != 404
+          profile = data["profile"]
+          profile.each do |p|
+            platform = p["platform"]
+            region = p["region"]
+            has_account = p["hasAccount"]
+            OverPlatform.create(over_tag_id: tag_id, platform: platform, region: region, hasAccount: has_account)
+          end
+          return 200
+        else
+          return 404
         end
     }
     rescue
@@ -104,12 +119,17 @@ class OverTag < ActiveRecord::Base
         url.gsub!(/%/, '%25')
     
         data = JSON.load(open(url))
-        data.each do |d|
-          name = d["name"]
-          playtime = d["playtime"]
-          image = d["image"]
-          percentage = d["percentage"]
-          OverHero.create(over_tag_id: tag_id, name: name, playtime: playtime, image: image, percentage: percentage)
+        if data["statusCode"] != 404
+          data.each do |d|
+            name = d["name"]
+            playtime = d["playtime"]
+            image = d["image"]
+            percentage = d["percentage"]
+            OverHero.create(over_tag_id: tag_id, name: name, playtime: playtime, image: image, percentage: percentage)
+          end
+          return 404
+        else
+          return 200
         end
       }
     rescue
@@ -131,14 +151,20 @@ class OverTag < ActiveRecord::Base
           url.gsub!(/%/, '%25')
             
           data = JSON.load(open(url))
-          if job.eql?("Lucio")
-            OverTag.create_lucio(data, tag_id)
-          elsif job.eql?("Torbjoern")
-            OverTag.create_torbjoern(data, tag_id)
-          elsif job.eql?("Soldier76")
-            OverTag.create_soldier76(data, tag_id)
+          if data["statusCode"] != 404
+            if job.eql?("Lucio")
+              OverTag.create_lucio(data, tag_id)
+            elsif job.eql?("Torbjoern")
+              OverTag.create_torbjoern(data, tag_id)
+            elsif job.eql?("Soldier76")
+              OverTag.create_soldier76(data, tag_id)
+            end
+            status = 200
+          else
+            status = 404
           end
         end
+        return status
       }
     rescue
     end
@@ -156,7 +182,12 @@ class OverTag < ActiveRecord::Base
         url.gsub!(/%/, '%25')
         
         data = JSON.load(open(url))
-        OverTag.create_all_hero(data, tag_id)
+        if data["statusCode"] != 404
+          OverTag.create_all_hero(data, tag_id)
+          return 200
+        else
+          return 404
+        end
       }
     rescue
     end
