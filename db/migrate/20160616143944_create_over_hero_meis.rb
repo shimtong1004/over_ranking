@@ -1,15 +1,16 @@
-class CreateOverHeroSoldier76s < ActiveRecord::Migration
+class CreateOverHeroMeis < ActiveRecord::Migration
   def change
-    create_table :over_hero_soldier76s do |t|
+    create_table :over_hero_meis do |t|
       t.integer :over_tag_id
-      t.string  :HelixRocketsKills_MostinGame
-      t.string  :HelixRocketsKills
-      t.string  :TacticalVisorKills
-      t.string  :TacticalVisorKills_MostinGame
-      t.string  :BioticFieldsDeployed
-      t.string  :BioticFieldHealingDone
-      t.string  :TacticalVisorKills_Average
-      t.string  :HelixRocketsKills_Average
+      t.string  :EnemiesFrozen
+      t.string  :EnemiesFrozen_MostinGame
+      t.string  :BlizzardKills_MostinGame
+      t.string  :BlizzardKills
+      t.string  :DamageBlocked_MostinGame
+      t.string  :DamageBlocked
+      t.string  :EnemiesFrozen_Average
+      t.string  :DamageBlocked_Average
+      t.string  :BlizzardKills_Average
       t.string  :ShotsFired
       t.string  :ShotsHit
       t.string  :CriticalHits
@@ -32,6 +33,6 @@ class CreateOverHeroSoldier76s < ActiveRecord::Migration
       t.string  :WinPercentage
       t.timestamps null: false
     end
-    add_index :over_hero_soldier76s, :over_tag_id
+    add_index :over_hero_meis, :over_tag_id
   end
 end
