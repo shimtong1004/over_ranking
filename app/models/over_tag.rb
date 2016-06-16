@@ -89,7 +89,6 @@ class OverTag < ActiveRecord::Base
         url = uri.normalize.to_s
         # url.gsub!(/%/, '%25')
         
-        debugger
         data = JSON.load(open(url))
         if data["statusCode"] != 404
           profile = data["profile"]
