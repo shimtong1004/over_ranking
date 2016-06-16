@@ -10,10 +10,10 @@ class OverTag < ActiveRecord::Base
     over_tag = OverTag.create(tag: tag)
     status = get_achievement(tag, over_tag.id)
     status = get_profile(tag, over_tag.id) if status == 200
-    # status = get_platforms(tag, over_tag.id) if status == 200
     status = get_heroes(tag, over_tag.id) if status == 200
     status = get_hero(tag, over_tag.id) if status == 200
     status = get_allHeroes(tag, over_tag.id) if status == 200
+    status = get_platforms(tag, over_tag.id) if status == 200
     
     return over_tag, status
   end
@@ -25,7 +25,7 @@ class OverTag < ActiveRecord::Base
         url = "https://api.lootbox.eu/pc/kr/#{tag}/achievements"
         uri = Addressable::URI.parse(url)
         url = uri.normalize.to_s
-        url.gsub!(/%/, '%25')
+        # url.gsub!(/%/, '%25')
         
         data = JSON.load(open(url))
         if data["statusCode"] != 404
@@ -36,9 +36,9 @@ class OverTag < ActiveRecord::Base
             image = d["image"]
             OverAchievement.create(over_tag_id: tag_id, finishedAchievements: finished_achievements, name: name, finished: finished, image: image)
           end
-          return 404
-        else
           return 200
+        else
+          return 404
         end
       }
     rescue
@@ -53,8 +53,8 @@ class OverTag < ActiveRecord::Base
         url = "https://api.lootbox.eu/pc/kr/#{tag}/profile"
         uri = Addressable::URI.parse(url)
         url = uri.normalize.to_s
-        url.gsub!(/%/, '%25')
-      
+        # url.gsub!(/%/, '%25')
+        
         data = JSON.load(open(url))
         if data["statusCode"] != 404
           data = data["data"]
@@ -87,7 +87,7 @@ class OverTag < ActiveRecord::Base
         url = "https://api.lootbox.eu/pc/kr/#{tag}/get-platforms"
         uri = Addressable::URI.parse(url)
         url = uri.normalize.to_s
-        url.gsub!(/%/, '%25')
+        # url.gsub!(/%/, '%25')
     
         data = JSON.load(open(url))
         if data["statusCode"] != 404
@@ -116,7 +116,7 @@ class OverTag < ActiveRecord::Base
         url = "https://api.lootbox.eu/pc/kr/#{tag}/heroes"
         uri = Addressable::URI.parse(url)
         url = uri.normalize.to_s
-        url.gsub!(/%/, '%25')
+        # url.gsub!(/%/, '%25')
     
         data = JSON.load(open(url))
         if data["statusCode"] != 404
@@ -127,9 +127,9 @@ class OverTag < ActiveRecord::Base
             percentage = d["percentage"]
             OverHero.create(over_tag_id: tag_id, name: name, playtime: playtime, image: image, percentage: percentage)
           end
-          return 404
-        else
           return 200
+        else
+          return 404
         end
       }
     rescue
@@ -148,7 +148,7 @@ class OverTag < ActiveRecord::Base
           url = "https://api.lootbox.eu/pc/kr/#{tag}/hero/#{job}/"
           uri = Addressable::URI.parse(url)
           url = uri.normalize.to_s
-          url.gsub!(/%/, '%25')
+          # url.gsub!(/%/, '%25')
             
           data = JSON.load(open(url))
           if data["statusCode"] != 404
@@ -179,7 +179,7 @@ class OverTag < ActiveRecord::Base
         url = "https://api.lootbox.eu/pc/kr/#{tag}/allHeroes/"
         uri = Addressable::URI.parse(url)
         url = uri.normalize.to_s
-        url.gsub!(/%/, '%25')
+        # url.gsub!(/%/, '%25')
         
         data = JSON.load(open(url))
         if data["statusCode"] != 404
