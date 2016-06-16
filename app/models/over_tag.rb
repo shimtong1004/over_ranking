@@ -1,7 +1,7 @@
 #encoding: utf-8
 require 'open-uri'
 
-TIME_OUT = 20
+TIME_OUT = 60
 
 class OverTag < ActiveRecord::Base
   has_one :over_all_hero
