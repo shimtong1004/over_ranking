@@ -13,7 +13,7 @@ class OverTag < ActiveRecord::Base
     status = get_heroes(tag, over_tag.id) if status == 200
     status = get_hero(tag, over_tag.id) if status == 200
     status = get_allHeroes(tag, over_tag.id) if status == 200
-    status = get_platforms(tag, over_tag.id) if status == 200
+    # status = get_platforms(tag, over_tag.id) if status == 200
     
     return over_tag, status
   end
@@ -88,7 +88,8 @@ class OverTag < ActiveRecord::Base
         uri = Addressable::URI.parse(url)
         url = uri.normalize.to_s
         # url.gsub!(/%/, '%25')
-    
+        
+        debugger
         data = JSON.load(open(url))
         if data["statusCode"] != 404
           profile = data["profile"]
@@ -117,9 +118,8 @@ class OverTag < ActiveRecord::Base
         uri = Addressable::URI.parse(url)
         url = uri.normalize.to_s
         # url.gsub!(/%/, '%25')
-    
         data = JSON.load(open(url))
-        if data["statusCode"] != 404
+        if data.class.eql?(Array)
           data.each do |d|
             name = d["name"]
             playtime = d["playtime"]
@@ -144,6 +144,7 @@ class OverTag < ActiveRecord::Base
         tag.gsub!(/#/, '-')
     
         jobs = ["Lucio", "Torbjoern", "Soldier76"]
+        status = 404
         jobs.each do |job|
           url = "https://api.lootbox.eu/pc/kr/#{tag}/hero/#{job}/"
           uri = Addressable::URI.parse(url)
