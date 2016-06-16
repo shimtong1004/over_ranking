@@ -19,7 +19,6 @@ class OverTagsController < ApplicationController
     unless @tag_data
       @tag_data = OverTag.set_data(tag)
     end
-    
     render 'show'
   end
 

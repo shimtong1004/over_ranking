@@ -1,5 +1,21 @@
 <%= form_tag({:action=>"new"}, {:method=>"get"}) do %>
-	<%= text_field_tag "tag", session[:btag], :placeholder=>"배틀테그 입력" %>
-	<%= submit_tag "확인"  %><br />
-	<%= link_to "배틀넷 로그인", "/auth/bnet" %>
+	<div style="padding: 30px 0; text-align: center;">
+		<%= text_field_tag "tag", session[:btag], :placeholder=>"배틀테그 입력", :style=>"padding:10px; font-size:14px;" %>
+		<%= submit_tag "확인", :class=>"submit_button"  %>
+		<div style="font-size: 14px; margin-top:10px;">
+			<%= link_to "내 배틀태그 가져오기", "/auth/bnet" %>
+		</div>
+		
+	</div>
 <% end %>
+
+<style>
+	.submit_button {
+	    padding: 10px 20px;
+	    font-size: 14px;
+	    /*background-color: #000;
+	    color: #fff;*/
+	    border-style: none;
+	}
+
+</style>
