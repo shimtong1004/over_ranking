@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160616145612) do
+ActiveRecord::Schema.define(version: 20160617150245) do
 
   create_table "authorizations", force: :cascade do |t|
     t.string   "provider",   limit: 255
@@ -88,64 +88,50 @@ ActiveRecord::Schema.define(version: 20160616145612) do
   end
 
   create_table "over_hero_bastions", force: :cascade do |t|
-    t.integer  "over_tag_id",               limit: 4
-    t.string   "ReconKills",                limit: 255
-    t.string   "SentryKills",               limit: 255
-    t.string   "TankKills",                 limit: 255
-    t.string   "SentryKills_MostinGame",    limit: 255
-    t.string   "ReconKills_MostinGame",     limit: 255
-    t.string   "TankKills_MostinGame",      limit: 255
-    t.string   "TankKills_Average",         limit: 255
-    t.string   "SentryKills_Average",       limit: 255
-    t.string   "ReconKills_Average",        limit: 255
-    t.string   "ShotsFired",                limit: 255
-    t.string   "ShotsHit",                  limit: 255
-    t.string   "CriticalHits",              limit: 255
-    t.string   "CriticalHitsperMinute",     limit: 255
-    t.string   "CriticalHitAccuracy",       limit: 255
-    t.string   "EliminationsperLife",       limit: 255
-    t.string   "WeaponAccuracy",            limit: 255
-    t.string   "TurretsDestroyed",          limit: 255
-    t.string   "SelfHealing",               limit: 255
-    t.string   "Eliminations_MostinLife",   limit: 255
-    t.string   "MostScorewithinoneLife",    limit: 255
-    t.string   "DamageDone_MostinLife",     limit: 255
-    t.string   "HealingDone_MostinLife",    limit: 255
-    t.string   "WeaponAccuracy_BestinGame", limit: 255
-    t.string   "KillStreak_Best",           limit: 255
-    t.string   "CriticalHits_MostinGame",   limit: 255
-    t.string   "CriticalHits_MostinLife",   limit: 255
-    t.string   "SelfHealing_MostinGame",    limit: 255
-    t.string   "SelfHealing_Average",       limit: 255
-    t.string   "WinPercentage",             limit: 255
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.integer  "over_tag_id",            limit: 4
+    t.string   "ReconKills",             limit: 255
+    t.string   "SentryKills",            limit: 255
+    t.string   "TankKills",              limit: 255
+    t.string   "SentryKills_MostinGame", limit: 255
+    t.string   "ReconKills_MostinGame",  limit: 255
+    t.string   "TankKills_MostinGame",   limit: 255
+    t.string   "TankKills_Average",      limit: 255
+    t.string   "SentryKills_Average",    limit: 255
+    t.string   "ReconKills_Average",     limit: 255
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
   add_index "over_hero_bastions", ["over_tag_id"], name: "index_over_hero_bastions_on_over_tag_id", using: :btree
+
+  create_table "over_hero_columns", force: :cascade do |t|
+    t.string   "col",        limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "over_hero_commons", force: :cascade do |t|
     t.integer  "over_hero_common_table_id",   limit: 4
     t.string   "over_hero_common_table_type", limit: 255
     t.string   "Cards",                       limit: 255
     t.string   "DamageDone",                  limit: 255
-    t.string   "DamageDone_Average",          limit: 255
+    t.string   "DamageDone_Average",          limit: 10
     t.string   "DamageDone_MostinGame",       limit: 255
     t.string   "Deaths",                      limit: 255
-    t.string   "Deaths_Average",              limit: 255
+    t.string   "Deaths_Average",              limit: 10
     t.string   "DefensiveAssists_MostinGame", limit: 255
     t.string   "Eliminations",                limit: 255
-    t.string   "Eliminations_Average",        limit: 255
+    t.string   "Eliminations_Average",        limit: 10
     t.string   "Eliminations_MostinGame",     limit: 255
     t.string   "EnvironmentalDeaths",         limit: 255
     t.string   "EnvironmentalKills",          limit: 255
     t.string   "FinalBlows",                  limit: 255
-    t.string   "FinalBlows_Average",          limit: 255
+    t.string   "FinalBlows_Average",          limit: 10
     t.string   "FinalBlows_MostinGame",       limit: 255
     t.string   "GamesPlayed",                 limit: 255
     t.string   "GamesWon",                    limit: 255
     t.string   "HealingDone",                 limit: 255
-    t.string   "HealingDone_Average",         limit: 255
+    t.string   "HealingDone_Average",         limit: 10
     t.string   "HealingDone_MostinGame",      limit: 255
     t.string   "Medals",                      limit: 255
     t.string   "Medals_Bronze",               limit: 255
@@ -156,19 +142,48 @@ ActiveRecord::Schema.define(version: 20160616145612) do
     t.string   "Multikill_Best",              limit: 255
     t.string   "Multikills",                  limit: 255
     t.string   "ObjectiveKills",              limit: 255
-    t.string   "ObjectiveKills_Average",      limit: 255
+    t.string   "ObjectiveKills_Average",      limit: 10
     t.string   "ObjectiveKills_MostinGame",   limit: 255
     t.string   "ObjectiveTime",               limit: 255
-    t.string   "ObjectiveTime_Average",       limit: 255
+    t.string   "ObjectiveTime_Average",       limit: 10
     t.string   "ObjectiveTime_MostinGame",    limit: 255
     t.string   "OffensiveAssists_MostinGame", limit: 255
     t.string   "Score",                       limit: 255
     t.string   "SoloKills",                   limit: 255
-    t.string   "SoloKills_Average",           limit: 255
+    t.string   "SoloKills_Average",           limit: 10
     t.string   "SoloKills_MostinGame",        limit: 255
     t.string   "TimePlayed",                  limit: 255
     t.string   "TimeSpentonFire",             limit: 255
     t.string   "TeleporterPadsDestroyed",     limit: 255
+    t.string   "ShotsFired",                  limit: 255
+    t.string   "ShotsHit",                    limit: 255
+    t.string   "CriticalHits",                limit: 255
+    t.string   "CriticalHitsperMinute",       limit: 255
+    t.string   "CriticalHitAccuracy",         limit: 255
+    t.string   "EliminationsperLife",         limit: 255
+    t.string   "WeaponAccuracy",              limit: 255
+    t.string   "TurretsDestroyed",            limit: 255
+    t.string   "SelfHealing",                 limit: 255
+    t.string   "Eliminations_MostinLife",     limit: 255
+    t.string   "MostScorewithinoneLife",      limit: 255
+    t.string   "DamageDone_MostinLife",       limit: 255
+    t.string   "HealingDone_MostinLife",      limit: 255
+    t.string   "WeaponAccuracy_BestinGame",   limit: 255
+    t.string   "KillStreak_Best",             limit: 255
+    t.string   "CriticalHits_MostinGame",     limit: 255
+    t.string   "CriticalHits_MostinLife",     limit: 255
+    t.string   "SelfHealing_MostinGame",      limit: 255
+    t.string   "SelfHealing_Average",         limit: 10
+    t.string   "WinPercentage",               limit: 255
+    t.string   "DamageBlocked",               limit: 255
+    t.string   "DamageBlocked_MostinGame",    limit: 255
+    t.string   "DamageBlocked_Average",       limit: 10
+    t.string   "OffensiveAssists",            limit: 255
+    t.string   "DefensiveAssists",            limit: 255
+    t.string   "DefensiveAssists_Average",    limit: 10
+    t.string   "OffensiveAssists_Average",    limit: 10
+    t.string   "ReconAssists_MostinGame",     limit: 255
+    t.string   "ReconAssists_Average",        limit: 10
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
   end
@@ -179,27 +194,8 @@ ActiveRecord::Schema.define(version: 20160616145612) do
     t.integer  "over_tag_id",                   limit: 4
     t.string   "MechsCalled",                   limit: 255
     t.string   "MechsCalled_MostinGame",        limit: 255
-    t.string   "DamageBlocked_MostinGame",      limit: 255
-    t.string   "DamageBlocked",                 limit: 255
     t.string   "MechDeaths",                    limit: 255
     t.string   "MechsCalled_Average",           limit: 255
-    t.string   "DamageBlocked_Average",         limit: 255
-    t.string   "ShotsFired",                    limit: 255
-    t.string   "ShotsHit",                      limit: 255
-    t.string   "CriticalHits",                  limit: 255
-    t.string   "CriticalHitsperMinute",         limit: 255
-    t.string   "CriticalHitAccuracy",           limit: 255
-    t.string   "EliminationsperLife",           limit: 255
-    t.string   "WeaponAccuracy",                limit: 255
-    t.string   "TurretsDestroyed",              limit: 255
-    t.string   "Eliminations_MostinLife",       limit: 255
-    t.string   "MostScorewithinoneLife",        limit: 255
-    t.string   "DamageDone_MostinLife",         limit: 255
-    t.string   "WeaponAccuracy_BestinGame",     limit: 255
-    t.string   "KillStreak_Best",               limit: 255
-    t.string   "CriticalHits_MostinGame",       limit: 255
-    t.string   "CriticalHits_MostinLife",       limit: 255
-    t.string   "WinPercentage",                 limit: 255
     t.string   "Self_DestructKills",            limit: 255
     t.string   "Self_DestructKills_MostinGame", limit: 255
     t.string   "Self_DestructKills_Average",    limit: 255
@@ -218,22 +214,6 @@ ActiveRecord::Schema.define(version: 20160616145612) do
     t.string   "Dragonblades",                limit: 255
     t.string   "DragonbladeKills_Average",    limit: 255
     t.string   "DamageReflected_Average",     limit: 255
-    t.string   "ShotsFired",                  limit: 255
-    t.string   "ShotsHit",                    limit: 255
-    t.string   "CriticalHits",                limit: 255
-    t.string   "CriticalHitsperMinute",       limit: 255
-    t.string   "CriticalHitAccuracy",         limit: 255
-    t.string   "EliminationsperLife",         limit: 255
-    t.string   "WeaponAccuracy",              limit: 255
-    t.string   "TurretsDestroyed",            limit: 255
-    t.string   "Eliminations_MostinLife",     limit: 255
-    t.string   "MostScorewithinoneLife",      limit: 255
-    t.string   "DamageDone_MostinLife",       limit: 255
-    t.string   "WeaponAccuracy_BestinGame",   limit: 255
-    t.string   "KillStreak_Best",             limit: 255
-    t.string   "CriticalHits_MostinGame",     limit: 255
-    t.string   "CriticalHits_MostinLife",     limit: 255
-    t.string   "WinPercentage",               limit: 255
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
   end
@@ -246,26 +226,8 @@ ActiveRecord::Schema.define(version: 20160616145612) do
     t.string   "DragonstrikeKills_MostinGame", limit: 255
     t.string   "ScatterArrowKills",            limit: 255
     t.string   "ScatterArrowKills_MostinGame", limit: 255
-    t.string   "ReconAssists_MostinGame",      limit: 255
     t.string   "ScatterArrowKills_Average",    limit: 255
     t.string   "DragonstrikeKills_Average",    limit: 255
-    t.string   "ShotsFired",                   limit: 255
-    t.string   "ShotsHit",                     limit: 255
-    t.string   "CriticalHits",                 limit: 255
-    t.string   "CriticalHitsperMinute",        limit: 255
-    t.string   "CriticalHitAccuracy",          limit: 255
-    t.string   "EliminationsperLife",          limit: 255
-    t.string   "WeaponAccuracy",               limit: 255
-    t.string   "TurretsDestroyed",             limit: 255
-    t.string   "Eliminations_MostinLife",      limit: 255
-    t.string   "MostScorewithinoneLife",       limit: 255
-    t.string   "DamageDone_MostinLife",        limit: 255
-    t.string   "WeaponAccuracy_BestinGame",    limit: 255
-    t.string   "KillStreak_Best",              limit: 255
-    t.string   "CriticalHits_MostinGame",      limit: 255
-    t.string   "CriticalHits_MostinLife",      limit: 255
-    t.string   "WinPercentage",                limit: 255
-    t.string   "ReconAssists_Average",         limit: 255
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
   end
@@ -279,17 +241,6 @@ ActiveRecord::Schema.define(version: 20160616145612) do
     t.string   "RIP_TireKills_MostinGame",  limit: 255
     t.string   "RIP_TireKills",             limit: 255
     t.string   "EnemiesTrappedaMinute",     limit: 255
-    t.string   "ShotsFired",                limit: 255
-    t.string   "ShotsHit",                  limit: 255
-    t.string   "EliminationsperLife",       limit: 255
-    t.string   "WeaponAccuracy",            limit: 255
-    t.string   "TurretsDestroyed",          limit: 255
-    t.string   "Eliminations_MostinLife",   limit: 255
-    t.string   "MostScorewithinoneLife",    limit: 255
-    t.string   "DamageDone_MostinLife",     limit: 255
-    t.string   "WeaponAccuracy_BestinGame", limit: 255
-    t.string   "KillStreak_Best",           limit: 255
-    t.string   "WinPercentage",             limit: 255
     t.string   "RIP_TireKills_Average",     limit: 255
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
@@ -302,30 +253,6 @@ ActiveRecord::Schema.define(version: 20160616145612) do
     t.string   "SoundBarriersProvided",            limit: 255
     t.string   "SoundBarriersProvided_MostinGame", limit: 255
     t.string   "SoundBarriersProvided_Average",    limit: 255
-    t.string   "ShotsFired",                       limit: 255
-    t.string   "ShotsHit",                         limit: 255
-    t.string   "CriticalHits",                     limit: 255
-    t.string   "CriticalHitsperMinute",            limit: 255
-    t.string   "CriticalHitAccuracy",              limit: 255
-    t.string   "EliminationsperLife",              limit: 255
-    t.string   "WeaponAccuracy",                   limit: 255
-    t.string   "TurretsDestroyed",                 limit: 255
-    t.string   "SelfHealing",                      limit: 255
-    t.string   "Eliminations_MostinLife",          limit: 255
-    t.string   "MostScorewithinoneLife",           limit: 255
-    t.string   "DamageDone_MostinLife",            limit: 255
-    t.string   "HealingDone_MostinLife",           limit: 255
-    t.string   "WeaponAccuracy_BestinGame",        limit: 255
-    t.string   "KillStreak_Best",                  limit: 255
-    t.string   "CriticalHits_MostinGame",          limit: 255
-    t.string   "CriticalHits_MostinLife",          limit: 255
-    t.string   "SelfHealing_MostinGame",           limit: 255
-    t.string   "SelfHealing_Average",              limit: 255
-    t.string   "WinPercentage",                    limit: 255
-    t.string   "OffensiveAssists",                 limit: 255
-    t.string   "DefensiveAssists",                 limit: 255
-    t.string   "DefensiveAssists_Average",         limit: 255
-    t.string   "OffensiveAssists_Average",         limit: 255
     t.datetime "created_at",                                   null: false
     t.datetime "updated_at",                                   null: false
   end
@@ -339,22 +266,6 @@ ActiveRecord::Schema.define(version: 20160616145612) do
     t.string   "FantheHammerKills",            limit: 255
     t.string   "FantheHammerKills_Average",    limit: 255
     t.string   "DeadeyeKills_Average",         limit: 255
-    t.string   "ShotsFired",                   limit: 255
-    t.string   "ShotsHit",                     limit: 255
-    t.string   "CriticalHits",                 limit: 255
-    t.string   "CriticalHitsperMinute",        limit: 255
-    t.string   "CriticalHitAccuracy",          limit: 255
-    t.string   "EliminationsperLife",          limit: 255
-    t.string   "WeaponAccuracy",               limit: 255
-    t.string   "TurretsDestroyed",             limit: 255
-    t.string   "Eliminations_MostinLife",      limit: 255
-    t.string   "MostScorewithinoneLife",       limit: 255
-    t.string   "DamageDone_MostinLife",        limit: 255
-    t.string   "WeaponAccuracy_BestinGame",    limit: 255
-    t.string   "KillStreak_Best",              limit: 255
-    t.string   "CriticalHits_MostinGame",      limit: 255
-    t.string   "CriticalHits_MostinLife",      limit: 255
-    t.string   "WinPercentage",                limit: 255
     t.string   "FantheHammerKills_MostinGame", limit: 255
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
@@ -363,38 +274,15 @@ ActiveRecord::Schema.define(version: 20160616145612) do
   add_index "over_hero_mc_crees", ["over_tag_id"], name: "index_over_hero_mc_crees_on_over_tag_id", using: :btree
 
   create_table "over_hero_meis", force: :cascade do |t|
-    t.integer  "over_tag_id",               limit: 4
-    t.string   "EnemiesFrozen",             limit: 255
-    t.string   "EnemiesFrozen_MostinGame",  limit: 255
-    t.string   "BlizzardKills_MostinGame",  limit: 255
-    t.string   "BlizzardKills",             limit: 255
-    t.string   "DamageBlocked_MostinGame",  limit: 255
-    t.string   "DamageBlocked",             limit: 255
-    t.string   "EnemiesFrozen_Average",     limit: 255
-    t.string   "DamageBlocked_Average",     limit: 255
-    t.string   "BlizzardKills_Average",     limit: 255
-    t.string   "ShotsFired",                limit: 255
-    t.string   "ShotsHit",                  limit: 255
-    t.string   "CriticalHits",              limit: 255
-    t.string   "CriticalHitsperMinute",     limit: 255
-    t.string   "CriticalHitAccuracy",       limit: 255
-    t.string   "EliminationsperLife",       limit: 255
-    t.string   "WeaponAccuracy",            limit: 255
-    t.string   "TurretsDestroyed",          limit: 255
-    t.string   "SelfHealing",               limit: 255
-    t.string   "Eliminations_MostinLife",   limit: 255
-    t.string   "MostScorewithinoneLife",    limit: 255
-    t.string   "DamageDone_MostinLife",     limit: 255
-    t.string   "HealingDone_MostinLife",    limit: 255
-    t.string   "WeaponAccuracy_BestinGame", limit: 255
-    t.string   "KillStreak_Best",           limit: 255
-    t.string   "CriticalHits_MostinGame",   limit: 255
-    t.string   "CriticalHits_MostinLife",   limit: 255
-    t.string   "SelfHealing_MostinGame",    limit: 255
-    t.string   "SelfHealing_Average",       limit: 255
-    t.string   "WinPercentage",             limit: 255
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.integer  "over_tag_id",              limit: 4
+    t.string   "EnemiesFrozen",            limit: 255
+    t.string   "EnemiesFrozen_MostinGame", limit: 255
+    t.string   "BlizzardKills_MostinGame", limit: 255
+    t.string   "BlizzardKills",            limit: 255
+    t.string   "EnemiesFrozen_Average",    limit: 255
+    t.string   "BlizzardKills_Average",    limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
   end
 
   add_index "over_hero_meis", ["over_tag_id"], name: "index_over_hero_meis_on_over_tag_id", using: :btree
@@ -407,31 +295,8 @@ ActiveRecord::Schema.define(version: 20160616145612) do
     t.string   "MostPlayersSavedinaGame",       limit: 255
     t.string   "PlayersSaved_Average",          limit: 255
     t.string   "PlayersResurrected_Average",    limit: 255
-    t.string   "ShotsFired",                    limit: 255
-    t.string   "ShotsHit",                      limit: 255
-    t.string   "CriticalHits",                  limit: 255
-    t.string   "CriticalHitsperMinute",         limit: 255
-    t.string   "CriticalHitAccuracy",           limit: 255
-    t.string   "EliminationsperLife",           limit: 255
-    t.string   "WeaponAccuracy",                limit: 255
-    t.string   "SelfHealing",                   limit: 255
-    t.string   "Eliminations_MostinLife",       limit: 255
-    t.string   "MostScorewithinoneLife",        limit: 255
-    t.string   "DamageDone_MostinLife",         limit: 255
-    t.string   "HealingDone_MostinLife",        limit: 255
-    t.string   "WeaponAccuracy_BestinGame",     limit: 255
-    t.string   "KillStreak_Best",               limit: 255
-    t.string   "CriticalHits_MostinGame",       limit: 255
-    t.string   "CriticalHits_MostinLife",       limit: 255
-    t.string   "SelfHealing_MostinGame",        limit: 255
-    t.string   "SelfHealing_Average",           limit: 255
-    t.string   "WinPercentage",                 limit: 255
     t.string   "BlasterKills",                  limit: 255
     t.string   "BlasterKills_MostinGame",       limit: 255
-    t.string   "OffensiveAssists",              limit: 255
-    t.string   "DefensiveAssists",              limit: 255
-    t.string   "DefensiveAssists_Average",      limit: 255
-    t.string   "OffensiveAssists_Average",      limit: 255
     t.string   "BlasterKills_Average",          limit: 255
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
@@ -447,17 +312,6 @@ ActiveRecord::Schema.define(version: 20160616145612) do
     t.string   "BarrageKills_MostinGame",     limit: 255
     t.string   "RocketDirectHits_Average",    limit: 255
     t.string   "BarrageKills_Average",        limit: 255
-    t.string   "ShotsFired",                  limit: 255
-    t.string   "ShotsHit",                    limit: 255
-    t.string   "EliminationsperLife",         limit: 255
-    t.string   "WeaponAccuracy",              limit: 255
-    t.string   "TurretsDestroyed",            limit: 255
-    t.string   "Eliminations_MostinLife",     limit: 255
-    t.string   "MostScorewithinoneLife",      limit: 255
-    t.string   "DamageDone_MostinLife",       limit: 255
-    t.string   "WeaponAccuracy_BestinGame",   limit: 255
-    t.string   "KillStreak_Best",             limit: 255
-    t.string   "WinPercentage",               limit: 255
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
   end
@@ -472,26 +326,6 @@ ActiveRecord::Schema.define(version: 20160616145612) do
     t.string   "DeathBlossomKills_MostinGame", limit: 255
     t.string   "SoulsConsumed_Average",        limit: 255
     t.string   "DeathBlossomKills_Average",    limit: 255
-    t.string   "ShotsFired",                   limit: 255
-    t.string   "ShotsHit",                     limit: 255
-    t.string   "CriticalHits",                 limit: 255
-    t.string   "CriticalHitsperMinute",        limit: 255
-    t.string   "CriticalHitAccuracy",          limit: 255
-    t.string   "EliminationsperLife",          limit: 255
-    t.string   "WeaponAccuracy",               limit: 255
-    t.string   "TurretsDestroyed",             limit: 255
-    t.string   "SelfHealing",                  limit: 255
-    t.string   "Eliminations_MostinLife",      limit: 255
-    t.string   "MostScorewithinoneLife",       limit: 255
-    t.string   "DamageDone_MostinLife",        limit: 255
-    t.string   "HealingDone_MostinLife",       limit: 255
-    t.string   "WeaponAccuracy_BestinGame",    limit: 255
-    t.string   "KillStreak_Best",              limit: 255
-    t.string   "CriticalHits_MostinGame",      limit: 255
-    t.string   "CriticalHits_MostinLife",      limit: 255
-    t.string   "SelfHealing_MostinGame",       limit: 255
-    t.string   "SelfHealing_Average",          limit: 255
-    t.string   "WinPercentage",                limit: 255
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
   end
@@ -500,8 +334,6 @@ ActiveRecord::Schema.define(version: 20160616145612) do
 
   create_table "over_hero_reinhardts", force: :cascade do |t|
     t.integer  "over_tag_id",                  limit: 4
-    t.string   "DamageBlocked",                limit: 255
-    t.string   "DamageBlocked_MostinGame",     limit: 255
     t.string   "ChargeKills",                  limit: 255
     t.string   "ChargeKills_MostinGame",       limit: 255
     t.string   "FireStrikeKills",              limit: 255
@@ -510,15 +342,7 @@ ActiveRecord::Schema.define(version: 20160616145612) do
     t.string   "EarthshatterKills_MostinGame", limit: 255
     t.string   "FireStrikeKills_Average",      limit: 255
     t.string   "EarthshatterKills_Average",    limit: 255
-    t.string   "DamageBlocked_Average",        limit: 255
     t.string   "ChargeKills_Average",          limit: 255
-    t.string   "EliminationsperLife",          limit: 255
-    t.string   "TurretsDestroyed",             limit: 255
-    t.string   "Eliminations_MostinLife",      limit: 255
-    t.string   "MostScorewithinoneLife",       limit: 255
-    t.string   "DamageDone_MostinLife",        limit: 255
-    t.string   "KillStreak_Best",              limit: 255
-    t.string   "WinPercentage",                limit: 255
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
   end
@@ -526,38 +350,18 @@ ActiveRecord::Schema.define(version: 20160616145612) do
   add_index "over_hero_reinhardts", ["over_tag_id"], name: "index_over_hero_reinhardts_on_over_tag_id", using: :btree
 
   create_table "over_hero_roadhogs", force: :cascade do |t|
-    t.integer  "over_tag_id",               limit: 4
-    t.string   "EnemiesHooked_MostinGame",  limit: 255
-    t.string   "EnemiesHooked",             limit: 255
-    t.string   "HooksAttempted",            limit: 255
-    t.string   "WholeHogKills_MostinGame",  limit: 255
-    t.string   "WholeHogKills",             limit: 255
-    t.string   "HookAccuracy_BestinGame",   limit: 255
-    t.string   "WholeHogKills_Average",     limit: 255
-    t.string   "EnemiesHooked_Average",     limit: 255
-    t.string   "HookAccuracy",              limit: 255
-    t.string   "ShotsFired",                limit: 255
-    t.string   "ShotsHit",                  limit: 255
-    t.string   "CriticalHits",              limit: 255
-    t.string   "CriticalHitsperMinute",     limit: 255
-    t.string   "CriticalHitAccuracy",       limit: 255
-    t.string   "EliminationsperLife",       limit: 255
-    t.string   "WeaponAccuracy",            limit: 255
-    t.string   "TurretsDestroyed",          limit: 255
-    t.string   "SelfHealing",               limit: 255
-    t.string   "Eliminations_MostinLife",   limit: 255
-    t.string   "MostScorewithinoneLife",    limit: 255
-    t.string   "DamageDone_MostinLife",     limit: 255
-    t.string   "HealingDone_MostinLife",    limit: 255
-    t.string   "WeaponAccuracy_BestinGame", limit: 255
-    t.string   "KillStreak_Best",           limit: 255
-    t.string   "CriticalHits_MostinGame",   limit: 255
-    t.string   "CriticalHits_MostinLife",   limit: 255
-    t.string   "SelfHealing_MostinGame",    limit: 255
-    t.string   "SelfHealing_Average",       limit: 255
-    t.string   "WinPercentage",             limit: 255
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.integer  "over_tag_id",              limit: 4
+    t.string   "EnemiesHooked_MostinGame", limit: 255
+    t.string   "EnemiesHooked",            limit: 255
+    t.string   "HooksAttempted",           limit: 255
+    t.string   "WholeHogKills_MostinGame", limit: 255
+    t.string   "WholeHogKills",            limit: 255
+    t.string   "HookAccuracy_BestinGame",  limit: 255
+    t.string   "WholeHogKills_Average",    limit: 255
+    t.string   "EnemiesHooked_Average",    limit: 255
+    t.string   "HookAccuracy",             limit: 255
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
   end
 
   add_index "over_hero_roadhogs", ["over_tag_id"], name: "index_over_hero_roadhogs_on_over_tag_id", using: :btree
@@ -572,26 +376,6 @@ ActiveRecord::Schema.define(version: 20160616145612) do
     t.string   "BioticFieldHealingDone",        limit: 255
     t.string   "TacticalVisorKills_Average",    limit: 255
     t.string   "HelixRocketsKills_Average",     limit: 255
-    t.string   "ShotsFired",                    limit: 255
-    t.string   "ShotsHit",                      limit: 255
-    t.string   "CriticalHits",                  limit: 255
-    t.string   "CriticalHitsperMinute",         limit: 255
-    t.string   "CriticalHitAccuracy",           limit: 255
-    t.string   "EliminationsperLife",           limit: 255
-    t.string   "WeaponAccuracy",                limit: 255
-    t.string   "TurretsDestroyed",              limit: 255
-    t.string   "SelfHealing",                   limit: 255
-    t.string   "Eliminations_MostinLife",       limit: 255
-    t.string   "MostScorewithinoneLife",        limit: 255
-    t.string   "DamageDone_MostinLife",         limit: 255
-    t.string   "HealingDone_MostinLife",        limit: 255
-    t.string   "WeaponAccuracy_BestinGame",     limit: 255
-    t.string   "KillStreak_Best",               limit: 255
-    t.string   "CriticalHits_MostinGame",       limit: 255
-    t.string   "CriticalHits_MostinLife",       limit: 255
-    t.string   "SelfHealing_MostinGame",        limit: 255
-    t.string   "SelfHealing_Average",           limit: 255
-    t.string   "WinPercentage",                 limit: 255
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
   end
@@ -612,12 +396,6 @@ ActiveRecord::Schema.define(version: 20160616145612) do
     t.string   "SentryTurretKills_Average",    limit: 255
     t.string   "PlayersTeleported_Average",    limit: 255
     t.string   "TeleporterUptime_Average",     limit: 255
-    t.string   "EliminationsperLife",          limit: 255
-    t.string   "Eliminations_MostinLife",      limit: 255
-    t.string   "MostScorewithinoneLife",       limit: 255
-    t.string   "DamageDone_MostinLife",        limit: 255
-    t.string   "KillStreak_Best",              limit: 255
-    t.string   "WinPercentage",                limit: 255
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
   end
@@ -636,22 +414,6 @@ ActiveRecord::Schema.define(version: 20160616145612) do
     t.string   "TorbjoernKills_Average",     limit: 255
     t.string   "MoltenCoreKills_Average",    limit: 255
     t.string   "ArmorPacksCreated_Average",  limit: 255
-    t.string   "ShotsFired",                 limit: 255
-    t.string   "ShotsHit",                   limit: 255
-    t.string   "CriticalHits",               limit: 255
-    t.string   "CriticalHitsperMinute",      limit: 255
-    t.string   "CriticalHitAccuracy",        limit: 255
-    t.string   "EliminationsperLife",        limit: 255
-    t.string   "WeaponAccuracy",             limit: 255
-    t.string   "TurretsDestroyed",           limit: 255
-    t.string   "Eliminations_MostinLife",    limit: 255
-    t.string   "MostScorewithinoneLife",     limit: 255
-    t.string   "DamageDone_MostinLife",      limit: 255
-    t.string   "WeaponAccuracy_BestinGame",  limit: 255
-    t.string   "KillStreak_Best",            limit: 255
-    t.string   "CriticalHits_MostinGame",    limit: 255
-    t.string   "CriticalHits_MostinLife",    limit: 255
-    t.string   "WinPercentage",              limit: 255
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
   end
@@ -666,25 +428,6 @@ ActiveRecord::Schema.define(version: 20160616145612) do
     t.string   "PulseBombsAttached",            limit: 255
     t.string   "PulseBombKills_Average",        limit: 255
     t.string   "PulseBombsAttached_Average",    limit: 255
-    t.string   "ShotsFired",                    limit: 255
-    t.string   "ShotsHit",                      limit: 255
-    t.string   "CriticalHits",                  limit: 255
-    t.string   "CriticalHitsperMinute",         limit: 255
-    t.string   "CriticalHitAccuracy",           limit: 255
-    t.string   "EliminationsperLife",           limit: 255
-    t.string   "WeaponAccuracy",                limit: 255
-    t.string   "TurretsDestroyed",              limit: 255
-    t.string   "SelfHealing",                   limit: 255
-    t.string   "Eliminations_MostinLife",       limit: 255
-    t.string   "MostScorewithinoneLife",        limit: 255
-    t.string   "DamageDone_MostinLife",         limit: 255
-    t.string   "WeaponAccuracy_BestinGame",     limit: 255
-    t.string   "KillStreak_Best",               limit: 255
-    t.string   "CriticalHits_MostinGame",       limit: 255
-    t.string   "CriticalHits_MostinLife",       limit: 255
-    t.string   "SelfHealing_MostinGame",        limit: 255
-    t.string   "SelfHealing_Average",           limit: 255
-    t.string   "WinPercentage",                 limit: 255
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
   end
@@ -699,28 +442,10 @@ ActiveRecord::Schema.define(version: 20160616145612) do
     t.string   "ScopedCriticalHits",            limit: 255
     t.string   "ScopedCriticalHits_MostinGame", limit: 255
     t.string   "VenomMineKills_MostinGame",     limit: 255
-    t.string   "ReconAssists_MostinGame",       limit: 255
     t.string   "ScopedAccuracy_BestinGame",     limit: 255
     t.string   "VenomMineKills_Average",        limit: 255
     t.string   "ScopedCriticalHits_Average",    limit: 255
     t.string   "ScopedAccuracy",                limit: 255
-    t.string   "ShotsFired",                    limit: 255
-    t.string   "ShotsHit",                      limit: 255
-    t.string   "CriticalHits",                  limit: 255
-    t.string   "CriticalHitsperMinute",         limit: 255
-    t.string   "CriticalHitAccuracy",           limit: 255
-    t.string   "EliminationsperLife",           limit: 255
-    t.string   "WeaponAccuracy",                limit: 255
-    t.string   "TurretsDestroyed",              limit: 255
-    t.string   "Eliminations_MostinLife",       limit: 255
-    t.string   "MostScorewithinoneLife",        limit: 255
-    t.string   "DamageDone_MostinLife",         limit: 255
-    t.string   "WeaponAccuracy_BestinGame",     limit: 255
-    t.string   "KillStreak_Best",               limit: 255
-    t.string   "CriticalHits_MostinGame",       limit: 255
-    t.string   "CriticalHits_MostinLife",       limit: 255
-    t.string   "WinPercentage",                 limit: 255
-    t.string   "ReconAssists_Average",          limit: 255
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
   end
@@ -730,8 +455,6 @@ ActiveRecord::Schema.define(version: 20160616145612) do
   create_table "over_hero_winstons", force: :cascade do |t|
     t.integer  "over_tag_id",                   limit: 4
     t.string   "PlayersKnockedBack",            limit: 255
-    t.string   "DamageBlocked",                 limit: 255
-    t.string   "DamageBlocked_MostinGame",      limit: 255
     t.string   "PlayersKnockedBack_MostinGame", limit: 255
     t.string   "MeleeKills",                    limit: 255
     t.string   "MeleeKills_MostinGame",         limit: 255
@@ -740,14 +463,6 @@ ActiveRecord::Schema.define(version: 20160616145612) do
     t.string   "PlayersKnockedBack_Average",    limit: 255
     t.string   "MeleeKills_Average",            limit: 255
     t.string   "JumpPackKills_Average",         limit: 255
-    t.string   "DamageBlocked_Average",         limit: 255
-    t.string   "EliminationsperLife",           limit: 255
-    t.string   "TurretsDestroyed",              limit: 255
-    t.string   "Eliminations_MostinLife",       limit: 255
-    t.string   "MostScorewithinoneLife",        limit: 255
-    t.string   "DamageDone_MostinLife",         limit: 255
-    t.string   "KillStreak_Best",               limit: 255
-    t.string   "WinPercentage",                 limit: 255
     t.string   "PrimalRageKills",               limit: 255
     t.string   "PrimalRageKills_MostinGame",    limit: 255
     t.string   "PrimalRageKills_Average",       limit: 255
@@ -759,8 +474,6 @@ ActiveRecord::Schema.define(version: 20160616145612) do
 
   create_table "over_hero_zaryas", force: :cascade do |t|
     t.integer  "over_tag_id",                         limit: 4
-    t.string   "DamageBlocked",                       limit: 255
-    t.string   "DamageBlocked_MostinGame",            limit: 255
     t.string   "LifetimeGravitonSurgeKills",          limit: 255
     t.string   "GravitonSurgeKills_MostinGame",       limit: 255
     t.string   "HighEnergyKills_MostinGame",          limit: 255
@@ -772,19 +485,7 @@ ActiveRecord::Schema.define(version: 20160616145612) do
     t.string   "ProjectedBarriersApplied_Average",    limit: 255
     t.string   "HighEnergyKills_Average",             limit: 255
     t.string   "GravitonSurgeKills_Average",          limit: 255
-    t.string   "DamageBlocked_Average",               limit: 255
     t.string   "LifetimeAverageEnergy",               limit: 255
-    t.string   "ShotsFired",                          limit: 255
-    t.string   "ShotsHit",                            limit: 255
-    t.string   "EliminationsperLife",                 limit: 255
-    t.string   "WeaponAccuracy",                      limit: 255
-    t.string   "TurretsDestroyed",                    limit: 255
-    t.string   "Eliminations_MostinLife",             limit: 255
-    t.string   "MostScorewithinoneLife",              limit: 255
-    t.string   "DamageDone_MostinLife",               limit: 255
-    t.string   "WeaponAccuracy_BestinGame",           limit: 255
-    t.string   "KillStreak_Best",                     limit: 255
-    t.string   "WinPercentage",                       limit: 255
     t.string   "ProjectedBarriersApplied_MostinGame", limit: 255
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
@@ -795,31 +496,7 @@ ActiveRecord::Schema.define(version: 20160616145612) do
   create_table "over_hero_zenyatta", force: :cascade do |t|
     t.integer  "over_tag_id",               limit: 4
     t.string   "TranscendenceHealing_Best", limit: 255
-    t.string   "ShotsFired",                limit: 255
-    t.string   "ShotsHit",                  limit: 255
-    t.string   "CriticalHits",              limit: 255
-    t.string   "CriticalHitsperMinute",     limit: 255
-    t.string   "CriticalHitAccuracy",       limit: 255
-    t.string   "EliminationsperLife",       limit: 255
-    t.string   "WeaponAccuracy",            limit: 255
-    t.string   "TurretsDestroyed",          limit: 255
-    t.string   "SelfHealing",               limit: 255
-    t.string   "Eliminations_MostinLife",   limit: 255
-    t.string   "MostScorewithinoneLife",    limit: 255
-    t.string   "DamageDone_MostinLife",     limit: 255
-    t.string   "HealingDone_MostinLife",    limit: 255
-    t.string   "WeaponAccuracy_BestinGame", limit: 255
-    t.string   "KillStreak_Best",           limit: 255
-    t.string   "CriticalHits_MostinGame",   limit: 255
-    t.string   "CriticalHits_MostinLife",   limit: 255
-    t.string   "SelfHealing_MostinGame",    limit: 255
-    t.string   "SelfHealing_Average",       limit: 255
-    t.string   "WinPercentage",             limit: 255
     t.string   "TranscendenceHealing",      limit: 255
-    t.string   "OffensiveAssists",          limit: 255
-    t.string   "DefensiveAssists",          limit: 255
-    t.string   "DefensiveAssists_Average",  limit: 255
-    t.string   "OffensiveAssists_Average",  limit: 255
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
   end
@@ -860,11 +537,14 @@ ActiveRecord::Schema.define(version: 20160616145612) do
   end
 
   create_table "over_tags", force: :cascade do |t|
-    t.string   "tag",        limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "tag",            limit: 255
+    t.string   "site_url",       limit: 255
+    t.boolean  "is_create_data",             default: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
   end
 
+  add_index "over_tags", ["is_create_data"], name: "index_over_tags_on_is_create_data", using: :btree
   add_index "over_tags", ["tag"], name: "index_over_tags_on_tag", using: :btree
 
   create_table "users", force: :cascade do |t|

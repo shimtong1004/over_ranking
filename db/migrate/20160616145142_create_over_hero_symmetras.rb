@@ -14,12 +14,12 @@ class CreateOverHeroSymmetras < ActiveRecord::Migration
       t.string  :SentryTurretKills_Average
       t.string  :PlayersTeleported_Average
       t.string  :TeleporterUptime_Average
-      t.string  :EliminationsperLife
-      t.string  :Eliminations_MostinLife
-      t.string  :MostScorewithinoneLife
-      t.string  :DamageDone_MostinLife
-      t.string  :KillStreak_Best
-      t.string  :WinPercentage
+      # t.string  :EliminationsperLife
+      # t.string  :Eliminations_MostinLife
+      # t.string  :MostScorewithinoneLife
+      # t.string  :DamageDone_MostinLife
+      # t.string  :KillStreak_Best
+      # t.string  :WinPercentage
       t.timestamps null: false
     end
     add_index :over_hero_symmetras, :over_tag_id

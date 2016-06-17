@@ -11,26 +11,26 @@ class CreateOverHeroRoadhogs < ActiveRecord::Migration
       t.string  :WholeHogKills_Average
       t.string  :EnemiesHooked_Average
       t.string  :HookAccuracy
-      t.string  :ShotsFired
-      t.string  :ShotsHit
-      t.string  :CriticalHits
-      t.string  :CriticalHitsperMinute
-      t.string  :CriticalHitAccuracy
-      t.string  :EliminationsperLife
-      t.string  :WeaponAccuracy
-      t.string  :TurretsDestroyed
-      t.string  :SelfHealing
-      t.string  :Eliminations_MostinLife
-      t.string  :MostScorewithinoneLife
-      t.string  :DamageDone_MostinLife
-      t.string  :HealingDone_MostinLife
-      t.string  :WeaponAccuracy_BestinGame
-      t.string  :KillStreak_Best
-      t.string  :CriticalHits_MostinGame
-      t.string  :CriticalHits_MostinLife
-      t.string  :SelfHealing_MostinGame
-      t.string  :SelfHealing_Average
-      t.string  :WinPercentage
+      # t.string  :ShotsFired
+      # t.string  :ShotsHit
+      # t.string  :CriticalHits
+      # t.string  :CriticalHitsperMinute
+      # t.string  :CriticalHitAccuracy
+      # t.string  :EliminationsperLife
+      # t.string  :WeaponAccuracy
+      # t.string  :TurretsDestroyed
+      # t.string  :SelfHealing
+      # t.string  :Eliminations_MostinLife
+      # t.string  :MostScorewithinoneLife
+      # t.string  :DamageDone_MostinLife
+      # t.string  :HealingDone_MostinLife
+      # t.string  :WeaponAccuracy_BestinGame
+      # t.string  :KillStreak_Best
+      # t.string  :CriticalHits_MostinGame
+      # t.string  :CriticalHits_MostinLife
+      # t.string  :SelfHealing_MostinGame
+      # t.string  :SelfHealing_Average
+      # t.string  :WinPercentage
       t.timestamps null: false
     end
     add_index :over_hero_roadhogs, :over_tag_id
