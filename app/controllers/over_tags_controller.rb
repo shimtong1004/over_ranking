@@ -15,10 +15,10 @@ class OverTagsController < ApplicationController
   # GET /over_tags/new
   def new
     tag = params[:tag]
-    @tag_data = OverTag.find_by_tag(tag)
-    unless @tag_data
-      @tag_data, @status = OverTag.set_data(tag)
-    end
+    @tag_data, @status = OverTag.set_data(tag)
+    
+    @main_hero = OverHero.main_hero(@tag_data.id)
+    
     render 'show'
   end
 

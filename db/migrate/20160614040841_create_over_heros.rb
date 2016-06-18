@@ -4,6 +4,7 @@ class CreateOverHeros < ActiveRecord::Migration
       t.integer :over_tag_id
       t.string  :name
       t.string  :playtime
+      t.integer :playtime_min
       t.text  :image
       t.string  :percentage
       t.timestamps null: false

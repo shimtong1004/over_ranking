@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160617150245) do
+ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "authorizations", force: :cascade do |t|
     t.string   "provider",   limit: 255
@@ -86,6 +86,15 @@ ActiveRecord::Schema.define(version: 20160617150245) do
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
   end
+
+  create_table "over_data_histories", force: :cascade do |t|
+    t.integer  "over_tag_id", limit: 4
+    t.string   "kill_death",  limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "over_data_histories", ["over_tag_id"], name: "index_over_data_histories_on_over_tag_id", using: :btree
 
   create_table "over_hero_bastions", force: :cascade do |t|
     t.integer  "over_tag_id",            limit: 4
@@ -504,13 +513,14 @@ ActiveRecord::Schema.define(version: 20160617150245) do
   add_index "over_hero_zenyatta", ["over_tag_id"], name: "index_over_hero_zenyatta_on_over_tag_id", using: :btree
 
   create_table "over_heros", force: :cascade do |t|
-    t.integer  "over_tag_id", limit: 4
-    t.string   "name",        limit: 255
-    t.string   "playtime",    limit: 255
-    t.text     "image",       limit: 65535
-    t.string   "percentage",  limit: 255
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.integer  "over_tag_id",  limit: 4
+    t.string   "name",         limit: 255
+    t.string   "playtime",     limit: 255
+    t.integer  "playtime_min", limit: 4
+    t.text     "image",        limit: 65535
+    t.string   "percentage",   limit: 255
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   create_table "over_platforms", force: :cascade do |t|
@@ -546,6 +556,21 @@ ActiveRecord::Schema.define(version: 20160617150245) do
 
   add_index "over_tags", ["is_create_data"], name: "index_over_tags_on_is_create_data", using: :btree
   add_index "over_tags", ["tag"], name: "index_over_tags_on_tag", using: :btree
+
+  create_table "update_logs", force: :cascade do |t|
+    t.integer  "over_tag_id", limit: 4
+    t.string   "table_name",  limit: 255
+    t.string   "sub_name",    limit: 255
+    t.string   "log_type",    limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "update_logs", ["over_tag_id", "log_type"], name: "index_update_logs_on_over_tag_id_and_log_type", using: :btree
+  add_index "update_logs", ["over_tag_id", "table_name", "log_type", "sub_name"], name: "update_logs_sub_name", using: :btree
+  add_index "update_logs", ["over_tag_id", "table_name", "log_type"], name: "index_update_logs_on_over_tag_id_and_table_name_and_log_type", using: :btree
+  add_index "update_logs", ["over_tag_id", "table_name"], name: "index_update_logs_on_over_tag_id_and_table_name", using: :btree
+  add_index "update_logs", ["over_tag_id"], name: "index_update_logs_on_over_tag_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name",       limit: 255

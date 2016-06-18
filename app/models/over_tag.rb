@@ -5,18 +5,93 @@ TIME_OUT = 60
 
 class OverTag < ActiveRecord::Base
   has_one :over_all_hero
+  has_one :over_profile
+  has_many :over_heros
+  has_many :update_logs
+  
+  
+  after_create :create_log_data
+  after_update :update_log_data
+  
+  def create_log_data
+    UpdateLog.create(over_tag_id: self.id, table_name: "over_tag", log_type: "create")
+  end
+  
+  def update_log_data
+    UpdateLog.create(over_tag_id: self.id, table_name: "over_tag", log_type: "update")
+  end
   
   def self.set_data(tag)
-    over_tag = OverTag.create(tag: tag)
-    status = get_achievement(tag, over_tag.id)
-    status = get_profile(tag, over_tag.id) if status == 200
-    status = get_heroes(tag, over_tag.id) if status == 200
-    status = get_hero(tag, over_tag.id) if status == 200
-    status = get_allHeroes(tag, over_tag.id) if status == 200
+    over_tag = OverTag.find_by_tag(tag)
+    status = 200
+    if over_tag
+      over_all_hero = over_tag.over_all_hero
+      unless over_all_hero
+        get_allHeroes(tag, over_tag.id)
+      end
+      
+      over_profile = over_tag.over_profile
+      unless over_profile
+        get_profile(tag, over_tag.id)
+      end
+      
+      hero_names = ["Roadhog", "Reaper", "Soldier: 76", "Reinhardt", "Tracer", "Genji", "L&#xFA;cio", "McCree", "Pharah", "Junkrat", "Widowmaker", "Mei", "Zarya", "Zenyatta", "Hanzo", "Mercy", "Torbj&#xF6;rn", "Symmetra", "Winston", "Bastion", "D.Va"]
+      
+      over_heros = over_tag.over_heros.where(name: hero_names)
+      get_heroes(tag, over_tag.id) if over_heros.size != 21
+      
+      
+    else
+      over_tag = OverTag.create(tag: tag)
+    
+      get_profile(tag, over_tag.id)
+      get_allHeroes(tag, over_tag.id)
+      get_heroes(tag, over_tag.id)
+    end
     # status = get_platforms(tag, over_tag.id) if status == 200
     
     return over_tag, status
   end
+  
+  def self.set_all_data(tag)
+    over_tag = OverTag.find_by_tag(tag)    
+    over_tag = OverTag.create(tag: tag) unless over_tag
+    
+    status = get_achievement(tag, over_tag.id)
+    
+    over_profile = OverProfile.where(over_tag_id: over_tag.id)
+    status = get_profile(tag, over_tag.id) if status == 200 && over_profile.blank?
+    
+    over_hero = OverHero.where(over_tag_id: over_tag.id)
+    status = get_heroes(tag, over_tag.id) if status == 200 && over_hero.blank?
+    
+    status = get_hero(tag, over_tag.id) if status == 200
+    
+    over_all_hero = OverAllHero.where(over_tag_id: over_tag.id)
+    status = get_allHeroes(tag, over_tag.id) if status == 200 && over_all_hero.blank?
+    # status = get_platforms(tag, over_tag.id) if status == 200
+    
+    return over_tag, status
+  end
+  
+  def self.set_sub_data(over_tag)
+    p "-----------------#{over_tag.id}-----------------------"
+    tag = over_tag.tag
+    
+    status = get_achievement(tag, over_tag.id)
+    over_profile = OverProfile.where(over_tag_id: over_tag.id)
+    status = get_profile(tag, over_tag.id) if over_profile.blank?
+    
+    
+    status = get_heroes(tag, over_tag.id)
+    
+    status = get_hero(tag, over_tag.id)
+    
+    over_all_hero = OverAllHero.where(over_tag_id: over_tag.id)
+    status = get_allHeroes(tag, over_tag.id) if over_all_hero.blank?
+    # status = get_platforms(tag, over_tag.id) if status == 200
+  end
+  
   def self.get_achievement(tag, tag_id)
     begin
       timeout(TIME_OUT) {
@@ -32,9 +107,12 @@ class OverTag < ActiveRecord::Base
           finished_achievements = data["finishedAchievements"]
           data["achievements"].each do |d|
             name = d["name"]
-            finished = d["finished"]
-            image = d["image"]
-            OverAchievement.create(over_tag_id: tag_id, finishedAchievements: finished_achievements, name: name, finished: finished, image: image)
+            over_achievment = OverAchievement.where(over_tag_id: tag_id, name: name)
+            if over_achievment.blank?
+              finished = d["finished"]
+              image = d["image"]
+              OverAchievement.create(over_tag_id: tag_id, finishedAchievements: finished_achievements, name: name, finished: finished, image: image)
+            end
           end
           return 200
         else
@@ -121,10 +199,25 @@ class OverTag < ActiveRecord::Base
         if data.class.eql?(Array)
           data.each do |d|
             name = d["name"]
-            playtime = d["playtime"]
-            image = d["image"]
-            percentage = d["percentage"]
-            OverHero.create(over_tag_id: tag_id, name: name, playtime: playtime, image: image, percentage: percentage)
+            over_hero = OverHero.where(over_tag_id: tag_id, name: name)
+            if over_hero.blank?
+              playtime = d["playtime"]
+            
+              if playtime.end_with?("1 hour")
+                playtime_min = 60
+              elsif playtime.end_with?("hours")
+                hour = playtime.split(" ")[0].to_i
+                playtime_min = hour * 60
+              elsif playtime.end_with?("minutes") 
+                min = playtime.split(" ")[0].to_i
+                playtime_min = min
+              end
+              
+              image = d["image"]
+              percentage = d["percentage"]
+              
+              OverHero.create(over_tag_id: tag_id, name: name, playtime: playtime, playtime_min: playtime_min, image: image, percentage: percentage)
+            end
           end
           return 200
         else
@@ -143,8 +236,12 @@ class OverTag < ActiveRecord::Base
         tag.gsub!(/#/, '-')
     
         jobs = ["Roadhog", "Reaper", "Soldier76", "Reinhardt", "Tracer", "Genji", "Lucio", "McCree", "Pharah", "Junkrat", "Widowmaker", "Mei", "Zarya", "Zenyatta", "Hanzo", "Mercy", "Torbjoern", "Symmetra", "Winston", "Bastion", "DVa"]
-        status = 404
+        status = 200
         jobs.each do |job|
+          next if self.is_hero_data?(tag_id, job)
+          
+          status = 404
+          
           url = "https://api.lootbox.eu/pc/kr/#{tag}/hero/#{job}/"
           uri = Addressable::URI.parse(url)
           url = uri.normalize.to_s
@@ -194,7 +291,7 @@ class OverTag < ActiveRecord::Base
             elsif job.eql?("DVa")
               obj = OverTag.create_dva(data, tag_id)
             end
-            OverTag.common_create(obj, data)
+            OverTag.common_create(obj, data) if obj
             status = 200
           else
             status = 404
@@ -317,26 +414,6 @@ class OverTag < ActiveRecord::Base
       WholeHogKills_Average: data["WholeHogKills-Average"],
       EnemiesHooked_Average: data["EnemiesHooked-Average"],
       HookAccuracy: data["HookAccuracy"]
-      # ShotsFired: data["ShotsFired"],
-      # ShotsHit: data["ShotsHit"],
-      # CriticalHits: data["CriticalHits"],
-      # CriticalHitsperMinute: data["CriticalHitsperMinute"],
-      # CriticalHitAccuracy: data["CriticalHitAccuracy"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # WeaponAccuracy: data["WeaponAccuracy"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # SelfHealing: data["SelfHealing"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # HealingDone_MostinLife: data["HealingDone-MostinLife"],
-      # WeaponAccuracy_BestinGame: data["WeaponAccuracy-BestinGame"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # CriticalHits_MostinGame: data["CriticalHits-MostinGame"],
-      # CriticalHits_MostinLife: data["CriticalHits-MostinLife"],
-      # SelfHealing_MostinGame: data["SelfHealing-MostinGame"],
-      # SelfHealing_Average: data["SelfHealing-Average"],
-      # WinPercentage: data["WinPercentage"]
     )
   end
   
@@ -349,26 +426,6 @@ class OverTag < ActiveRecord::Base
       DeathBlossomKills_MostinGame: data["DeathBlossomKills-MostinGame"],
       SoulsConsumed_Average: data["SoulsConsumed-Average"],
       DeathBlossomKills_Average: data["DeathBlossomKills-Average"]
-      # ShotsFired: data["ShotsFired"],
-      # ShotsHit: data["ShotsHit"],
-      # CriticalHits: data["CriticalHits"],
-      # CriticalHitsperMinute: data["CriticalHitsperMinute"],
-      # CriticalHitAccuracy: data["CriticalHitAccuracy"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # WeaponAccuracy: data["WeaponAccuracy"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # SelfHealing: data["SelfHealing"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # HealingDone_MostinLife: data["HealingDone-MostinLife"],
-      # WeaponAccuracy_BestinGame: data["WeaponAccuracy-BestinGame"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # CriticalHits_MostinGame: data["CriticalHits-MostinGame"],
-      # CriticalHits_MostinLife: data["CriticalHits-MostinLife"],
-      # SelfHealing_MostinGame: data["SelfHealing-MostinGame"],
-      # SelfHealing_Average: data["SelfHealing-Average"],
-      # WinPercentage: data["WinPercentage"]
     )
   end
   
@@ -383,34 +440,12 @@ class OverTag < ActiveRecord::Base
       BioticFieldHealingDone: data["BioticFieldHealingDone"],
       TacticalVisorKills_Average: data["TacticalVisorKills-Average"],
       HelixRocketsKills_Average: data["HelixRocketsKills-Average"]
-      # ShotsFired: data["ShotsFired"],
-      # ShotsHit: data["ShotsHit"],
-      # CriticalHits: data["CriticalHits"],
-      # CriticalHitsperMinute: data["CriticalHitsperMinute"],
-      # CriticalHitAccuracy: data["CriticalHitAccuracy"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # WeaponAccuracy: data["WeaponAccuracy"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # SelfHealing: data["SelfHealing"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # HealingDone_MostinLife: data["HealingDone-MostinLife"],
-      # WeaponAccuracy_BestinGame: data["WeaponAccuracy-BestinGame"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # CriticalHits_MostinGame: data["CriticalHits-MostinGame"],
-      # CriticalHits_MostinLife: data["CriticalHits-MostinLife"],
-      # SelfHealing_MostinGame: data["SelfHealing-MostinGame"],
-      # SelfHealing_Average: data["SelfHealing-Average"],
-      # WinPercentage: data["WinPercentage"]
     )
   end
   
   def self.create_reinhardt(data, tag_id)
     OverHeroReinhardt.create(
       over_tag_id: tag_id,
-      # DamageBlocked: data["DamageBlocked"],
-      # DamageBlocked_MostinGame: data["DamageBlocked-MostinGame"],
       ChargeKills: data["ChargeKills"],
       ChargeKills_MostinGame: data["ChargeKills-MostinGame"],
       FireStrikeKills: data["FireStrikeKills"],
@@ -419,17 +454,8 @@ class OverTag < ActiveRecord::Base
       EarthshatterKills_MostinGame: data["EarthshatterKills-MostinGame"],
       FireStrikeKills_Average: data["FireStrikeKills-Average"],
       EarthshatterKills_Average: data["EarthshatterKills-Average"],
-      # DamageBlocked_Average: data["DamageBlocked-Average"],
       ChargeKills_Average: data["ChargeKills-Average"]
-      # EliminationsperLife: data["EliminationsperLife"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # WinPercentage: data["WinPercentage"]
     )
-    
   end
   
   def self.create_tracer(data, tag_id)
@@ -441,27 +467,7 @@ class OverTag < ActiveRecord::Base
       PulseBombsAttached: data["PulseBombsAttached"],
       PulseBombKills_Average: data["PulseBombKills-Average"],
       PulseBombsAttached_Average: data["PulseBombsAttached-Average"]
-      # ShotsFired: data["ShotsFired"],
-      # ShotsHit: data["ShotsHit"],
-      # CriticalHits: data["CriticalHits"],
-      # CriticalHitsperMinute: data["CriticalHitsperMinute"],
-      # CriticalHitAccuracy: data["CriticalHitAccuracy"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # WeaponAccuracy: data["WeaponAccuracy"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # SelfHealing: data["SelfHealing"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # WeaponAccuracy_BestinGame: data["WeaponAccuracy-BestinGame"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # CriticalHits_MostinGame: data["CriticalHits-MostinGame"],
-      # CriticalHits_MostinLife: data["CriticalHits-MostinLife"],
-      # SelfHealing_MostinGame: data["SelfHealing-MostinGame"],
-      # SelfHealing_Average: data["SelfHealing-Average"],
-      # WinPercentage: data["WinPercentage"]
     )
-    
   end
   
   def self.create_genji(data, tag_id)
@@ -474,22 +480,6 @@ class OverTag < ActiveRecord::Base
       Dragonblades: data["Dragonblades"],
       DragonbladeKills_Average: data["DragonbladeKills-Average"],
       DamageReflected_Average: data["DamageReflected-Average"]
-      # ShotsFired: data["ShotsFired"],
-      # ShotsHit: data["ShotsHit"],
-      # CriticalHits: data["CriticalHits"],
-      # CriticalHitsperMinute: data["CriticalHitsperMinute"],
-      # CriticalHitAccuracy: data["CriticalHitAccuracy"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # WeaponAccuracy: data["WeaponAccuracy"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # WeaponAccuracy_BestinGame: data["WeaponAccuracy-BestinGame"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # CriticalHits_MostinGame: data["CriticalHits-MostinGame"],
-      # CriticalHits_MostinLife: data["CriticalHits-MostinLife"],
-      # WinPercentage: data["WinPercentage"]
     )
   end
               
@@ -499,30 +489,6 @@ class OverTag < ActiveRecord::Base
       SoundBarriersProvided: data["SoundBarriersProvided"],
       SoundBarriersProvided_MostinGame: data["SoundBarriersProvided-MostinGame"],
       SoundBarriersProvided_Average: data["SoundBarriersProvided-Average"]
-      # ShotsFired: data["ShotsFired"],
-      # ShotsHit: data["ShotsHit"],
-      # CriticalHits: data["CriticalHits"],
-      # CriticalHitsperMinute: data["CriticalHitsperMinute"],
-      # CriticalHitAccuracy: data["CriticalHitAccuracy"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # WeaponAccuracy: data["WeaponAccuracy"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # SelfHealing: data["SelfHealing"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # HealingDone_MostinLife: data["HealingDone-MostinLife"],
-      # WeaponAccuracy_BestinGame: data["WeaponAccuracy-BestinGame"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # CriticalHits_MostinGame: data["CriticalHits-MostinGame"],
-      # CriticalHits_MostinLife: data["CriticalHits-MostinLife"],
-      # SelfHealing_MostinGame: data["SelfHealing-MostinGame"],
-      # SelfHealing_Average: data["SelfHealing-Average"],
-      # WinPercentage: data["WinPercentage"],
-      # OffensiveAssists: data["OffensiveAssists"],
-      # DefensiveAssists: data["DefensiveAssists"],
-      # DefensiveAssists_Average: data["DefensiveAssists-Average"],
-      # OffensiveAssists_Average: data["OffensiveAssists-Average"]
     )
   end
   
@@ -534,22 +500,6 @@ class OverTag < ActiveRecord::Base
       FantheHammerKills: data["FantheHammerKills"],
       FantheHammerKills_Average: data["FantheHammerKills-Average"],
       DeadeyeKills_Average: data["DeadeyeKills-Average"],
-      # ShotsFired: data["ShotsFired"],
-      # ShotsHit: data["ShotsHit"],
-      # CriticalHits: data["CriticalHits"],
-      # CriticalHitsperMinute: data["CriticalHitsperMinute"],
-      # CriticalHitAccuracy: data["CriticalHitAccuracy"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # WeaponAccuracy: data["WeaponAccuracy"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # WeaponAccuracy_BestinGame: data["WeaponAccuracy-BestinGame"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # CriticalHits_MostinGame: data["CriticalHits-MostinGame"],
-      # CriticalHits_MostinLife: data["CriticalHits-MostinLife"],
-      # WinPercentage: data["WinPercentage"],
       FantheHammerKills_MostinGame: data["FantheHammerKills-MostinGame"]
     )
     
@@ -564,17 +514,6 @@ class OverTag < ActiveRecord::Base
       BarrageKills_MostinGame: data["BarrageKills-MostinGame"],
       RocketDirectHits_Average: data["RocketDirectHits-Average"],
       BarrageKills_Average: data["BarrageKills-Average"]
-      # ShotsFired: data["ShotsFired"],
-      # ShotsHit: data["ShotsHit"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # WeaponAccuracy: data["WeaponAccuracy"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # WeaponAccuracy_BestinGame: data["WeaponAccuracy-BestinGame"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # WinPercentage: data["WinPercentage"]
     )
   end
   
@@ -586,17 +525,6 @@ class OverTag < ActiveRecord::Base
       RIP_TireKills_MostinGame: data["RIP-TireKills-MostinGame"],
       RIP_TireKills: data["RIP-TireKills"],
       EnemiesTrappedaMinute: data["EnemiesTrappedaMinute"],
-      # ShotsFired: data["ShotsFired"],
-      # ShotsHit: data["ShotsHit"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # WeaponAccuracy: data["WeaponAccuracy"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # WeaponAccuracy_BestinGame: data["WeaponAccuracy-BestinGame"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # WinPercentage: data["WinPercentage"],
       RIP_TireKills_Average: data["RIP-TireKills-Average"]
     )
   end
@@ -610,28 +538,10 @@ class OverTag < ActiveRecord::Base
       ScopedCriticalHits: data["ScopedCriticalHits"],
       ScopedCriticalHits_MostinGame: data["ScopedCriticalHits-MostinGame"],
       VenomMineKills_MostinGame: data["VenomMineKills-MostinGame"],
-      # ReconAssists_MostinGame: data["ReconAssists-MostinGame"],
       ScopedAccuracy_BestinGame: data["ScopedAccuracy-BestinGame"],
       VenomMineKills_Average: data["VenomMineKills-Average"],
       ScopedCriticalHits_Average: data["ScopedCriticalHits-Average"],
       ScopedAccuracy: data["ScopedAccuracy"]
-      # ShotsFired: data["ShotsFired"],
-      # ShotsHit: data["ShotsHit"],
-      # CriticalHits: data["CriticalHits"],
-      # CriticalHitsperMinute: data["CriticalHitsperMinute"],
-      # CriticalHitAccuracy: data["CriticalHitAccuracy"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # WeaponAccuracy: data["WeaponAccuracy"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # WeaponAccuracy_BestinGame: data["WeaponAccuracy-BestinGame"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # CriticalHits_MostinGame: data["CriticalHits-MostinGame"],
-      # CriticalHits_MostinLife: data["CriticalHits-MostinLife"],
-      # WinPercentage: data["WinPercentage"],
-      # ReconAssists_Average: data["ReconAssists-Average"]
     )
   end
   
@@ -642,39 +552,14 @@ class OverTag < ActiveRecord::Base
       EnemiesFrozen_MostinGame: data["EnemiesFrozen-MostinGame"],
       BlizzardKills_MostinGame: data["BlizzardKills-MostinGame"],
       BlizzardKills: data["BlizzardKills"],
-      # DamageBlocked_MostinGame: data["DamageBlocked-MostinGame"],
-      # DamageBlocked: data["DamageBlocked"],
       EnemiesFrozen_Average: data["EnemiesFrozen-Average"],
-      # DamageBlocked_Average: data["DamageBlocked-Average"],
       BlizzardKills_Average: data["BlizzardKills-Average"]
-      # ShotsFired: data["ShotsFired"],
-      # ShotsHit: data["ShotsHit"],
-      # CriticalHits: data["CriticalHits"],
-      # CriticalHitsperMinute: data["CriticalHitsperMinute"],
-      # CriticalHitAccuracy: data["CriticalHitAccuracy"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # WeaponAccuracy: data["WeaponAccuracy"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # SelfHealing: data["SelfHealing"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # HealingDone_MostinLife: data["HealingDone-MostinLife"],
-      # WeaponAccuracy_BestinGame: data["WeaponAccuracy-BestinGame"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # CriticalHits_MostinGame: data["CriticalHits-MostinGame"],
-      # CriticalHits_MostinLife: data["CriticalHits-MostinLife"],
-      # SelfHealing_MostinGame: data["SelfHealing-MostinGame"],
-      # SelfHealing_Average: data["SelfHealing-Average"],
-      # WinPercentage: data["WinPercentage"]
     )
   end
   
   def self.create_zarya(data, tag_id)
     OverHeroZarya.create(
       over_tag_id: tag_id,
-      # DamageBlocked: data["DamageBlocked"],
-      # DamageBlocked_MostinGame: data["DamageBlocked-MostinGame"],
       LifetimeGravitonSurgeKills: data["LifetimeGravitonSurgeKills"],
       GravitonSurgeKills_MostinGame: data["GravitonSurgeKills-MostinGame"],
       HighEnergyKills_MostinGame: data["HighEnergyKills-MostinGame"],
@@ -686,19 +571,7 @@ class OverTag < ActiveRecord::Base
       ProjectedBarriersApplied_Average: data["ProjectedBarriersApplied-Average"],
       HighEnergyKills_Average: data["HighEnergyKills-Average"],
       GravitonSurgeKills_Average: data["GravitonSurgeKills-Average"],
-      # DamageBlocked_Average: data["DamageBlocked-Average"],
       LifetimeAverageEnergy: data["LifetimeAverageEnergy"],
-      # ShotsFired: data["ShotsFired"],
-      # ShotsHit: data["ShotsHit"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # WeaponAccuracy: data["WeaponAccuracy"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # WeaponAccuracy_BestinGame: data["WeaponAccuracy-BestinGame"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # WinPercentage: data["WinPercentage"],
       ProjectedBarriersApplied_MostinGame: data["ProjectedBarriersApplied-MostinGame"]
     )
   end
@@ -707,31 +580,7 @@ class OverTag < ActiveRecord::Base
     OverHeroZenyattum.create(
       over_tag_id: tag_id,
       TranscendenceHealing_Best: data["TranscendenceHealing-Best"],
-      # ShotsFired: data["ShotsFired"],
-      # ShotsHit: data["ShotsHit"],
-      # CriticalHits: data["CriticalHits"],
-      # CriticalHitsperMinute: data["CriticalHitsperMinute"],
-      # CriticalHitAccuracy: data["CriticalHitAccuracy"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # WeaponAccuracy: data["WeaponAccuracy"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # SelfHealing: data["SelfHealing"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # HealingDone_MostinLife: data["HealingDone-MostinLife"],
-      # WeaponAccuracy_BestinGame: data["WeaponAccuracy-BestinGame"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # CriticalHits_MostinGame: data["CriticalHits-MostinGame"],
-      # CriticalHits_MostinLife: data["CriticalHits-MostinLife"],
-      # SelfHealing_MostinGame: data["SelfHealing-MostinGame"],
-      # SelfHealing_Average: data["SelfHealing-Average"],
-      # WinPercentage: data["WinPercentage"],
       TranscendenceHealing: data["TranscendenceHealing"]
-      # OffensiveAssists: data["OffensiveAssists"],
-      # DefensiveAssists: data["DefensiveAssists"],
-      # DefensiveAssists_Average: data["DefensiveAssists-Average"],
-      # OffensiveAssists_Average: data["OffensiveAssists-Average"]
     )
   end
   
@@ -742,26 +591,8 @@ class OverTag < ActiveRecord::Base
       DragonstrikeKills_MostinGame: data["DragonstrikeKills-MostinGame"],
       ScatterArrowKills: data["ScatterArrowKills"],
       ScatterArrowKills_MostinGame: data["ScatterArrowKills-MostinGame"],
-      # ReconAssists_MostinGame: data["ReconAssists-MostinGame"],
       ScatterArrowKills_Average: data["ScatterArrowKills-Average"],
       DragonstrikeKills_Average: data["DragonstrikeKills-Average"]
-      # ShotsFired: data["ShotsFired"],
-      # ShotsHit: data["ShotsHit"],
-      # CriticalHits: data["CriticalHits"],
-      # CriticalHitsperMinute: data["CriticalHitsperMinute"],
-      # CriticalHitAccuracy: data["CriticalHitAccuracy"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # WeaponAccuracy: data["WeaponAccuracy"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # WeaponAccuracy_BestinGame: data["WeaponAccuracy-BestinGame"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # CriticalHits_MostinGame: data["CriticalHits-MostinGame"],
-      # CriticalHits_MostinLife: data["CriticalHits-MostinLife"],
-      # WinPercentage: data["WinPercentage"],
-      # ReconAssists_Average: data["ReconAssists-Average"]
     )
   end
   
@@ -774,31 +605,8 @@ class OverTag < ActiveRecord::Base
       MostPlayersSavedinaGame: data["MostPlayersSavedinaGame"],
       PlayersSaved_Average: data["PlayersSaved-Average"],
       PlayersResurrected_Average: data["PlayersResurrected-Average"],
-      # ShotsFired: data["ShotsFired"],
-      # ShotsHit: data["ShotsHit"],
-      # CriticalHits: data["CriticalHits"],
-      # CriticalHitsperMinute: data["CriticalHitsperMinute"],
-      # CriticalHitAccuracy: data["CriticalHitAccuracy"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # WeaponAccuracy: data["WeaponAccuracy"],
-      # SelfHealing: data["SelfHealing"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # HealingDone_MostinLife: data["HealingDone-MostinLife"],
-      # WeaponAccuracy_BestinGame: data["WeaponAccuracy-BestinGame"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # CriticalHits_MostinGame: data["CriticalHits-MostinGame"],
-      # CriticalHits_MostinLife: data["CriticalHits-MostinLife"],
-      # SelfHealing_MostinGame: data["SelfHealing-MostinGame"],
-      # SelfHealing_Average: data["SelfHealing-Average"],
-      # WinPercentage: data["WinPercentage"],
       BlasterKills: data["BlasterKills"],
       BlasterKills_MostinGame: data["BlasterKills-MostinGame"],
-      # OffensiveAssists: data["OffensiveAssists"],
-      # DefensiveAssists: data["DefensiveAssists"],
-      # DefensiveAssists_Average: data["DefensiveAssists-Average"],
-      # OffensiveAssists_Average: data["OffensiveAssists-Average"],
       BlasterKills_Average: data["BlasterKills-Average"]
     )
   end
@@ -816,22 +624,6 @@ class OverTag < ActiveRecord::Base
       TorbjoernKills_Average: data["Torbj&#xF6;rnKills-Average"],
       MoltenCoreKills_Average: data["MoltenCoreKills-Average"],
       ArmorPacksCreated_Average: data["ArmorPacksCreated-Average"]
-      # ShotsFired: data["ShotsFired"],
-      # ShotsHit: data["ShotsHit"],
-      # CriticalHits: data["CriticalHits"],
-      # CriticalHitsperMinute: data["CriticalHitsperMinute"],
-      # CriticalHitAccuracy: data["CriticalHitAccuracy"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # WeaponAccuracy: data["WeaponAccuracy"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # WeaponAccuracy_BestinGame: data["WeaponAccuracy-BestinGame"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # CriticalHits_MostinGame: data["CriticalHits-MostinGame"],
-      # CriticalHits_MostinLife: data["CriticalHits-MostinLife"],
-      # WinPercentage: data["WinPercentage"]
     )
   end
   
@@ -850,12 +642,6 @@ class OverTag < ActiveRecord::Base
       SentryTurretKills_Average: data["SentryTurretKills-Average"],
       PlayersTeleported_Average: data["PlayersTeleported-Average"],
       TeleporterUptime_Average: data["TeleporterUptime-Average"]
-      # EliminationsperLife: data["EliminationsperLife"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # WinPercentage: data["WinPercentage"]
     )
   end
   
@@ -863,8 +649,6 @@ class OverTag < ActiveRecord::Base
     OverHeroWinston.create(
       over_tag_id: tag_id,
       PlayersKnockedBack: data["PlayersKnockedBack"],
-      # DamageBlocked: data["DamageBlocked"],
-      # DamageBlocked_MostinGame: data["DamageBlocked-MostinGame"],
       PlayersKnockedBack_MostinGame: data["PlayersKnockedBack-MostinGame"],
       MeleeKills: data["MeleeKills"],
       MeleeKills_MostinGame: data["MeleeKills-MostinGame"],
@@ -873,14 +657,6 @@ class OverTag < ActiveRecord::Base
       PlayersKnockedBack_Average: data["PlayersKnockedBack-Average"],
       MeleeKills_Average: data["MeleeKills-Average"],
       JumpPackKills_Average: data["JumpPackKills-Average"],
-      # DamageBlocked_Average: data["DamageBlocked-Average"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # WinPercentage: data["WinPercentage"],
       PrimalRageKills: data["PrimalRageKills"],
       PrimalRageKills_MostinGame: data["PrimalRageKills-MostinGame"],
       PrimalRageKills_Average: data["PrimalRageKills-Average"]
@@ -899,26 +675,6 @@ class OverTag < ActiveRecord::Base
       TankKills_Average: data["TankKills-Average"],
       SentryKills_Average: data["SentryKills-Average"],
       ReconKills_Average: data["ReconKills-Average"]
-      # ShotsFired: data["ShotsFired"],
-      # ShotsHit: data["ShotsHit"],
-      # CriticalHits: data["CriticalHits"],
-      # CriticalHitsperMinute: data["CriticalHitsperMinute"],
-      # CriticalHitAccuracy: data["CriticalHitAccuracy"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # WeaponAccuracy: data["WeaponAccuracy"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # SelfHealing: data["SelfHealing"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # HealingDone_MostinLife: data["HealingDone-MostinLife"],
-      # WeaponAccuracy_BestinGame: data["WeaponAccuracy-BestinGame"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # CriticalHits_MostinGame: data["CriticalHits-MostinGame"],
-      # CriticalHits_MostinLife: data["CriticalHits-MostinLife"],
-      # SelfHealing_MostinGame: data["SelfHealing-MostinGame"],
-      # SelfHealing_Average: data["SelfHealing-Average"],
-      # WinPercentage: data["WinPercentage"]
     )
   end
   
@@ -927,27 +683,8 @@ class OverTag < ActiveRecord::Base
       over_tag_id: tag_id,
       MechsCalled: data["MechsCalled"],
       MechsCalled_MostinGame: data["MechsCalled-MostinGame"],
-      # DamageBlocked_MostinGame: data["DamageBlocked-MostinGame"],
-      # DamageBlocked: data["DamageBlocked"],
       MechDeaths: data["MechDeaths"],
       MechsCalled_Average: data["MechsCalled-Average"],
-      # DamageBlocked_Average: data["DamageBlocked-Average"],
-      # ShotsFired: data["ShotsFired"],
-      # ShotsHit: data["ShotsHit"],
-      # CriticalHits: data["CriticalHits"],
-      # CriticalHitsperMinute: data["CriticalHitsperMinute"],
-      # CriticalHitAccuracy: data["CriticalHitAccuracy"],
-      # EliminationsperLife: data["EliminationsperLife"],
-      # WeaponAccuracy: data["WeaponAccuracy"],
-      # TurretsDestroyed: data["TurretsDestroyed"],
-      # Eliminations_MostinLife: data["Eliminations-MostinLife"],
-      # MostScorewithinoneLife: data["MostScorewithinoneLife"],
-      # DamageDone_MostinLife: data["DamageDone-MostinLife"],
-      # WeaponAccuracy_BestinGame: data["WeaponAccuracy-BestinGame"],
-      # KillStreak_Best: data["KillStreak-Best"],
-      # CriticalHits_MostinGame: data["CriticalHits-MostinGame"],
-      # CriticalHits_MostinLife: data["CriticalHits-MostinLife"],
-      # WinPercentage: data["WinPercentage"],
       Self_DestructKills: data["Self-DestructKills"],
       Self_DestructKills_MostinGame: data["Self-DestructKills-MostinGame"],
       Self_DestructKills_Average: data["Self-DestructKills-Average"]
@@ -1100,6 +837,57 @@ class OverTag < ActiveRecord::Base
         break if max==0
       rescue
       end
+    end
+  end
+  
+  def self.is_hero_data?(tag_id, job)
+    if job.eql?("Roadhog")
+      data = OverHeroRoadhog.where(over_tag_id: tag_id)
+    elsif job.eql?("Reaper")
+      data = OverHeroReaper.where(over_tag_id: tag_id)
+    elsif job.eql?("Soldier76")
+      data = OverHeroSoldier76.where(over_tag_id: tag_id)
+    elsif job.eql?("Reinhardt")
+      data = OverHeroReinhardt.where(over_tag_id: tag_id)
+    elsif job.eql?("Tracer")
+      data = OverHeroTracer.where(over_tag_id: tag_id)
+    elsif job.eql?("Genji")
+      data = OverHeroGenji.where(over_tag_id: tag_id)
+    elsif job.eql?("Lucio")
+      data = OverHeroLucio.where(over_tag_id: tag_id)
+    elsif job.eql?("McCree")
+      data = OverHeroMcCree.where(over_tag_id: tag_id)
+    elsif job.eql?("Pharah")
+      data = OverHeroPharah.where(over_tag_id: tag_id)
+    elsif job.eql?("Junkrat")
+      data = OverHeroJunkrat.where(over_tag_id: tag_id)
+    elsif job.eql?("Widowmaker")
+      data = OverHeroWidowmaker.where(over_tag_id: tag_id)
+    elsif job.eql?("Mei")
+      data = OverHeroMei.where(over_tag_id: tag_id)
+    elsif job.eql?("Zarya")
+      data = OverHeroZarya.where(over_tag_id: tag_id)
+    elsif job.eql?("Zenyatta")
+      data = OverHeroZenyattum.where(over_tag_id: tag_id)
+    elsif job.eql?("Hanzo")
+      data = OverHeroHanzo.where(over_tag_id: tag_id)
+    elsif job.eql?("Mercy")
+      data = OverHeroMercy.where(over_tag_id: tag_id)
+    elsif job.eql?("Torbjoern")
+      data = OverHeroTorbjoern.where(over_tag_id: tag_id)
+    elsif job.eql?("Symmetra")
+      data = OverHeroSymmetra.where(over_tag_id: tag_id)
+    elsif job.eql?("Winston")
+      data = OverHeroWinston.where(over_tag_id: tag_id)
+    elsif job.eql?("Bastion")
+      data = OverHeroBastion.where(over_tag_id: tag_id)
+    elsif job.eql?("DVa")
+      data = OverHeroDva.where(over_tag_id: tag_id)
+    end
+    unless data.blank?
+      return true
+    else
+      return false
     end
   end
 
