@@ -2,10 +2,35 @@
 require 'open-uri'
 
 TIME_OUT = 60
+HEROES = ["Roadhog", "Reaper", "Soldier: 76", "Reinhardt", "Tracer", "Genji", "L&#xFA;cio", "McCree", "Pharah", "Junkrat", "Widowmaker", "Mei", "Zarya", "Zenyatta", "Hanzo", "Mercy", "Torbj&#xF6;rn", "Symmetra", "Winston", "Bastion", "D.Va"]
 
 class OverTag < ActiveRecord::Base
   has_one :over_all_hero
   has_one :over_profile
+  
+  has_one :over_hero_bastion
+  has_one :over_hero_dva
+  has_one :over_hero_genji
+  has_one :over_hero_hanzo
+  has_one :over_hero_junkrat
+  has_one :over_hero_lucio
+  has_one :over_hero_mc_cree
+  has_one :over_hero_mei
+  has_one :over_hero_mercy
+  has_one :over_hero_pharah
+  has_one :over_hero_reaper
+  has_one :over_hero_reinhardt
+  has_one :over_hero_roadhog
+  has_one :over_hero_soldier76
+  has_one :over_hero_symmetra
+  has_one :over_hero_torbjoern
+  has_one :over_hero_tracer
+  has_one :over_hero_widowmaker
+  has_one :over_hero_winston
+  has_one :over_hero_zarya
+  has_one :over_hero_zenyattum
+  
+  
   has_many :over_heros
   has_many :update_logs
   
@@ -51,6 +76,12 @@ class OverTag < ActiveRecord::Base
     # status = get_platforms(tag, over_tag.id) if status == 200
     
     return over_tag, status
+  end
+  
+  def self.set_detail_data(over_tag)
+    # status = get_achievement(tag, over_tag.id)
+    get_hero(over_tag.tag, over_tag.id)# if status == 200
+    
   end
   
   def self.set_all_data(tag)
@@ -291,6 +322,7 @@ class OverTag < ActiveRecord::Base
             elsif job.eql?("DVa")
               obj = OverTag.create_dva(data, tag_id)
             end
+
             OverTag.common_create(obj, data) if obj
             status = 200
           else
@@ -327,7 +359,9 @@ class OverTag < ActiveRecord::Base
   end
   
   def self.common_create(obj, data)
+    over_hero_id = obj.over_tag.over_heros.where(name: obj.name).first.id
     obj.over_hero_common.create(
+      over_hero_id: over_hero_id,
       Cards: data["Cards"],
       DamageDone: data["DamageDone"],
       DamageDone_Average: data["DamageDone-Average"],
@@ -404,7 +438,8 @@ class OverTag < ActiveRecord::Base
   
   def self.create_roadhog(data, tag_id)
     OverHeroRoadhog.create(
-      over_tag_id: tag_id, 
+      over_tag_id: tag_id,
+      name: HEROES[0],
       EnemiesHooked_MostinGame: data["EnemiesHooked-MostinGame"],
       EnemiesHooked: data["EnemiesHooked"],
       HooksAttempted: data["HooksAttempted"],
@@ -419,7 +454,8 @@ class OverTag < ActiveRecord::Base
   
   def self.create_reaper(data, tag_id)
     OverHeroReaper.create(
-      over_tag_id: tag_id, 
+      over_tag_id: tag_id,
+      name: HEROES[1],
       SoulsConsumed: data["SoulsConsumed"],
       DeathBlossomKills: data["DeathBlossomKills"],
       SoulsConsumed_MostinGame: data["SoulsConsumed-MostinGame"],
@@ -432,6 +468,7 @@ class OverTag < ActiveRecord::Base
   def self.create_soldier76(data, tag_id)
     OverHeroSoldier76.create(
       over_tag_id: tag_id,
+      name: HEROES[2],
       HelixRocketsKills_MostinGame: data["HelixRocketsKills-MostinGame"],
       HelixRocketsKills: data["HelixRocketsKills"],
       TacticalVisorKills: data["TacticalVisorKills"],
@@ -446,6 +483,7 @@ class OverTag < ActiveRecord::Base
   def self.create_reinhardt(data, tag_id)
     OverHeroReinhardt.create(
       over_tag_id: tag_id,
+      name: HEROES[3],
       ChargeKills: data["ChargeKills"],
       ChargeKills_MostinGame: data["ChargeKills-MostinGame"],
       FireStrikeKills: data["FireStrikeKills"],
@@ -461,6 +499,7 @@ class OverTag < ActiveRecord::Base
   def self.create_tracer(data, tag_id)
     OverHeroTracer.create(
       over_tag_id: tag_id,
+      name: HEROES[4],
       PulseBombKills: data["PulseBombKills"],
       PulseBombKills_MostinGame: data["PulseBombKills-MostinGame"],
       PulseBombsAttached_MostinGame: data["PulseBombsAttached-MostinGame"],
@@ -473,6 +512,7 @@ class OverTag < ActiveRecord::Base
   def self.create_genji(data, tag_id)
     OverHeroGenji.create(
       over_tag_id: tag_id,
+      name: HEROES[5],
       DragonbladeKills: data["DragonbladeKills"],
       DragonbladeKills_MostinGame: data["DragonbladeKills-MostinGame"],
       DamageReflected: data["DamageReflected"],
@@ -485,7 +525,8 @@ class OverTag < ActiveRecord::Base
               
   def self.create_lucio(data, tag_id)
     OverHeroLucio.create(
-      over_tag_id: tag_id, 
+      over_tag_id: tag_id,
+      name: HEROES[6],
       SoundBarriersProvided: data["SoundBarriersProvided"],
       SoundBarriersProvided_MostinGame: data["SoundBarriersProvided-MostinGame"],
       SoundBarriersProvided_Average: data["SoundBarriersProvided-Average"]
@@ -495,6 +536,7 @@ class OverTag < ActiveRecord::Base
   def self.create_mccree(data, tag_id)
     OverHeroMcCree.create(
       over_tag_id: tag_id,
+      name: HEROES[7],
       DeadeyeKills: data["DeadeyeKills"],
       DeadeyeKills_MostinGame: data["DeadeyeKills-MostinGame"],
       FantheHammerKills: data["FantheHammerKills"],
@@ -508,6 +550,7 @@ class OverTag < ActiveRecord::Base
   def self.create_pharah(data, tag_id)
     OverHeroPharah.create(
       over_tag_id: tag_id,
+      name: HEROES[8],
       RocketDirectHits: data["RocketDirectHits"],
       BarrageKills: data["BarrageKills"],
       RocketDirectHits_MostinGame: data["RocketDirectHits-MostinGame"],
@@ -520,6 +563,7 @@ class OverTag < ActiveRecord::Base
   def self.create_junkrat(data, tag_id)
     OverHeroJunkrat.create(
       over_tag_id: tag_id,
+      name: HEROES[9],
       EnemiesTrapped_MostinGame: data["EnemiesTrapped-MostinGame"],
       EnemiesTrapped: data["EnemiesTrapped"],
       RIP_TireKills_MostinGame: data["RIP-TireKills-MostinGame"],
@@ -532,6 +576,7 @@ class OverTag < ActiveRecord::Base
   def self.create_widowmaker(data, tag_id)
     OverHeroWidowmaker.create(
       over_tag_id: tag_id,
+      name: HEROES[10],
       VenomMineKills: data["VenomMineKills"],
       ScopedHits: data["ScopedHits"],
       ScopedShots: data["ScopedShots"],
@@ -548,6 +593,7 @@ class OverTag < ActiveRecord::Base
   def self.create_mei(data, tag_id)
     OverHeroMei.create(
       over_tag_id: tag_id,
+      name: HEROES[11],
       EnemiesFrozen: data["EnemiesFrozen"],
       EnemiesFrozen_MostinGame: data["EnemiesFrozen-MostinGame"],
       BlizzardKills_MostinGame: data["BlizzardKills-MostinGame"],
@@ -560,6 +606,7 @@ class OverTag < ActiveRecord::Base
   def self.create_zarya(data, tag_id)
     OverHeroZarya.create(
       over_tag_id: tag_id,
+      name: HEROES[12],
       LifetimeGravitonSurgeKills: data["LifetimeGravitonSurgeKills"],
       GravitonSurgeKills_MostinGame: data["GravitonSurgeKills-MostinGame"],
       HighEnergyKills_MostinGame: data["HighEnergyKills-MostinGame"],
@@ -579,6 +626,7 @@ class OverTag < ActiveRecord::Base
   def self.create_zenyatta(data, tag_id)
     OverHeroZenyattum.create(
       over_tag_id: tag_id,
+      name: HEROES[13],
       TranscendenceHealing_Best: data["TranscendenceHealing-Best"],
       TranscendenceHealing: data["TranscendenceHealing"]
     )
@@ -587,6 +635,7 @@ class OverTag < ActiveRecord::Base
   def self.create_hanzo(data, tag_id)
     OverHeroHanzo.create(
       over_tag_id: tag_id,
+      name: HEROES[14],
       DragonstrikeKills: data["DragonstrikeKills"],
       DragonstrikeKills_MostinGame: data["DragonstrikeKills-MostinGame"],
       ScatterArrowKills: data["ScatterArrowKills"],
@@ -599,6 +648,7 @@ class OverTag < ActiveRecord::Base
   def self.create_mercy(data, tag_id)
     OverHeroMercy.create(
       over_tag_id: tag_id,
+      name: HEROES[15],
       PlayersResurrected: data["PlayersResurrected"],
       PlayersResurrected_MostinGame: data["PlayersResurrected-MostinGame"],
       PlayersSaved: data["PlayersSaved"],
@@ -613,7 +663,8 @@ class OverTag < ActiveRecord::Base
   
   def self.create_torbjoern(data, tag_id)
     OverHeroTorbjoern.create(
-      over_tag_id: tag_id, 
+      over_tag_id: tag_id,
+      name: HEROES[16], 
       ArmorPacksCreated: data["ArmorPacksCreated"],
       TorbjoernKills: data["Torbj&#xF6;rnKills"],
       TurretKills: data["TurretKills"],
@@ -630,6 +681,7 @@ class OverTag < ActiveRecord::Base
   def self.create_symmetra(data, tag_id)
     OverHeroSymmetra.create(
       over_tag_id: tag_id,
+      name: HEROES[17],
       SentryTurretKills: data["SentryTurretKills"],
       SentryTurretKills_MostinGame: data["SentryTurretKills-MostinGame"],
       PlayersTeleported: data["PlayersTeleported"],
@@ -648,6 +700,7 @@ class OverTag < ActiveRecord::Base
   def self.create_winston(data, tag_id)
     OverHeroWinston.create(
       over_tag_id: tag_id,
+      name: HEROES[18],
       PlayersKnockedBack: data["PlayersKnockedBack"],
       PlayersKnockedBack_MostinGame: data["PlayersKnockedBack-MostinGame"],
       MeleeKills: data["MeleeKills"],
@@ -666,6 +719,7 @@ class OverTag < ActiveRecord::Base
   def self.create_bastion(data, tag_id)
     OverHeroBastion.create(
       over_tag_id: tag_id,
+      name: HEROES[19],
       ReconKills: data["ReconKills"],
       SentryKills: data["SentryKills"],
       TankKills: data["TankKills"],
@@ -681,6 +735,7 @@ class OverTag < ActiveRecord::Base
   def self.create_dva(data, tag_id)
     OverHeroDva.create(
       over_tag_id: tag_id,
+      name: HEROES[20],
       MechsCalled: data["MechsCalled"],
       MechsCalled_MostinGame: data["MechsCalled-MostinGame"],
       MechDeaths: data["MechDeaths"],
@@ -694,7 +749,7 @@ class OverTag < ActiveRecord::Base
   
   def self.create_all_hero(data, tag_id)
     OverAllHero.create(
-      over_tag_id: tag_id, 
+      over_tag_id: tag_id,
       MeleeFinalBlows: data["MeleeFinalBlows"], 
       SoloKills: data["SoloKills"], 
       ObjectiveKills: data["ObjectiveKills"], 

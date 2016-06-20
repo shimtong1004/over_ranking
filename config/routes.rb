@@ -36,7 +36,11 @@ Rails.application.routes.draw do
     redirect OmniAuth.config.full_host
   end
 
-  resources :over_tags
+  resources :over_tags do
+    member do
+      get 'detail'
+    end
+  end
   resources :over_heros
   resources :over_heros do
     collection do

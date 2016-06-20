@@ -2,6 +2,7 @@ class CreateOverHeroReapers < ActiveRecord::Migration
   def change
     create_table :over_hero_reapers do |t|
       t.integer :over_tag_id
+      t.string  :name
       t.string  :SoulsConsumed
       t.string  :DeathBlossomKills
       t.string  :SoulsConsumed_MostinGame

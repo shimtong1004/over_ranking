@@ -1,5 +1,6 @@
 class OverHeroCommon < ActiveRecord::Base
   belongs_to :over_hero_common_table, polymorphic: true
+  belongs_to :over_hero
   
   after_create :create_log_data
   after_update :update_log_data

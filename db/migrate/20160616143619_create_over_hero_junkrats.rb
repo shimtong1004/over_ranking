@@ -2,6 +2,7 @@ class CreateOverHeroJunkrats < ActiveRecord::Migration
   def change
     create_table :over_hero_junkrats do |t|
       t.integer :over_tag_id
+      t.string  :name
       t.string  :EnemiesTrapped_MostinGame
       t.string  :EnemiesTrapped
       t.string  :RIP_TireKills_MostinGame

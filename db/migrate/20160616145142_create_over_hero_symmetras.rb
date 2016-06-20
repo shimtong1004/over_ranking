@@ -2,6 +2,7 @@ class CreateOverHeroSymmetras < ActiveRecord::Migration
   def change
     create_table :over_hero_symmetras do |t|
       t.integer :over_tag_id
+      t.string  :name
       t.string  :SentryTurretKills
       t.string  :SentryTurretKills_MostinGame
       t.string  :PlayersTeleported

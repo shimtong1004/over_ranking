@@ -1,5 +1,6 @@
 class OverHero < ActiveRecord::Base
   belongs_to :over_tag
+  has_one :over_hero_common
   
   after_create :create_log_data
   after_update :update_log_data

@@ -1,5 +1,10 @@
 class OverHeroBastion < ActiveRecord::Base
   has_many :over_hero_common, as: :over_hero_common_table
+  belongs_to :over_tag
+  
+  
+  
+  # be_longs :over_hero
   
   after_create :create_log_data
   after_update :update_log_data

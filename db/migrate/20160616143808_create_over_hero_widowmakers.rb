@@ -2,6 +2,7 @@ class CreateOverHeroWidowmakers < ActiveRecord::Migration
   def change
     create_table :over_hero_widowmakers do |t|
       t.integer :over_tag_id
+      t.string  :name
       t.string  :VenomMineKills
       t.string  :ScopedHits
       t.string  :ScopedShots

@@ -12,7 +12,8 @@
 		<td width="100px">승률</td>
 		<td width="100px">플레이시간 </td>
 	</tr>
-	<tr onclick="javascript: get_detail_data()">
+	<!-- <tr onclick="javascript: get_detail_data()" style="cursor:pointer;"> -->
+	<tr data-link="<%= detail_over_tag_path(@tag_data) %>" style="cursor:pointer;>
 		<td>PC/KR</td>
 		<td><image src="<%=@main_hero.image%>" style="width:50px; height:50px;"></td>
 		<td><%=@main_hero.name%></td>
@@ -26,6 +27,7 @@
 		<td><%= @tag_data.over_profile.playtime %></td>
 	</tr>
 </table>
+
 <% if @status==404 %>
 <div>
 	서버 터졌음.
@@ -34,7 +36,7 @@
 </div>
 
 <script>
-	function get_detail_data(){
-		alert("데이터 가져오기");
-	}
+	$("tr[data-link]").click(function() {
+	  window.location = $(this).data("link")
+	})
 </script>

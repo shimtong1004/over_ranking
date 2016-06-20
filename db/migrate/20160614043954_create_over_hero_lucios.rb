@@ -2,6 +2,7 @@ class CreateOverHeroLucios < ActiveRecord::Migration
   def change
     create_table :over_hero_lucios do |t|
       t.integer :over_tag_id
+      t.string  :name
       t.string  :SoundBarriersProvided
       t.string  :SoundBarriersProvided_MostinGame
       t.string  :SoundBarriersProvided_Average

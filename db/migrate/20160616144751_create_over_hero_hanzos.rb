@@ -2,6 +2,7 @@ class CreateOverHeroHanzos < ActiveRecord::Migration
   def change
     create_table :over_hero_hanzos do |t|
       t.integer :over_tag_id
+      t.string  :name
       t.string  :DragonstrikeKills
       t.string  :DragonstrikeKills_MostinGame
       t.string  :ScatterArrowKills

@@ -1,5 +1,5 @@
 class OverTagsController < ApplicationController
-  before_action :set_over_tag, only: [:show, :edit, :update, :destroy]
+  before_action :set_over_tag, only: [:show, :edit, :update, :destroy, :detail]
 
   # GET /over_tags
   # GET /over_tags.json
@@ -20,6 +20,11 @@ class OverTagsController < ApplicationController
     @main_hero = OverHero.main_hero(@tag_data.id)
     
     render 'show'
+  end
+  
+  def detail
+    OverTag.set_detail_data(@over_tag)
+    @heros = @over_tag.over_heros
   end
 
   # GET /over_tags/1/edit

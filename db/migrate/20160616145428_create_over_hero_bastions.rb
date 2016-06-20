@@ -2,6 +2,7 @@ class CreateOverHeroBastions < ActiveRecord::Migration
   def change
     create_table :over_hero_bastions do |t|
       t.integer :over_tag_id
+      t.string  :name
       t.string  :ReconKills
       t.string  :SentryKills
       t.string  :TankKills

@@ -2,6 +2,7 @@ class CreateOverHeroTracers < ActiveRecord::Migration
   def change
     create_table :over_hero_tracers do |t|
       t.integer :over_tag_id
+      t.string  :name
       t.string  :PulseBombKills
       t.string  :PulseBombKills_MostinGame
       t.string  :PulseBombsAttached_MostinGame

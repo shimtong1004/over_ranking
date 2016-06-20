@@ -2,6 +2,7 @@ class CreateOverHeroRoadhogs < ActiveRecord::Migration
   def change
     create_table :over_hero_roadhogs do |t|
       t.integer :over_tag_id
+      t.string  :name
       t.string  :EnemiesHooked_MostinGame
       t.string  :EnemiesHooked
       t.string  :HooksAttempted

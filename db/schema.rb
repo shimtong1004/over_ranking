@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_bastions", force: :cascade do |t|
     t.integer  "over_tag_id",            limit: 4
+    t.string   "name",                   limit: 255
     t.string   "ReconKills",             limit: 255
     t.string   "SentryKills",            limit: 255
     t.string   "TankKills",              limit: 255
@@ -120,6 +121,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
   end
 
   create_table "over_hero_commons", force: :cascade do |t|
+    t.integer  "over_hero_id",                limit: 4
     t.integer  "over_hero_common_table_id",   limit: 4
     t.string   "over_hero_common_table_type", limit: 255
     t.string   "Cards",                       limit: 255
@@ -198,9 +200,11 @@ ActiveRecord::Schema.define(version: 20160618085626) do
   end
 
   add_index "over_hero_commons", ["over_hero_common_table_id", "over_hero_common_table_type"], name: "hero_common_index", using: :btree
+  add_index "over_hero_commons", ["over_hero_id"], name: "index_over_hero_commons_on_over_hero_id", using: :btree
 
   create_table "over_hero_dvas", force: :cascade do |t|
     t.integer  "over_tag_id",                   limit: 4
+    t.string   "name",                          limit: 255
     t.string   "MechsCalled",                   limit: 255
     t.string   "MechsCalled_MostinGame",        limit: 255
     t.string   "MechDeaths",                    limit: 255
@@ -216,6 +220,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_genjis", force: :cascade do |t|
     t.integer  "over_tag_id",                 limit: 4
+    t.string   "name",                        limit: 255
     t.string   "DragonbladeKills",            limit: 255
     t.string   "DragonbladeKills_MostinGame", limit: 255
     t.string   "DamageReflected",             limit: 255
@@ -231,6 +236,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_hanzos", force: :cascade do |t|
     t.integer  "over_tag_id",                  limit: 4
+    t.string   "name",                         limit: 255
     t.string   "DragonstrikeKills",            limit: 255
     t.string   "DragonstrikeKills_MostinGame", limit: 255
     t.string   "ScatterArrowKills",            limit: 255
@@ -245,6 +251,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_junkrats", force: :cascade do |t|
     t.integer  "over_tag_id",               limit: 4
+    t.string   "name",                      limit: 255
     t.string   "EnemiesTrapped_MostinGame", limit: 255
     t.string   "EnemiesTrapped",            limit: 255
     t.string   "RIP_TireKills_MostinGame",  limit: 255
@@ -259,6 +266,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_lucios", force: :cascade do |t|
     t.integer  "over_tag_id",                      limit: 4
+    t.string   "name",                             limit: 255
     t.string   "SoundBarriersProvided",            limit: 255
     t.string   "SoundBarriersProvided_MostinGame", limit: 255
     t.string   "SoundBarriersProvided_Average",    limit: 255
@@ -270,6 +278,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_mc_crees", force: :cascade do |t|
     t.integer  "over_tag_id",                  limit: 4
+    t.string   "name",                         limit: 255
     t.string   "DeadeyeKills",                 limit: 255
     t.string   "DeadeyeKills_MostinGame",      limit: 255
     t.string   "FantheHammerKills",            limit: 255
@@ -284,6 +293,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_meis", force: :cascade do |t|
     t.integer  "over_tag_id",              limit: 4
+    t.string   "name",                     limit: 255
     t.string   "EnemiesFrozen",            limit: 255
     t.string   "EnemiesFrozen_MostinGame", limit: 255
     t.string   "BlizzardKills_MostinGame", limit: 255
@@ -298,6 +308,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_mercies", force: :cascade do |t|
     t.integer  "over_tag_id",                   limit: 4
+    t.string   "name",                          limit: 255
     t.string   "PlayersResurrected",            limit: 255
     t.string   "PlayersResurrected_MostinGame", limit: 255
     t.string   "PlayersSaved",                  limit: 255
@@ -315,6 +326,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_pharahs", force: :cascade do |t|
     t.integer  "over_tag_id",                 limit: 4
+    t.string   "name",                        limit: 255
     t.string   "RocketDirectHits",            limit: 255
     t.string   "BarrageKills",                limit: 255
     t.string   "RocketDirectHits_MostinGame", limit: 255
@@ -329,6 +341,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_reapers", force: :cascade do |t|
     t.integer  "over_tag_id",                  limit: 4
+    t.string   "name",                         limit: 255
     t.string   "SoulsConsumed",                limit: 255
     t.string   "DeathBlossomKills",            limit: 255
     t.string   "SoulsConsumed_MostinGame",     limit: 255
@@ -343,6 +356,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_reinhardts", force: :cascade do |t|
     t.integer  "over_tag_id",                  limit: 4
+    t.string   "name",                         limit: 255
     t.string   "ChargeKills",                  limit: 255
     t.string   "ChargeKills_MostinGame",       limit: 255
     t.string   "FireStrikeKills",              limit: 255
@@ -360,6 +374,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_roadhogs", force: :cascade do |t|
     t.integer  "over_tag_id",              limit: 4
+    t.string   "name",                     limit: 255
     t.string   "EnemiesHooked_MostinGame", limit: 255
     t.string   "EnemiesHooked",            limit: 255
     t.string   "HooksAttempted",           limit: 255
@@ -377,6 +392,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_soldier76s", force: :cascade do |t|
     t.integer  "over_tag_id",                   limit: 4
+    t.string   "name",                          limit: 255
     t.string   "HelixRocketsKills_MostinGame",  limit: 255
     t.string   "HelixRocketsKills",             limit: 255
     t.string   "TacticalVisorKills",            limit: 255
@@ -393,6 +409,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_symmetras", force: :cascade do |t|
     t.integer  "over_tag_id",                  limit: 4
+    t.string   "name",                         limit: 255
     t.string   "SentryTurretKills",            limit: 255
     t.string   "SentryTurretKills_MostinGame", limit: 255
     t.string   "PlayersTeleported",            limit: 255
@@ -413,6 +430,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_torbjoerns", force: :cascade do |t|
     t.integer  "over_tag_id",                limit: 4
+    t.string   "name",                       limit: 255
     t.string   "ArmorPacksCreated",          limit: 255
     t.string   "TorbjoernKills",             limit: 255
     t.string   "TurretKills",                limit: 255
@@ -431,6 +449,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_tracers", force: :cascade do |t|
     t.integer  "over_tag_id",                   limit: 4
+    t.string   "name",                          limit: 255
     t.string   "PulseBombKills",                limit: 255
     t.string   "PulseBombKills_MostinGame",     limit: 255
     t.string   "PulseBombsAttached_MostinGame", limit: 255
@@ -445,6 +464,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_widowmakers", force: :cascade do |t|
     t.integer  "over_tag_id",                   limit: 4
+    t.string   "name",                          limit: 255
     t.string   "VenomMineKills",                limit: 255
     t.string   "ScopedHits",                    limit: 255
     t.string   "ScopedShots",                   limit: 255
@@ -463,6 +483,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_winstons", force: :cascade do |t|
     t.integer  "over_tag_id",                   limit: 4
+    t.string   "name",                          limit: 255
     t.string   "PlayersKnockedBack",            limit: 255
     t.string   "PlayersKnockedBack_MostinGame", limit: 255
     t.string   "MeleeKills",                    limit: 255
@@ -483,6 +504,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_zaryas", force: :cascade do |t|
     t.integer  "over_tag_id",                         limit: 4
+    t.string   "name",                                limit: 255
     t.string   "LifetimeGravitonSurgeKills",          limit: 255
     t.string   "GravitonSurgeKills_MostinGame",       limit: 255
     t.string   "HighEnergyKills_MostinGame",          limit: 255
@@ -504,6 +526,7 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   create_table "over_hero_zenyatta", force: :cascade do |t|
     t.integer  "over_tag_id",               limit: 4
+    t.string   "name",                      limit: 255
     t.string   "TranscendenceHealing_Best", limit: 255
     t.string   "TranscendenceHealing",      limit: 255
     t.datetime "created_at",                            null: false
@@ -522,6 +545,8 @@ ActiveRecord::Schema.define(version: 20160618085626) do
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
   end
+
+  add_index "over_heros", ["over_tag_id", "name"], name: "index_over_heros_on_over_tag_id_and_name", using: :btree
 
   create_table "over_platforms", force: :cascade do |t|
     t.integer  "over_tag_id", limit: 4

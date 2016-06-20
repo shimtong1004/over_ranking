@@ -2,6 +2,7 @@ class CreateOverHeroDvas < ActiveRecord::Migration
   def change
     create_table :over_hero_dvas do |t|
       t.integer :over_tag_id
+      t.string  :name
       t.string  :MechsCalled
       t.string  :MechsCalled_MostinGame
       # t.string  :DamageBlocked_MostinGame

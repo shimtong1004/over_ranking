@@ -1,0 +1,1314 @@
+<div style="margin-top: 30px;">
+	<div style="float: left; width: 20%">
+		<table style="width: 100%" border="1">
+			<tr>
+				<td colspan="2">요약정보</td>
+				
+			</tr>
+			<tr>
+				<td>전체순위</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>kr지역순위</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>점수</td>
+				<td><%= @over_tag.over_all_hero.Score %></td>
+			</tr>
+			<tr>
+				<td>1분 평균 획득 점수</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>칭찬카드</td>
+				<td><%= @over_tag.over_all_hero.Cards %></td>
+			</tr>
+			<tr>
+				<td>승률</td>
+				<td><%= @over_tag.over_profile.played %>전 <%= @over_tag.over_profile.wins %>승 <%= @over_tag.over_profile.wins %>패 (<%= @over_tag.over_profile.win_percentage %>)</td>
+			</tr>
+			<tr>
+				<td>K/D</td>
+				<td><%= @over_tag.over_all_hero.Eliminations %>/<%= @over_tag.over_all_hero.Deaths %></td>
+			</tr>
+			<tr>
+				<td>게임당 평균 K/D</td>
+				<td><%= @over_tag.over_all_hero.Eliminations_Average %> / <%= @over_tag.over_all_hero.Deaths_Average %></td>
+			</tr>
+			<tr>
+				<td>게임당 평균 딜량</td>
+				<td><%= @over_tag.over_all_hero.DamageDone_Average %></td>
+			</tr>
+			<tr>
+				<td>게임당 평균 힐량</td>
+				<td><%= @over_tag.over_all_hero.HealingDone_Average %></td>
+			</tr>
+			<tr>
+				<td>플레이 시간</td>
+				<td><%= @over_tag.over_all_hero.TimePlayed %></td>
+			</tr>
+			<tr>
+				<td>일 평균 플레이 시간</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>전체 폭주 시간</td>
+				<td><%= @over_tag.over_all_hero.TimeSpentonFire %></td>
+			</tr>
+			<tr>
+				<td>평균 폭주 시간</td>
+				<td><%= @over_tag.over_all_hero.TimeSpentonFire_Average %></td>
+			</tr>
+			<tr>
+				<td>평균 임무 기여 시간</td>
+				<td><%= @over_tag.over_all_hero.ObjectiveTime_Average %></td>
+			</tr>
+			<tr>
+				<td>평균 임무 기여 처치</td>
+				<td><%= @over_tag.over_all_hero.ObjectiveKills_Average %></td>
+			</tr>
+			<tr>
+				<td>전체 메달</td>
+				<td><%= @over_tag.over_all_hero.Medals %></td>
+			</tr>
+			<tr>
+				<td>금메달</td>
+				<td><%= @over_tag.over_all_hero.Medals_Gold %></td>
+			</tr>
+			<tr>
+				<td>은메달</td>
+				<td><%= @over_tag.over_all_hero.Medals_Silver %></td>
+			</tr>
+			<tr>
+				<td>동메달</td>
+				<td><%= @over_tag.over_all_hero.Medals_Bronze %></td>
+			</tr>
+		</table>
+	</div>
+	<div style="float: right; width: 80%">
+		<table style="width: 100%" border="1">
+			<tr>
+				<td>역할별 통계</td>
+				<td>플레이 시간</td>
+				<td>평균 폭주</td>
+				<td>점수/분</td>
+				<td>K/D</td>
+				<td>평균 딜량</td>
+				<td>평균 힐량</td>
+				<td>평균 임무기여</td>
+				<td>승률</td>
+			</tr>
+			<tr>
+				<td>공격</td>
+				<td>겐지+리퍼+멕크리+솔져+트레이서+파라</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>돌격</td>
+				<td>디바+라인하트+로그호그+윈스턴+자리야</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>수비</td>
+				<td>메이+바스티온+윈도우메이커+정크렛+토르비욘+한조</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>지원</td>
+				<td>루시우+메르시+시메트라+젠야타</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
+	</div>
+	<div style="float: right; width: 80%; margin-top: 20px">
+		<table style="width: 100%" border="1">
+			<tr>
+				<td colspan="10">히스토리 그래프</td>
+				
+			</tr>
+			<tr>
+				<td>누적점수</td>
+				<td>1분 평균 점수</td>
+				<td>평균 폭주</td>
+				<td>K/D</td>
+				<td>승률</td>
+				<td>플레이 시간</td>
+				<td>칭찬카드</td>
+				<td>메달</td>
+				<td>평균임무기여 시간</td>
+				<td>평균임무기여 처치</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div style="float: right; width: 80%; margin-top: 20px">
+		<div style="width: 100%;">
+			<span style="display:inline-block; width:10%;">영웅</span>
+			<span style="display:inline-block; width:10%;">플레이 시간</span>
+			<span style="display:inline-block; width:10%;">평균 폭주</span>
+			<span style="display:inline-block; width:10%;">점수/분</span>
+			<span style="display:inline-block; width:10%;">K/D</span>
+			<span style="display:inline-block; width:10%;">평균임무기여 시간</span>
+			<span style="display:inline-block; width:10%;">승률</span>
+			
+		</div>
+	</div>
+	
+	
+	<div style="float: right; width: 80%; margin-top: 20px">
+		<table style="width: 100%" border="1">
+			<tr>
+				<td>영웅</td>
+				<td>플레이 시간</td>
+				<td>평균 폭주</td>
+				<td>점수/분</td>
+				<td>K/D</td>
+				<td>평균임무기여 시간</td>
+				<td>승률</td>
+			</tr>
+			<% @heros.each do |hero| %>
+			<% name = hero.name %>
+			<tr>
+				<td><%= hero.name %></td>
+				<td><%= hero.playtime %></td>
+				<td></td>
+				<td><%= hero.over_hero_common.Score %></td>
+				<td></td>
+				<td></td>
+				<td><%= hero.over_hero_common.WinPercentage %> 접기</td>
+				<!-- 여기 -->
+			</tr>
+			<% end %>
+		</table>
+	</div>
+</div>
+<% @heros.each do |hero| %>
+<% name = hero.name %>
+
+					<table class="detail_table" border="1" style="width: 50%; float: left; margin-top: 20px;">
+						<tr>
+							<td colspan="2">점수</td>
+						</tr>
+						<tr>
+							<td><%= hero.over_hero_common.Score %></td>
+							<td><%= hero.over_hero_common.MostScorewithinoneLife %></td>
+						</tr>
+					</table>
+					<table class="detail_table" border="1" style="width: 50%; float: right; margin-top: 20px;">
+						<tr>
+							<td colspan="2">폭주</td>
+						</tr>
+						<tr>
+							<td>a</td>
+							<td>b</td>
+						</tr>
+					</table>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="5">경기보상</td></tr>
+						<tr>
+							<td>전체메달</td>
+							<td>금메달</td>
+							<td>은메달</td>
+							<td>동메달</td>
+							<td>칭찬카드</td>
+						</tr>
+						<tr>
+							<td>Medals</td>
+							<td>Medals-Gold</td>
+							<td>Medals-Silver</td>
+							<td>Medals-Bronze</td>
+							<td>Cards</td>
+						</tr>
+					</table>
+						
+					<table class="detail_table" border="1" style="width: 60%; float: right; margin-top: 20px">
+						<tr>
+							<td colspan="3">임무기여</td>
+						</tr>
+						<tr>
+							<td>누적 임무 기여</td>
+							<td>최고 임무 기여 시간</td>
+							<td>평균 임무 기여 시간</td>
+						</tr>
+						<tr>
+							<td>누적 임무 기여 처치</td>
+							<td>최고 임무 기여 처치</td>
+							<td>최고 임무 기여 처치</td>
+						</tr>
+					</table>
+					<table class="detail_table" border="1" style="width: 40%; float: right; margin-top: 20px">
+						<tr>
+							<td colspan="2">죽음</td>
+						</tr>
+						<tr>
+							<td>누적죽음</td>
+							<td>게임당 평균죽음</td>
+						</tr>
+						<tr>
+							<td colspan="2">환경 요소로 죽음</td>
+						</tr>
+					</table>
+					
+					<% if name == "Widowmaker" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="5">영웅 기술: 저격</td></tr>
+						<tr>
+							<td>누적 발사</td>
+							<td>누적 명중</td>
+							<td>저격 명중률</td>
+							<td>게임당 최고 처치 시야 지원</td>
+						</tr>
+						<tr>
+							<td>누적 치명타</td>
+							<td>게임당 최고 치명타</td>
+							<td colspan="2">게임당 평균 치명타</td>
+						</tr>
+					</table>
+					<% end %>
+					<% if name == "Widowmaker" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 맹독 지뢰</td></tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<% if name == "L&#xFA;cio" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 소리 방벽</td></tr>
+						<tr>
+							<td>SoundBarriersProvided</td>
+							<td>SoundBarriersProvided-MostinGame</td>
+							<td>SoundBarriersProvided-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					
+					<% end %>
+					
+					<% if name == "Hanzo"%>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 갈래 화살</td></tr>
+						<tr>
+							<td>ScatterArrowKills</td>
+							<td>ScatterArrowKills-MostinGame</td>
+							<td>ScatterArrowKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 용의 일격</td></tr>
+						<tr>
+							<td>DragonstrikeKills</td>
+							<td>DragonstrikeKills-MostinGame</td>
+							<td>DragonstrikeKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<% if name == "Reaper" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 죽음의 꽃</td></tr>
+						<tr>
+							<td>DeathBlossomKills</td>
+							<td>DeathBlossomKills-MostinGame</td>
+							<td>DeathBlossomKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 명중</td>
+							<td>게임당 최고 명중</td>
+							<td>게임당 평균 명중</td>
+						</tr>
+					</table>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 영혼 거두기</td></tr>
+						<tr>
+							<td>SoulsConsumed</td>
+							<td>SoulsConsumed-MostinGame</td>
+							<td>SoulsConsumed-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<% if name == "Pharah" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 충격탄</td></tr>
+						<tr>
+							<td>RocketDirectHits</td>
+							<td>RocketDirectHits-MostinGame</td>
+							<td>RocketDirectHits-Average</td>
+						</tr>
+						<tr>
+							<td>누적 명중</td>
+							<td>게임당 최고 명중</td>
+							<td>게임당 평균 명중</td>
+						</tr>
+					</table>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 포화</td></tr>
+						<tr>
+							<td>BarrageKills</td>
+							<td>BarrageKills-MostinGame</td>
+							<td>BarrageKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<% if name == "Genji"%>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 튕겨내기</td></tr>
+						<tr>
+							<td>DamageReflected</td>
+							<td>DamageReflected-MostinGame</td>
+							<td>DamageReflected-Average</td>
+						</tr>
+						<tr>
+							<td>누적 반사 피해</td>
+							<td>게임당 최고 반사 피해</td>
+							<td>게임당 평균 반사 피해</td>
+						</tr>
+					</table>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="4">영웅 기술: 용검</td></tr>
+						<tr>
+							<td>Dragonblades</td>
+							<td>DragonbladeKills</td>
+							<td>DragonbladeKills-MostinGame</td>
+							<td>DragonbladeKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 사용</td>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<% if name == "Tracer" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 펄스 폭탄</td></tr>
+						<tr>
+							<td>PulseBombKills</td>
+							<td>PulseBombKills-MostinGame</td>
+							<td>PulseBombKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 펄스 폭탄 처치</td>
+							<td>게임당 최고 펄스 폭탄 처치</td>
+							<td>게임당 평균 펄스 폭탄 처치</td>
+						</tr>
+						
+						<tr>
+							<td>PulseBombsAttached</td>
+							<td>PulseBombsAttached-MostinGame</td>
+							<td>PulseBombsAttached-Average</td>
+						</tr>
+						<tr>
+							<td>누적 펄스 폭탄 부착</td>
+							<td>게임당 최고 펄스 폭탄 부착</td>
+							<td>게임당 평균 펄스 폭탄 부착</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<% if name == "Mercy" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="4">주 무기: 카두세우스 지팡이</td></tr>
+						<tr>
+							<td>HealingDone</td>
+							<td>HealingDone-MostinGame</td>
+							<td>HealingDone-MostinLife</td>
+							<td>HealingDone-Average</td>
+						</tr>
+						<tr>
+							<td>누적 치유</td>
+							<td>게임당 최고 치유</td>
+							<td>한 목숨 최고 치유</td>
+							<td>게임당 평균 치유</td>
+						</tr>
+						
+						<tr>
+							<td>PlayersSaved</td>
+							<td colspan="3">PlayersSaved-Average</td>
+						</tr>
+						<tr>
+							<td>누적 구한 플레이어</td>
+							<td colspan="3">게임당 평균 구한 플레이어</td>
+						</tr>
+					</table>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">보조 무기: 카두세우스 블라스터</td></tr>
+						<tr>
+							<td>BlasterKills</td>
+							<td>KillStreak-Best</td>
+							<td>BlasterKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 부활</td></tr>
+						<tr>
+							<td>PlayersResurrected</td>
+							<td>PlayersResurrected-MostinGame</td>
+							<td>PlayersResurrected-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<% if name == "Bastion" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="4">영웅 기술: 수색 모드</td></tr>
+						<tr>
+							<td>ReconKills</td>
+							<td>ReconKills-MostinGame</td>
+							<td>ReconKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 경계 모드</td></tr>
+						<tr>
+							<td>SentryKills</td>
+							<td>SentryKills-MostinGame</td>
+							<td>SentryKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 전차 모드</td></tr>
+						<tr>
+							<td>TankKills</td>
+							<td>TankKills-MostinGame</td>
+							<td>TankKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<% if name == "Soldier: 76" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 나선 로켓</td></tr>
+						<tr>
+							<td>HelixRocketsKills</td>
+							<td>HelixRocketsKills-MostinGame</td>
+							<td>HelixRocketsKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 전술 조준경</td></tr>
+						<tr>
+							<td>TacticalVisorKills</td>
+							<td>TacticalVisorKills-MostinGame</td>
+							<td>TacticalVisorKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 생체장</td></tr>
+						<tr>
+							<td>BioticFieldsDeployed</td>
+							<td>BioticFieldHealingDone</td>
+							<td>HealingDone-Average</td>
+							<td>SelfHealing</td>
+							<td>SelfHealing-MostinGame</td>
+						</tr>
+						<tr>
+							<td>누적 생체장 생성</td>
+							<td>누적 치유</td>
+							<td>게임당 평균 치유</td>
+							<td>누적 자가 치유</td>
+							<td>게임당 최고 자가 치유</td>
+						</tr>
+						<tr><td colspan="5">SelfHealing-Average</td></tr>
+						<tr><td colspan="5">게임당 평균 자가 치유</td></tr>
+					</table>
+					<% end %>
+					
+					
+					<% if name == "Torbj&#xF6;rn" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">토르비욘이 직접 처치</td></tr>
+						<tr>
+							<td>Torbj&#xF6;rnKills</td>
+							<td>Torbj&#xF6;rnKills-MostinGame</td>
+							<td>Torbj&#xF6;rnKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="2">포탑으로 처치</td></tr>
+						<tr>
+							<td>TurretKills</td>
+							<td>TurretKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">초고열 용광로로 처치</td></tr>
+						<tr>
+							<td>MoltenCoreKills</td>
+							<td>MoltenCoreKills-MostinGame</td>
+							<td>MoltenCoreKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="2">영웅 기술: 방어구 팩</td></tr>
+						<tr>
+							<td>ArmorPacksCreated</td>
+							<td>ArmorPacksCreated-Average</td>
+						</tr>
+						<tr>
+							<td>누적 생성</td>
+							<td>게임당 평균 생성</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<% if name == "Reinhardt"%>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 방벽 방패</td></tr>
+						<tr>
+							<td>DamageBlocked</td>
+							<td>DamageBlocked-MostinGame</td>
+							<td>DamageBlocked-Average</td>
+						</tr>
+						<tr>
+							<td>누적 막은 피해</td>
+							<td>게임당 최고 막은 피해</td>
+							<td>게임당 평균 막은 피해</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 돌진</td></tr>
+						<tr>
+							<td>ChargeKills</td>
+							<td>ChargeKills-MostinGame</td>
+							<td>ChargeKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 화염 강타</td></tr>
+						<tr>
+							<td>FireStrikeKills</td>
+							<td>FireStrikeKills-MostinGame</td>
+							<td>FireStrikeKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 대지분쇄</td></tr>
+						<tr>
+							<td>EarthshatterKills</td>
+							<td>EarthshatterKills-MostinGame</td>
+							<td>EarthshatterKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<% if name == "McCree"%>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 피스키퍼 난사</td></tr>
+						<tr>
+							<td>FantheHammerKills</td>
+							<td>FantheHammerKills-MostinGame</td>
+							<td>FantheHammerKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 난사로 처치</td>
+							<td>게임당 최고 난사로 처치</td>
+							<td>게임당 평균 난사로 처치</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 황야의 무법자</td></tr>
+						<tr>
+							<td>DeadeyeKills</td>
+							<td>DeadeyeKills-MostinGame</td>
+							<td>DeadeyeKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<% if name == "Junkrat"%>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="2">영웅 기술: 강철 덫</td></tr>
+						<tr>
+							<td>EnemiesTrapped</td>
+							<td>EnemiesTrapped-MostinGame</td>
+						</tr>
+						<tr>
+							<td>누적 덫에 걸린 적</td>
+							<td>최고 덫에 걸린 적</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 죽이는 타이어</td></tr>
+						<tr>
+							<td>RIP-TireKills</td>
+							<td>RIP-TireKills-MostinGame</td>
+							<td>EnemiesTrappedaMinute</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>1분당 평균 처치</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					
+					<% if name == "D.Va" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 자폭</td></tr>
+						<tr>
+							<td>DamageBlocked</td>
+							<td>DamageBlocked-MostinGame</td>
+							<td>DamageBlocked-Average</td>
+						</tr>
+						<tr>
+							<td>누적 막은 피해</td>
+							<td>게임당 최고 막은 피해</td>
+							<td>게임당 평균 막은 피해</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 방어 매트릭스</td></tr>
+						<tr>
+							<td>Self-DestructKills</td>
+							<td>Self-DestructKills-MostinGame</td>
+							<td>Self-DestructKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="4">영웅 기술: 로봇 호출</td></tr>
+						<tr>
+							<td>MechsCalled</td>
+							<td>MechsCalled-MostinGame</td>
+							<td>MechsCalled-Average</td>
+							<td>MechDeaths</td>
+						</tr>
+						<tr>
+							<td>누적 호출</td>
+							<td>게임당 최고 호출</td>
+							<td>게임당 평균 호출</td>
+							<td>누적 파괴된 로봇</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					
+					<% if name == "Winston"%>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 점프팩</td></tr>
+						<tr>
+							<td>JumpPackKills</td>
+							<td>JumpPackKills-MostinGame</td>
+							<td>JumpPackKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+						
+						<tr>
+							<td>PlayersKnockedBack</td>
+							<td>PlayersKnockedBack-MostinGame</td>
+							<td>PlayersKnockedBack-Average</td>
+						</tr>
+						<tr>
+							<td>누적 밀쳐낸 횟수</td>
+							<td>게임당 최고 밀쳐낸 횟수</td>
+							<td>게임당 평균 밀쳐낸 횟수</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 방벽 생성기</td></tr>
+						<tr>
+							<td>DamageBlocked</td>
+							<td>DamageBlocked-MostinGame</td>
+							<td>DamageBlocked-Average</td>
+						</tr>
+						<tr>
+							<td>누적 막은 피해</td>
+							<td>게임당 최고 막은 피해</td>
+							<td>게임당 평균 막은 피해</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="4">영웅 기술: 원시의 분노</td></tr>
+						<tr>
+							<td>MeleeKills</td>
+							<td>MeleeKills-MostinGame</td>
+							<td>MeleeKills-Average</td>
+							<td>-</td>
+						</tr>
+						<tr>
+							<td>근접 공격 처치</td>
+							<td>게임당 최고 근접 처치</td>
+							<td>게임당 평균 근접 처치</td>
+							<td>근접 공격 결정타</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<% if name == "Roadhog"%>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 갈고리 사슬</td></tr>
+						<tr>
+							<td>HooksAttempted</td>
+							<td>HookAccuracy</td>
+							<td>HookAccuracy-BestinGame</td>
+						</tr>
+						<tr>
+							<td>갈고리 누적 시도</td>
+							<td>갈고리 명중률</td>
+							<td>게임당 최고 갈고리 명중률</td>
+						</tr>
+						<tr>
+							<td>EnemiesHooked</td>
+							<td>EnemiesHooked-MostinGame</td>
+							<td>EnemiesHooked-Average</td>
+						</tr>
+						<tr>
+							<td>누적 끌고온 적</td>
+							<td>게임당 최고 끌고온 적</td>
+							<td>게임당 평균 끌고온 적</td>
+						</tr>
+					</table>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 돼재앙</td></tr>
+						<tr>
+							<td>WholeHogKills</td>
+							<td>WholeHogKills-MostinGame</td>
+							<td>WholeHogKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<% if name == "Zarya" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">주 무기: 입자포</td></tr>
+						<tr>
+							<td>EnergyMaximum</td>
+							<td>LifetimeEnergyAccumulation</td>
+							<td>LifetimeAverageEnergy</td>
+						</tr>
+						<tr>
+							<td>최대 에너지</td>
+							<td>누적 축적 에너지</td>
+							<td>평균 축적 에너지</td>
+						</tr>
+						
+						<tr>
+							<td>HighEnergyKills</td>
+							<td>HighEnergyKills-MostinGame</td>
+							<td>HighEnergyKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 고에너지로 처치</td>
+							<td>최고 고에너지로 처치</td>
+							<td>평균 고에너지로 처치</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 입자 방벽</td></tr>
+						<tr>
+							<td>DamageBlocked</td>
+							<td>DamageBlocked-MostinGame</td>
+							<td>DamageBlocked-Average</td>
+						</tr>
+						<tr>
+							<td>누적 막은 피해</td>
+							<td>게임당 최고 막은 피해</td>
+							<td>게임당 평균 막은 피해</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 방벽 씌우기</td></tr>
+						<tr>
+							<td>ProjectedBarriersApplied</td>
+							<td>ProjectedBarriersApplied-MostinGame</td>
+							<td>ProjectedBarriersApplied-Average</td>
+						</tr>
+						<tr>
+							<td>누적 횟수</td>
+							<td>게임당 최고 횟수</td>
+							<td>게임당 평균 횟수</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 중력자탄</td></tr>
+						<tr>
+							<td>LifetimeGravitonSurgeKills</td>
+							<td>GravitonSurgeKills-MostinGame</td>
+							<td>GravitonSurgeKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<% if name == "Mei" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 냉각총</td></tr>
+						<tr>
+							<td>EnemiesFrozen</td>
+							<td>EnemiesFrozen-MostinGame</td>
+							<td>EnemiesFrozen-Average</td>
+						</tr>
+						<tr>
+							<td>누적 얼린 적</td>
+							<td>게임당 최고 얼린 적</td>
+							<td>게임당 평균 얼린 적</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 빙벽</td></tr>
+						<tr>
+							<td>DamageBlocked</td>
+							<td>DamageBlocked-MostinGame</td>
+							<td>DamageBlocked-Average</td>
+						</tr>
+						<tr>
+							<td>누적 막은 피해</td>
+							<td>게임당 최고 막은 피해</td>
+							<td>게임당 평균 막은 피해</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 눈보라</td></tr>
+						<tr>
+							<td>BlizzardKills</td>
+							<td>BlizzardKills-MostinGame</td>
+							<td>BlizzardKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>게임당 평균 처치</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<% if name == "Symmetra" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 감시 포탑</td></tr>
+						<tr>
+							<td>SentryTurretKills</td>
+							<td>SentryTurretKills-MostinGame</td>
+							<td>SentryTurretKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 감시 포탑으로 처치</td>
+							<td>최고 감시 포탑으로 처치</td>
+							<td>평균 감시 포탑으로 처치</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 광자 보호막</td></tr>
+						<tr>
+							<td>ShieldsProvided</td>
+							<td>ShieldsProvided-MostinGame</td>
+							<td>ShieldsProvided-Average</td>
+						</tr>
+						<tr>
+							<td>누적 보호막 제공</td>
+							<td>게임당 최고 보호막 제공</td>
+							<td>게임당 평균 보호막 제공</td>
+						</tr>
+					</table>
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">영웅 기술: 순간이동기</td></tr>
+						<tr>
+							<td>TeleporterUptime</td>
+							<td>TeleporterUptime-BestinGame</td>
+							<td>TeleporterUptime-Average</td>
+						</tr>
+						<tr>
+							<td>누적 가동 시간</td>
+							<td>게임당 최고 가동 시간</td>
+							<td>게임당 평균 가동 시간</td>
+						</tr>
+						
+						<tr>
+							<td>PlayersTeleported</td>
+							<td>PlayersTeleported-MostinGame</td>
+							<td>PlayersTeleported-Average</td>
+						</tr>
+						<tr>
+							<td>누적 이용자 수</td>
+							<td>게임당 최고 이용자 수</td>
+							<td>게임당 평균 이용자 수</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<% if name == "Zenyatta" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="2">영웅 기술: 초월</td></tr>
+						<tr>
+							<td>TranscendenceHealing</td>
+							<td>TranscendenceHealing-Best</td>
+						</tr>
+						<tr>
+							<td>누적 초월로 치유</td>
+							<td>초월로 최고 치유량</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					
+					<% if name == "L&#xFA;cio" || name == "Zenyatta" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="4">치유</td></tr>
+						<tr>
+							<td>HealingDone</td>
+							<td>HealingDone-MostinGame</td>
+							<td>HealingDone-Average</td>
+							<td>HealingDone-MostinLife</td>
+						</tr>
+						<tr>
+							<td>누적 치유</td>
+							<td>게임당 최고 치유</td>
+							<td>게임당 평균 치유</td>
+							<td>한 목숨 최고 치유</td>
+						</tr>
+					</table>
+					
+					
+					<% end %>
+					
+					<% if name == "L&#xFA;cio" || name == "Reaper" || name == "Mercy" || name == "Bastion" || name == "Roadhog" || name == "Mei" || name == "Zenyatta" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="4">자가 치유</td></tr>
+						<tr>
+							<td>SelfHealing</td>
+							<td>SelfHealing-MostinGame</td>
+							<td>SelfHealing-Average</td>
+						</tr>
+						<tr>
+							<td>누적 자가 치유</td>
+							<td>게임당 최고 자가 치유</td>
+							<td>게임당 평균 자가 치유</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					
+					
+					
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="5">처치</td></tr>
+						<tr>
+							<td>Eliminations</td>
+							<td>Eliminations-MostinGame</td>
+							<td>Eliminations-MostinLife</td>
+							<td>Eliminations-Average</td>
+							<td>Eliminations-MostinLife</td>
+						</tr>
+						<tr>
+							<td>누적 처치</td>
+							<td>게임당 최고 처치</td>
+							<td>한 목숨당 최고 처치</td>
+							<td>한 게임당 평균 처치</td>
+							<td>연속 처치</td>
+						</tr>
+						<tr>
+							<td>SoloKills</td>
+							<td>SoloKills-MostinGame</td>
+							<td colspan="3">SoloKills-Average</td>
+						</tr>
+						<tr>
+							<td>누적 단독 처치</td>
+							<td>최고 단독 처치</td>
+							<td colspan="3">게임당 평균 단독 처치</td>
+						</tr>
+					</table>
+					
+					<!--  -->
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="4">딜량</td></tr>
+						<tr>
+							<td>DamageDone</td>
+							<td>DamageDone-MostinGame</td>
+							<td>DamageDone-Average</td>
+							<td>DamageDone-MostinLife</td>
+						</tr>
+						<tr>
+							<td>누적 딜량</td>
+							<td>게임당 최고 딜량</td>
+							<td>게임당 평균 딜량</td>
+							<td>한 목숨당 최고 딜량</td>
+						</tr>
+					</table>
+					
+					<!--  -->
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="5">결정타</td></tr>
+						<tr>
+							<td>FinalBlows</td>
+							<td>FinalBlows-MostinGame</td>
+							<td>FinalBlows-Average</td>
+							<td>MeleeFinalBlows</td>
+							<td>MeleeFinalBlows-MostinGame</td>
+						</tr>
+						<tr>
+							<td>누적 결정타</td>
+							<td>게임당 최고 결정타</td>
+							<td>게임당 평균 결정타</td>
+							<td>누적 근접 공격 결정타</td>
+							<td>최고 근접 공격 결정타</td>
+						</tr>
+					</table>
+					
+					<!--  -->
+					<% if name == "Widowmaker" || name == "L&#xFA;cio" || name == "Hanzo" || name == "Reaper" || 
+						name == "Genji" || name == "Tracer" || name == "Mercy" || name == "Bastion" || name == "Soldier: 76" || 
+						name == "Torbj&#xF6;rn" || name == "McCree" || name == "D.Va" || name == "Roadhog" || name == "Mei" || name == "Zenyatta" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="5">치명타</td></tr>
+						
+						<tr>
+							<td>CriticalHits</td>
+							<td>CriticalHitsperMinute</td>
+							<td>CriticalHits-MostinGame</td>
+							<td>CriticalHits-MostinLife</td>
+							<td>CriticalHitAccuracy</td>
+						</tr>
+						<tr>
+							<td>누적 치명타</td>
+							<td>치명타 (1분 평균)</td>
+							<td>게임당 최고 치명타</td>
+							<td>한 목숨당 최고 치명타</td>
+							<td>치명타 명중률</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<!--  -->
+					<% if name == "Widowmaker" || name == "L&#xFA;cio" || name == "Hanzo" || name == "Reaper" || 
+						name == "Pharah" || name == "Genji" || name == "Tracer" || name == "Mercy" || name == "Bastion" || 
+						name == "Soldier: 76" || name == "Torbj&#xF6;rn" || name == "McCree" || name == "Junkrat" || name == "D.Va" || 
+						name == "Roadhog" || name == "Zarya" || name == "Mei" || name == "Zenyatta" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="4">명중률</td></tr>
+						<tr>
+							<td>ShotsFired</td>
+							<td>ShotsHit</td>
+							<td>WeaponAccuracy</td>
+							<td>WeaponAccuracy-BestinGame</td>
+						</tr>
+						<tr>
+							<td>발사</td>
+							<td>명중</td>
+							<td>평균 명중률</td>
+							<td>게임당 최고 명중률</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<% if name == "L&#xFA;cio" || name == "Mercy" || name == "Zenyatta" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">공격 어시스트</td></tr>
+						<tr>
+							<td>OffensiveAssists</td>
+							<td>OffensiveAssists-MostinGame</td>
+							<td>OffensiveAssists-Average</td>
+						</tr>
+						<tr>
+							<td>누적 공격 도움</td>
+							<td>게임당 최고 공격 도움</td>
+							<td>게임당 평균 공격 도움</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<% if name == "L&#xFA;cio" || name == "Mercy" || name == "Zenyatta" %>
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="3">방어 어시스트</td></tr>
+						<tr>
+							<td>DefensiveAssists</td>
+							<td>DefensiveAssists-MostinGame</td>
+							<td>DefensiveAssists-Average</td>
+						</tr>
+						<tr>
+							<td>누적 방어 도움</td>
+							<td>게임당 최고 방어 도움</td>
+							<td>게임당 평균 방어 도움</td>
+						</tr>
+					</table>
+					<% end %>
+					
+					<!--  -->
+					<table class="detail_table" border="1" style="width: 100%; float: right; margin-top: 20px">
+						<tr><td colspan="2">구조물 어시스트</td></tr>
+						<tr>
+							<td>TeleporterPadsDestroyed</td>
+							<td>TurretsDestroyed</td>
+						</tr>
+						<tr>
+							<td>순간이동기 파괴</td>
+							<td>포탑 파괴</td>
+						</tr>
+					</table>
+<% end %>
+
+
+
+<style>
+	.detail_table {
+		display: none;
+	} 
+</style>

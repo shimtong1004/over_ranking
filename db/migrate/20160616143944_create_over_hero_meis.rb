@@ -2,6 +2,7 @@ class CreateOverHeroMeis < ActiveRecord::Migration
   def change
     create_table :over_hero_meis do |t|
       t.integer :over_tag_id
+      t.string  :name
       t.string  :EnemiesFrozen
       t.string  :EnemiesFrozen_MostinGame
       t.string  :BlizzardKills_MostinGame

@@ -2,6 +2,7 @@ class CreateOverHeroZenyatta < ActiveRecord::Migration
   def change
     create_table :over_hero_zenyatta do |t|
       t.integer :over_tag_id
+      t.string  :name
       t.string  :TranscendenceHealing_Best
       # t.string  :ShotsFired
       # t.string  :ShotsHit

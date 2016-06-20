@@ -9,5 +9,6 @@ class CreateOverHeros < ActiveRecord::Migration
       t.string  :percentage
       t.timestamps null: false
     end
+    add_index :over_heros, [:over_tag_id, :name]
   end
 end

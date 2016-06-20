@@ -2,6 +2,7 @@ class CreateOverHeroGenjis < ActiveRecord::Migration
   def change
     create_table :over_hero_genjis do |t|
       t.integer :over_tag_id
+      t.string  :name
       t.string  :DragonbladeKills
       t.string  :DragonbladeKills_MostinGame
       t.string  :DamageReflected

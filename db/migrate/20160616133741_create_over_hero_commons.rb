@@ -1,6 +1,7 @@
 class CreateOverHeroCommons < ActiveRecord::Migration
   def change
     create_table :over_hero_commons do |t|
+      t.integer :over_hero_id
       t.integer :over_hero_common_table_id
       t.string  :over_hero_common_table_type
       t.string  :Cards
@@ -77,6 +78,7 @@ class CreateOverHeroCommons < ActiveRecord::Migration
       t.string  :ReconAssists_Average, :limit => 10
       t.timestamps null: false
     end
+    add_index :over_hero_commons, :over_hero_id
     add_index :over_hero_commons, [:over_hero_common_table_id, :over_hero_common_table_type], :name => 'hero_common_index'
   end
 end

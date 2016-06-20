@@ -2,6 +2,7 @@ class CreateOverHeroPharahs < ActiveRecord::Migration
   def change
     create_table :over_hero_pharahs do |t|
       t.integer :over_tag_id
+      t.string  :name
       t.string  :RocketDirectHits
       t.string  :BarrageKills
       t.string  :RocketDirectHits_MostinGame
