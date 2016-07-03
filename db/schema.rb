@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160618085626) do
+ActiveRecord::Schema.define(version: 20160703085351) do
 
   create_table "authorizations", force: :cascade do |t|
     t.string   "provider",   limit: 255
@@ -96,6 +96,17 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   add_index "over_data_histories", ["over_tag_id"], name: "index_over_data_histories_on_over_tag_id", using: :btree
 
+  create_table "over_hero_avatars", force: :cascade do |t|
+    t.string   "hero_name",  limit: 255
+    t.string   "hero_type",  limit: 255
+    t.string   "avatar",     limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "over_hero_avatars", ["hero_name"], name: "index_over_hero_avatars_on_hero_name", using: :btree
+  add_index "over_hero_avatars", ["hero_type"], name: "index_over_hero_avatars_on_hero_type", using: :btree
+
   create_table "over_hero_bastions", force: :cascade do |t|
     t.integer  "over_tag_id",            limit: 4
     t.string   "name",                   limit: 255
@@ -113,12 +124,6 @@ ActiveRecord::Schema.define(version: 20160618085626) do
   end
 
   add_index "over_hero_bastions", ["over_tag_id"], name: "index_over_hero_bastions_on_over_tag_id", using: :btree
-
-  create_table "over_hero_columns", force: :cascade do |t|
-    t.string   "col",        limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
 
   create_table "over_hero_commons", force: :cascade do |t|
     t.integer  "over_hero_id",                limit: 4
@@ -275,6 +280,26 @@ ActiveRecord::Schema.define(version: 20160618085626) do
   end
 
   add_index "over_hero_lucios", ["over_tag_id"], name: "index_over_hero_lucios_on_over_tag_id", using: :btree
+
+  create_table "over_hero_masters", force: :cascade do |t|
+    t.integer  "over_user_type_id", limit: 4
+    t.integer  "play_type",         limit: 4
+    t.string   "hero_name",         limit: 255
+    t.string   "keyword",           limit: 255
+    t.string   "value",             limit: 255
+    t.string   "view_group",        limit: 255
+    t.string   "view_group_detail", limit: 255
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "over_hero_masters", ["over_user_type_id", "play_type"], name: "index_over_hero_masters_on_over_user_type_id_and_play_type", using: :btree
+  add_index "over_hero_masters", ["over_user_type_id"], name: "index_over_hero_masters_on_over_user_type_id", using: :btree
+  add_index "over_hero_masters", ["play_type", "over_user_type_id", "hero_name", "keyword"], name: "over_hero_id_name_keyword", using: :btree
+  add_index "over_hero_masters", ["play_type", "over_user_type_id", "hero_name", "view_group", "view_group_detail"], name: "over_hero_id_name_grop_detail", using: :btree
+  add_index "over_hero_masters", ["play_type", "over_user_type_id", "hero_name", "view_group"], name: "over_hero_id_name_grop", using: :btree
+  add_index "over_hero_masters", ["play_type", "over_user_type_id", "hero_name"], name: "over_hero_id_name", using: :btree
+  add_index "over_hero_masters", ["play_type", "over_user_type_id", "keyword"], name: "over_hero_id_keyword", using: :btree
 
   create_table "over_hero_mc_crees", force: :cascade do |t|
     t.integer  "over_tag_id",                  limit: 4
@@ -571,8 +596,19 @@ ActiveRecord::Schema.define(version: 20160618085626) do
     t.datetime "updated_at",                   null: false
   end
 
+  create_table "over_tag_tmps", force: :cascade do |t|
+    t.string   "tag",        limit: 255
+    t.string   "tag_head",   limit: 255
+    t.string   "tag_tail",   limit: 255
+    t.string   "region",     limit: 255
+    t.string   "platform",   limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
   create_table "over_tags", force: :cascade do |t|
     t.string   "tag",            limit: 255
+    t.string   "tag_name",       limit: 255
     t.string   "site_url",       limit: 255
     t.boolean  "is_create_data",             default: false
     t.datetime "created_at",                                 null: false
@@ -581,6 +617,17 @@ ActiveRecord::Schema.define(version: 20160618085626) do
 
   add_index "over_tags", ["is_create_data"], name: "index_over_tags_on_is_create_data", using: :btree
   add_index "over_tags", ["tag"], name: "index_over_tags_on_tag", using: :btree
+  add_index "over_tags", ["tag_name"], name: "index_over_tags_on_tag_name", using: :btree
+
+  create_table "over_user_types", force: :cascade do |t|
+    t.integer  "over_tag_id", limit: 4
+    t.string   "user_type",   limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "over_user_types", ["over_tag_id", "user_type"], name: "index_over_user_types_on_over_tag_id_and_user_type", using: :btree
+  add_index "over_user_types", ["over_tag_id"], name: "index_over_user_types_on_over_tag_id", using: :btree
 
   create_table "update_logs", force: :cascade do |t|
     t.integer  "over_tag_id", limit: 4

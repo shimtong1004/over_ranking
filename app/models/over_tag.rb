@@ -30,10 +30,9 @@ class OverTag < ActiveRecord::Base
   has_one :over_hero_zarya
   has_one :over_hero_zenyattum
   
-  
   has_many :over_heros
+  has_many :over_user_types
   has_many :update_logs
-  
   
   after_create :create_log_data
   after_update :update_log_data
@@ -46,81 +45,293 @@ class OverTag < ActiveRecord::Base
     UpdateLog.create(over_tag_id: self.id, table_name: "over_tag", log_type: "update")
   end
   
-  def self.set_data(tag)
-    over_tag = OverTag.find_by_tag(tag)
-    status = 200
-    if over_tag
-      over_all_hero = over_tag.over_all_hero
-      unless over_all_hero
-        get_allHeroes(tag, over_tag.id)
-      end
-      
-      over_profile = over_tag.over_profile
-      unless over_profile
-        get_profile(tag, over_tag.id)
-      end
-      
-      hero_names = ["Roadhog", "Reaper", "Soldier: 76", "Reinhardt", "Tracer", "Genji", "L&#xFA;cio", "McCree", "Pharah", "Junkrat", "Widowmaker", "Mei", "Zarya", "Zenyatta", "Hanzo", "Mercy", "Torbj&#xF6;rn", "Symmetra", "Winston", "Bastion", "D.Va"]
-      
-      over_heros = over_tag.over_heros.where(name: hero_names)
-      get_heroes(tag, over_tag.id) if over_heros.size != 21
-      
-      
-    else
-      over_tag = OverTag.create(tag: tag)
+  def self.set_data_from_bnet(tag, over_tag_id)
+    tag.gsub!(/#/, '-')
     
-      get_profile(tag, over_tag.id)
-      get_allHeroes(tag, over_tag.id)
-      get_heroes(tag, over_tag.id)
+    urls = [
+          "https://playoverwatch.com/ko-kr/career/pc/kr/#{tag}",
+          "https://playoverwatch.com/ko-kr/career/pc/eu/#{tag}",
+          "https://playoverwatch.com/ko-kr/career/pc/us/#{tag}"
+          ]
+    
+    region = ""
+    html_ary = []
+    user_type_id_ary = []
+    max_thread = 3 # 최대 스레드수
+    ary_threads = []
+    locker = Mutex::new
+    # max_thread로 설정한수의 스레드로 시작
+    max_thread.times do |i|
+      ary_threads << Thread.start { # 스레드 작성
+        loop do
+          url = locker.synchronize { urls.pop } # url을 뽑아냄. 병합처리를 위해 synchronize사용.
+          break unless url # url이 더이상 루프 없으면 종료
+          uri = Addressable::URI.parse(url)
+          url = uri.normalize.to_s
+          begin
+            html = open(url).read
+            html_ary.push html
+            if html.include?("pc/kr")
+              user_type = "PC - KR"
+            elsif html.include?("pc/us")
+              user_type = "PC - US"
+            elsif html.include?("pc/eu")
+              user_type = "PC - EU"
+            end
+            user_type = OverUserType.create(over_tag_id: over_tag_id, user_type: user_type)
+            user_type_id_ary.push user_type.id
+          rescue
+          end
+        end
+      }
     end
-    # status = get_platforms(tag, over_tag.id) if status == 200
+    ary_threads.each { |th| th.join }
     
-    return over_tag, status
+    ActiveRecord::Base.transaction do
+      user_type_id_ary.each_with_index do |user_type_id, i|
+        html = html_ary[i]
+        # OverHeroMaster.create(over_user_type_id: user_type_id, keyword: "user_type", value: user_type)
+        
+        doc = Nokogiri::HTML(html)
+        play_types = []
+        play_types.push id: 1, value:"quick-play"
+        play_types.push id: 2, value:"competitive-play"
+        
+        
+        
+        play_types.each do |play_type|
+          play_type_id = play_type[:id]
+          play_type_str = play_type[:value]
+          
+          #level
+          level = doc.css(".u-vertical-center").text
+          keyword = "level"
+          OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, keyword: keyword, value: level)
+          
+          #quick-play 일반
+          play_type_doc = doc.css("##{play_type_str}")
+          # 주요통계
+          
+          view_group = play_type_doc.css(".content-box.page-wrapper.highlights-section .h3.header").text
+          for i in 0...8
+            value = play_type_doc.css(".content-box.page-wrapper.highlights-section .card-heading")[i].text
+            keyword = play_type_doc.css(".content-box.page-wrapper.highlights-section .card-copy")[i].text
+            OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, keyword: keyword, value: value, view_group: view_group)
+          end
+          
+          
+          
+          
+          #상위영웅 start
+          view_group = play_type_doc.css(".content-box.page-wrapper.hero-comparison-section .h3.header").text
+          
+          heroes_sort_condition = play_type_doc.css(".content-box.page-wrapper.hero-comparison-section .js-career-select option")
+          hero_sort_datas = play_type_doc.css(".progress-category.toggle-display")
+          
+          heroes_sort_condition.each_with_index do |sort_condition, hero_sort_index|
+            keyword = sort_condition.text
+            hero_sort_data = hero_sort_datas[hero_sort_index]
+            for i in 0...21
+              hero_name = hero_sort_data.css(".bar-text .title")[i].text
+              value = hero_sort_data.css(".bar-text .description")[i].text
+              OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, hero_name: hero_name, keyword: sort_condition.text, value: value, view_group: view_group)
+            end
+          end
+          #상위영웅 end
+          
+          #통계 start
+          view_group = play_type_doc.css(".content-box.page-wrapper.career-stats-section .h3.header").text
+          stats = play_type_doc.css(".content-box.page-wrapper.career-stats-section .js-stats.toggle-display")
+          stats_names =  play_type_doc.css(".content-box.page-wrapper.career-stats-section .js-career-select option")
+          
+          
+          stats.each_with_index do |data, i|
+            hero_name = stats_names[i].text
+            tables = data.css(".column.xs-12.md-6.xl-4.margin-xs.margin-no-sides table")
+            tables.each do |table|
+              view_group_detail = table.css("thead tr").text
+              trs = table.css("tbody tr")
+                trs.each do |tr|
+                keyword = tr.css("td")[0].text
+                value = tr.css("td")[1].text
+                OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, hero_name: hero_name, keyword: keyword, value: value, view_group: view_group, view_group_detail: view_group_detail)
+              end
+            end
+          end
+          #통계 end
+        end        
+      end
+    end
+    UpdateLog.create(over_tag_id: over_tag_id, table_name: "over_hero_master", log_type: "create")
+    
+    return region
+    
   end
   
-  def self.set_detail_data(over_tag)
-    # status = get_achievement(tag, over_tag.id)
-    get_hero(over_tag.tag, over_tag.id)# if status == 200
+  # def self.set_data_from_bnet(tag, over_tag_id)
+    # tag.gsub!(/#/, '-')
+    # url = "https://playoverwatch.com/ko-kr/career/pc/kr/#{tag}"
+    # uri = Addressable::URI.parse(url)
+    # url = uri.normalize.to_s
+#     
+    # html = open(url).read
+    # doc = Nokogiri::HTML(html)
+#     
+    # # 주요통계
+    # ActiveRecord::Base.transaction do
+      # view_group = doc.css("#highlights-section h1").text
+      # for i in 0...8
+        # value = doc.css(".card-heading")[i].text
+        # keyword = doc.css(".card-copy")[i].text
+        # OverHeroMaster.create(over_tag_id: over_tag_id, keyword: keyword, value: value, view_group: view_group)
+      # end
+#       
+      # #상위영웅 start
+      # view_group = doc.css("#top-heroes-section h1").text
+#       
+      # heroes_sort_condition = doc.css("#top-heroes-section .js-career-select option")
+      # hero_sort_datas = doc.css(".progress-category.toggle-display")
+#       
+      # heroes_sort_condition.each_with_index do |sort_condition, hero_sort_index|
+        # keyword = sort_condition.text
+        # hero_sort_data = hero_sort_datas[hero_sort_index]
+        # for i in 0...21
+          # hero_name = hero_sort_data.css(".bar-text .title")[i].text
+          # value = hero_sort_data.css(".bar-text .description")[i].text
+          # OverHeroMaster.create(over_tag_id: over_tag_id, hero_name: hero_name, keyword: sort_condition.text, value: value, view_group: view_group)
+        # end
+      # end
+      # #상위영웅 end    
+#       
+      # #통계 start
+      # stats = doc.css(".js-stats.toggle-display")
+      # stats_names =  doc.css(".js-career-select")[1].css("option")
+      # view_group = doc.css("#stats-section h1").text
+#       
+#       
+      # stats.each_with_index do |data, i|
+        # hero_name = stats_names[i].text
+        # tables = data.css(".column.xs-12.md-6.xl-4.margin-xs.margin-no-sides table")
+        # tables.each do |table|
+          # view_group_detail = table.css("thead tr").text
+          # trs = table.css("tbody tr")
+            # trs.each do |tr|
+            # keyword = tr.css("td")[0].text
+            # value = tr.css("td")[1].text
+            # OverHeroMaster.create(over_tag_id: over_tag_id, hero_name: hero_name, keyword: keyword, value: value, view_group: view_group, view_group_detail: view_group_detail)
+          # end
+        # end
+      # end
+    # end
+    # UpdateLog.create(over_tag_id: over_tag_id, table_name: "over_hero_master", log_type: "create")
+  # end
+  
+  def self.set_data(tag)
+    over_tag = OverTag.find_by_tag(tag)
+    unless over_tag
+      tag_ary = tag.split("#")
+      over_tag = OverTag.create(tag: tag, tag_name: tag_ary[0])
+    end
     
+    hero_master_data = over_tag.update_logs.where(table_name: "over_hero_master", log_type: "create")
+    
+    OverTag.set_data_from_bnet(tag, over_tag.id) if hero_master_data.blank?
+    
+    if over_tag.over_user_types[0].user_type == "PC - KR"
+      region = "pc/kr"
+    elsif over_tag.over_user_types[0].user_type == "PC - US"
+      region = "pc/us"
+    elsif over_tag.over_user_types[0].user_type == "PC - EU"
+      region = "pc/eu"
+    end
+    
+    over_profile = over_tag.over_profile
+    unless over_profile
+      self.get_profile(tag, over_tag.id, region)
+    end
+    
+    return over_tag.id
+  end
+  
+  # def self.set_data(tag)
+    # over_tag = OverTag.find_by_tag(tag)
+    # if over_tag
+      # over_all_hero = over_tag.over_all_hero
+      # over_profile = over_tag.over_profile
+      # over_heros = over_tag.over_heros.where(name: HEROES)
+#       
+      # self.get_main_data(over_all_hero, over_profile, over_heros, tag, over_tag.id)
+#       
+      # # unless over_all_hero
+        # # get_allHeroes(tag, over_tag.id)
+      # # end
+#       
+#       
+      # # unless over_profile
+        # # get_profile(tag, over_tag.id)
+      # # end
+#       
+#       
+      # # get_heroes(tag, over_tag.id) if over_heros.size != 21
+#       
+    # else
+      # over_tag = OverTag.create(tag: tag)
+      # self.get_main_data(over_all_hero, over_profile, over_heros, tag, over_tag.id)
+#     
+      # # get_profile(tag, over_tag.id)
+      # # get_allHeroes(tag, over_tag.id)
+      # # get_heroes(tag, over_tag.id)
+    # end
+    # # get_platforms(tag, over_tag.id)
+#     
+    # return over_tag.id
+  # end
+  
+  def self.set_detail_data(over_tag)
+    # get_achievement(tag, over_tag.id)
+    if over_tag.update_logs.where(table_name: "over_hero_common", log_type: "create").size == 21
+    else
+      get_hero(over_tag.tag, over_tag.id)
+    end
   end
   
   def self.set_all_data(tag)
     over_tag = OverTag.find_by_tag(tag)    
     over_tag = OverTag.create(tag: tag) unless over_tag
     
-    status = get_achievement(tag, over_tag.id)
+    get_achievement(tag, over_tag.id)
     
     over_profile = OverProfile.where(over_tag_id: over_tag.id)
-    status = get_profile(tag, over_tag.id) if status == 200 && over_profile.blank?
+    get_profile(tag, over_tag.id) if over_profile.blank?
     
     over_hero = OverHero.where(over_tag_id: over_tag.id)
-    status = get_heroes(tag, over_tag.id) if status == 200 && over_hero.blank?
+    get_heroes(tag, over_tag.id) if over_hero.blank?
     
-    status = get_hero(tag, over_tag.id) if status == 200
+    get_hero(tag, over_tag.id)
     
     over_all_hero = OverAllHero.where(over_tag_id: over_tag.id)
-    status = get_allHeroes(tag, over_tag.id) if status == 200 && over_all_hero.blank?
-    # status = get_platforms(tag, over_tag.id) if status == 200
+    get_allHeroes(tag, over_tag.id) if over_all_hero.blank?
+    # get_platforms(tag, over_tag.id)
     
-    return over_tag, status
+    return over_tag
   end
   
   def self.set_sub_data(over_tag)
     p "-----------------#{over_tag.id}-----------------------"
     tag = over_tag.tag
     
-    status = get_achievement(tag, over_tag.id)
+    get_achievement(tag, over_tag.id)
     over_profile = OverProfile.where(over_tag_id: over_tag.id)
-    status = get_profile(tag, over_tag.id) if over_profile.blank?
+    get_profile(tag, over_tag.id) if over_profile.blank?
     
     
-    status = get_heroes(tag, over_tag.id)
+    get_heroes(tag, over_tag.id)
     
-    status = get_hero(tag, over_tag.id)
+    get_hero(tag, over_tag.id)
     
     over_all_hero = OverAllHero.where(over_tag_id: over_tag.id)
-    status = get_allHeroes(tag, over_tag.id) if over_all_hero.blank?
-    # status = get_platforms(tag, over_tag.id) if status == 200
+    get_allHeroes(tag, over_tag.id) if over_all_hero.blank?
+    # get_platforms(tag, over_tag.id)
   end
   
   def self.get_achievement(tag, tag_id)
@@ -154,38 +365,32 @@ class OverTag < ActiveRecord::Base
     end 
   end
   
-  def self.get_profile(tag, tag_id)
-    begin
-      timeout(TIME_OUT) {
-        #tag = "아아아퍼때리지마#3725"
-        tag.gsub!(/#/, '-')
-        url = "https://api.lootbox.eu/pc/kr/#{tag}/profile"
-        uri = Addressable::URI.parse(url)
-        url = uri.normalize.to_s
-        # url.gsub!(/%/, '%25')
+  def self.get_profile(tag, tag_id, region)
+      tag.gsub!(/#/, '-')
+      url = "https://api.lootbox.eu/#{region.downcase}/#{tag}/profile"
+      uri = Addressable::URI.parse(url)
+      url = uri.normalize.to_s
+      # url.gsub!(/%/, '%25')
         
-        data = JSON.load(open(url))
-        if data["statusCode"] != 404
-          data = data["data"]
-          user_name = data["username"]
-          level = data["level"]
-          playtime = data["playtime"]
-          avatar = data["avatar"]
+      data = JSON.load(open(url))
+      if data["statusCode"] != 404
+        data = data["data"]
+        user_name = data["username"]
+        level = data["level"]
+        playtime = data["playtime"]
+        avatar = data["avatar"]
           
-          d = data["games"]
-          win_percentage = d["win_percentage"]
-          wins = d["wins"]
-          lost = d["lost"]
-          played = d["played"]
+        d = data["games"]
+        win_percentage = d["win_percentage"]
+        wins = d["wins"]
+        lost = d["lost"]
+        played = d["played"]
           
-          OverProfile.create(over_tag_id: tag_id, username: user_name, level: level, playtime: playtime, avatar: avatar, win_percentage: win_percentage, wins: wins, lost: lost, played: played)
-          return 200
-        else
-          return 404
-        end
-      }
-    rescue
-    end
+        OverProfile.create(over_tag_id: tag_id, username: user_name, level: level, playtime: playtime, avatar: avatar, win_percentage: win_percentage, wins: wins, lost: lost, played: played)
+        return 200
+      else
+        return 404
+      end
   end
   
   def self.get_platforms(tag, tag_id)
@@ -261,77 +466,203 @@ class OverTag < ActiveRecord::Base
   end
   
   def self.get_hero(tag, tag_id)
-    begin
-      timeout(300) {
-        #tag = "아아아퍼때리지마#3725"
-        tag.gsub!(/#/, '-')
+    tag.gsub!(/#/, '-')
     
-        jobs = ["Roadhog", "Reaper", "Soldier76", "Reinhardt", "Tracer", "Genji", "Lucio", "McCree", "Pharah", "Junkrat", "Widowmaker", "Mei", "Zarya", "Zenyatta", "Hanzo", "Mercy", "Torbjoern", "Symmetra", "Winston", "Bastion", "DVa"]
-        status = 200
-        jobs.each do |job|
-          next if self.is_hero_data?(tag_id, job)
-          
-          status = 404
-          
-          url = "https://api.lootbox.eu/pc/kr/#{tag}/hero/#{job}/"
+    urls = [
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Roadhog/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Reaper/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Soldier76/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Reinhardt/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Tracer/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Genji/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Lucio/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/McCree/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Pharah/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Junkrat/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Widowmaker/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Mei/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Zarya/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Zenyatta/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Hanzo/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Mercy/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Torbjoern/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Symmetra/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Winston/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/Bastion/",
+          "https://api.lootbox.eu/pc/kr/#{tag}/hero/DVa/"
+          ]
+        
+    max_thread = 21 # 최대 스레드수
+    ary_threads = []
+    datas = []
+    locker = Mutex::new
+    # max_thread로 설정한수의 스레드로 시작
+    max_thread.times do |i|
+      ary_threads << Thread.start { # 스레드 작성
+        loop do
+          url = locker.synchronize { urls.pop } # url을 뽑아냄. 병합처리를 위해 synchronize사용.
+          break unless url # url이 더이상 루프 없으면 종료
           uri = Addressable::URI.parse(url)
           url = uri.normalize.to_s
-          data = JSON.load(open(url))
-          
-          if data["statusCode"] != 404
-            if job.eql?("Roadhog")
-              obj = OverTag.create_roadhog(data, tag_id)
-            elsif job.eql?("Reaper")
-              obj = OverTag.create_reaper(data, tag_id)
-            elsif job.eql?("Soldier76")
-              obj = OverTag.create_soldier76(data, tag_id)
-            elsif job.eql?("Reinhardt")
-              obj = OverTag.create_reinhardt(data, tag_id)
-            elsif job.eql?("Tracer")
-              obj = OverTag.create_tracer(data, tag_id)
-            elsif job.eql?("Genji")
-              obj = OverTag.create_genji(data, tag_id)
-            elsif job.eql?("Lucio")
-              obj = OverTag.create_lucio(data, tag_id)
-            elsif job.eql?("McCree")
-              obj = OverTag.create_mccree(data, tag_id)
-            elsif job.eql?("Pharah")
-              obj = OverTag.create_pharah(data, tag_id)
-            elsif job.eql?("Junkrat")
-              obj = OverTag.create_junkrat(data, tag_id)
-            elsif job.eql?("Widowmaker")
-              obj = OverTag.create_widowmaker(data, tag_id)
-            elsif job.eql?("Mei")
-              obj = OverTag.create_mei(data, tag_id)
-            elsif job.eql?("Zarya")
-              obj = OverTag.create_zarya(data, tag_id)
-            elsif job.eql?("Zenyatta")
-              obj = OverTag.create_zenyatta(data, tag_id)
-            elsif job.eql?("Hanzo")
-              obj = OverTag.create_hanzo(data, tag_id)
-            elsif job.eql?("Mercy")
-              obj = OverTag.create_mercy(data, tag_id)
-            elsif job.eql?("Torbjoern")
-              obj = OverTag.create_torbjoern(data, tag_id)
-            elsif job.eql?("Symmetra")
-              obj = OverTag.create_symmetra(data, tag_id)
-            elsif job.eql?("Winston")
-              obj = OverTag.create_winston(data, tag_id)
-            elsif job.eql?("Bastion")
-              obj = OverTag.create_bastion(data, tag_id)
-            elsif job.eql?("DVa")
-              obj = OverTag.create_dva(data, tag_id)
-            end
-
-            OverTag.common_create(obj, data) if obj
-            status = 200
-          else
-            status = 404
+          begin
+            tmp_hash = {}
+            data = JSON.load(open(url))
+            key =  url.split("/")[-1]
+            tmp_hash["#{key}"] = data
+            datas.push tmp_hash
+          rescue
           end
         end
-        return status
       }
-    rescue
+    end
+        
+    ary_threads.each { |th| th.join }        
+    datas.each do |data|
+      hero_name = data.keys[0]
+      data = data.values[0]
+      if hero_name.eql?("Roadhog")
+        obj = OverTag.create_roadhog(data, tag_id)
+      elsif hero_name.eql?("Reaper")
+        obj = OverTag.create_reaper(data, tag_id)
+      elsif hero_name.eql?("Soldier76")
+        obj = OverTag.create_soldier76(data, tag_id)
+      elsif hero_name.eql?("Reinhardt")
+        obj = OverTag.create_reinhardt(data, tag_id)
+      elsif hero_name.eql?("Tracer")
+        obj = OverTag.create_tracer(data, tag_id)
+      elsif hero_name.eql?("Genji")
+        obj = OverTag.create_genji(data, tag_id)
+      elsif hero_name.eql?("Lucio")
+        obj = OverTag.create_lucio(data, tag_id)
+      elsif hero_name.eql?("McCree")
+        obj = OverTag.create_mccree(data, tag_id)
+      elsif hero_name.eql?("Pharah")
+        obj = OverTag.create_pharah(data, tag_id)
+      elsif hero_name.eql?("Junkrat")
+        obj = OverTag.create_junkrat(data, tag_id)
+      elsif hero_name.eql?("Widowmaker")
+        obj = OverTag.create_widowmaker(data, tag_id)
+      elsif hero_name.eql?("Mei")
+        obj = OverTag.create_mei(data, tag_id)
+      elsif hero_name.eql?("Zarya")
+        obj = OverTag.create_zarya(data, tag_id)
+      elsif hero_name.eql?("Zenyatta")
+        obj = OverTag.create_zenyatta(data, tag_id)
+      elsif hero_name.eql?("Hanzo")
+        obj = OverTag.create_hanzo(data, tag_id)
+      elsif hero_name.eql?("Mercy")
+        obj = OverTag.create_mercy(data, tag_id)
+      elsif hero_name.eql?("Torbjoern")
+        obj = OverTag.create_torbjoern(data, tag_id)
+      elsif hero_name.eql?("Symmetra")
+        obj = OverTag.create_symmetra(data, tag_id)
+      elsif hero_name.eql?("Winston")
+        obj = OverTag.create_winston(data, tag_id)
+      elsif hero_name.eql?("Bastion")
+        obj = OverTag.create_bastion(data, tag_id)
+      elsif hero_name.eql?("DVa")
+        obj = OverTag.create_dva(data, tag_id)
+      end
+
+      OverTag.common_create(obj, data) if obj
+    end
+  end
+  
+  
+  def self.get_main_data(over_all_hero, over_profile, over_heros, tag, tag_id)
+    tag.gsub!(/#/, '-')
+    
+    urls = []
+    max_thread = 0
+    unless over_all_hero
+      urls.push "https://api.lootbox.eu/pc/kr/#{tag}/allHeroes/"
+      max_thread += 1
+    end
+     
+    unless over_profile
+      urls.push "https://api.lootbox.eu/pc/kr/#{tag}/profile"
+      max_thread += 1
+    end
+    
+    if over_heros.blank?
+      urls.push "https://api.lootbox.eu/pc/kr/#{tag}/heroes"
+      max_thread += 1
+    end
+        
+    if max_thread != 0
+      ary_threads = []
+      datas = []
+      locker = Mutex::new
+      # max_thread로 설정한수의 스레드로 시작
+      max_thread.times do |i|
+        ary_threads << Thread.start { # 스레드 작성
+          loop do
+            url = locker.synchronize { urls.pop } # url을 뽑아냄. 병합처리를 위해 synchronize사용.
+            break unless url # url이 더이상 루프 없으면 종료
+            uri = Addressable::URI.parse(url)
+            url = uri.normalize.to_s
+            begin
+              tmp_hash = {}
+              data = JSON.load(open(url))
+              key =  url.split("/")[-1]
+              tmp_hash["#{key}"] = data
+              datas.push tmp_hash
+            rescue
+            end
+          end
+        }
+      end 
+      ary_threads.each { |th| th.join }
+      datas.each do |data|
+        key = data.keys[0]
+        data = data.values[0]
+        if key.eql?("allHeroes")
+          if data["statusCode"] != 404
+            OverTag.create_all_hero(data, tag_id)
+          end
+        elsif key.eql?("profile")
+          if data["statusCode"] != 404
+            data = data["data"]
+            user_name = data["username"]
+            level = data["level"]
+            playtime = data["playtime"]
+            avatar = data["avatar"]
+            
+            d = data["games"]
+            win_percentage = d["win_percentage"]
+            wins = d["wins"]
+            lost = d["lost"]
+            played = d["played"]
+            
+            OverProfile.create(over_tag_id: tag_id, username: user_name, level: level, playtime: playtime, avatar: avatar, win_percentage: win_percentage, wins: wins, lost: lost, played: played)
+          end
+        elsif key.eql?("heroes")
+          if data.class.eql?(Array)
+            data.each do |d|
+              name = d["name"]
+              over_hero = OverHero.where(over_tag_id: tag_id, name: name)
+              if over_hero.blank?
+                playtime = d["playtime"]
+              
+                if playtime.end_with?("1 hour")
+                  playtime_min = 60
+                elsif playtime.end_with?("hours")
+                  hour = playtime.split(" ")[0].to_i
+                  playtime_min = hour * 60
+                elsif playtime.end_with?("minutes") 
+                  min = playtime.split(" ")[0].to_i
+                  playtime_min = min
+                end
+                
+                image = d["image"]
+                percentage = d["percentage"]
+                
+                OverHero.create(over_tag_id: tag_id, name: name, playtime: playtime, playtime_min: playtime_min, image: image, percentage: percentage)
+              end
+            end
+          end
+        end
+      end
     end
   end
   

@@ -1,396 +1,346 @@
-<div class="container-fluid">
-         <div id="top_bar" class="row">
-           	<div class="container">
-				<nav class="navbar navbar-default">
 
-				 <div class="navbar-header">
-			      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-			        
-				     <a class="navbar-brand" href="#"><img src="./images/logo.png"></a>
-			    </div>
-
-			    <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height:1px;">
-			      <ul class="nav navbar-nav">
-			        <li class="active"><a href="#">홈</a></li>
-			        <li><a href="#">1번 메뉴</a></li>
-			        <li><a href="#">2번 메뉴</a></li> 
-			        <li><a href="#">3번 메뉴</a></li> 
-			      </ul>
-				  <div class="nav navbar-nav navbar-right">
-				    <form action="/over_tags/new" accept-charset="UTF-8" method="get" class="navbar-form navbar-left" role="search" >
-				    	<div class="form-group">
-				    		<input type="text" name="tag" id="tag" class="form-control" placeholder="배틀태그#1234">
-					 	</div>
-					 	<input type="submit" name="commit" value="확인" class="btn btn-default">
-					</form>
-				  </div>
-			    </div>
-                
-                  <div class="nav navbar-nav navbar-right mobile-battletag">
-		        	<form action="/over_tags/new" accept-charset="UTF-8" method="get"  class="navbar-form navbar-left" role="search">
-					  <div class="form-group">
-					  	<input type="text" name="tag" id="tag" class="form-control" placeholder="배틀태그#1234">
-					  	<input type="submit" name="commit" value="확인" class="btn btn-default custom_input">
-                     </div>
-					</form>
-				      </div>
-
-			  </nav>
-
-    	</div>
-           
-  </div>   
-		
-        
-        
-        
-         <div id="middle_contents_main" class="row">
-         	<div class="container">
-         		<div class="main_content">
-                <img src="./images/owrank_main.jpg">
-                </div>
-                
-                <div class="col-xs-12 main_content">
-                	<form action="/over_tags/new" accept-charset="UTF-8" method="get" class="navbar-form" role="search">
-					  <div class="form-group">
-					    <input name="tag" id="tag" type="text" class="form-control" placeholder="배틀태그#1234" value="<%= session[:btag] %>">
-					    <%= session[:btag] = nil %>
-					 </div>
-					 <input type="submit" name="commit" value="확인" class="btn btn-default">
-                     <div class="battle_tag_find" data-link="/auth/bnet" style="cursor:pointer;>
-                     	<img src="./images/battlenet_logo.png"> 배틀태그 확인하기
-                     </div>
-					</form>
-                 </div>
-                <div class="col-sm-12">
-                	<div class="main_chart_title">
-	                    <h3>역할별 승률 순위</h3>
+  	<div id="middle_contents_main" class="row">
+  		<div class="container">
+  			<div class="main_content">
+  				<img src="/images/owrank_main.jpg">
+            </div>
+            
+            <div class="col-xs-12 main_content">
+            	<form action="/over_tags/new" accept-charset="UTF-8" method="get" class="navbar-form" role="search">
+            		<div class="form-group">
+            			<input name="tag" id="tag" type="text" class="form-control" placeholder="배틀태그#1234" value="<%= session[:btag] %>">
+            			<%= session[:btag] = nil %>
+					</div>
+					<input type="submit" name="commit" value="확인" class="btn btn-default">
+					<div class="battle_tag_find" data-link="/auth/bnet" style="cursor:pointer;>
+						<img src="/images/battlenet_logo.png"> 배틀태그 확인하기
                     </div>
-           
-                	<ul class="col-sm-12 list_chart">                    	
-                       <li class="col-sm-6">
-                        <div class="col-xs-12 rank_chart_title">
-                        	<img src="./images/SupportIcon.png" class="title_left"><h4 class="title_left">지원 영웅</h4>
+				</form>
+			</div>
+            <div class="col-sm-12">
+            	<div class="main_chart_title">
+            		<h3>역할별 승률 순위</h3>
+            	</div>
+            	<ul class="col-sm-12 list_chart">
+            		<li class="col-sm-6">
+            			<div class="col-xs-12 rank_chart_title">
+            				<img src="/images/SupportIcon.png" class="title_left"><h4 class="title_left">지원 영웅</h4>
                             <div class="more">더보기</div>
                         </div>
 		            	<table class="table rank_chart">
-                        <colgroup>
-								<col width="4%">
+	                        <colgroup>
+	                        	<col width="4%">
 								<col width="160">
 								<col width="*">
-						</colgroup>
-                        <thead>
-                        <tr>
-                        	<th>#</th>
-                            <th>영웅</th>
-                            <th>승률</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                        	<td>1</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000042.png" class="chart_hero_sm"> 맥크리
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-01" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60%</div>
-	        	  		       </div>
- </td>
+							</colgroup>
+                        	<thead>
+		                        <tr>
+		                        	<th>#</th>
+		                            <th>영웅</th>
+		                            <th>승률</th>
+		                        </tr>
+	                        </thead>
+                        	<tbody>
+                        		<tr>
+	                        		<td>1</td>
+			                        <td>
+				                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000042.png" class="chart_hero_sm"> 맥크리
+		                        	</td>
+                        			<td>
+		                        		<div class="progress">
+		    	    	        		  <div class="progress-bar progress-bar-striped color-01" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60%</div>
+			        	  		       	</div>
+	        	  		    		</td>
+                        		</tr>
+                        		<tr>
+                        			<td>2</td>
+	                        		<td>
+	                        			<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E000000000006E.png" class="chart_hero_sm"> 솔져: 76
+                        			</td>
+                        			<td>
+                        				<div class="progress">
+                        					<div class="progress-bar progress-bar-striped color-02" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width:49%">49%</div>
+	        	  		       			</div>
+ 									</td>
                          
-                        </tr>
-                        <tr>
-                        	<td>2</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E000000000006E.png" class="chart_hero_sm"> 솔져: 76
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-02" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width:49%">49%</div>
-	        	  		       </div>
- </td>
+                        		</tr>
+                        		<tr>
+                        			<td>3</td>
+	                        		<td>
+		                           		<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
+                        			</td>
+                        			<td>
+                        				<div class="progress">
+                        					<div class="progress-bar progress-bar-striped color-03" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:45%">45%</div>
+	        	  		       			</div>
+ 									</td>
                          
-                        </tr>
-                        <tr>
-                        	<td>3</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-03" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:45%">45%</div>
-	        	  		       </div>
- </td>
-                         
-                        </tr>
-                        <tr>
-                        	<td>4</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-04" role="progressbar" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100" style="width:42%">42%</div>
-	        	  		       </div>
- </td>
-                         
-                        </tr>
-                        <tr>
-                        	<td>5</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-05" role="progressbar" aria-valuenow="39" aria-valuemin="0" aria-valuemax="100" style="width:39%">39%</div>
-	        	  		       </div>
- </td>
-                         
-                        </tr>
-                        </tbody>
+                        		</tr>
+                        		<tr>
+                        			<td>4</td>
+	                        		<td>
+		                           		<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
+                        			</td>
+	                        		<td>
+	                        			<div class="progress">
+	    	    	        		  		<div class="progress-bar progress-bar-striped color-04" role="progressbar" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100" style="width:42%">42%</div>
+		        	  		       		</div>
+	 								</td>
+ 								</tr>
+                        		<tr>
+                        			<td>5</td>
+	                        		<td>
+		                           		<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
+                        			</td>
+                        			<td>
+                        				<div class="progress">
+    	    	        		  			<div class="progress-bar progress-bar-striped color-05" role="progressbar" aria-valuenow="39" aria-valuemin="0" aria-valuemax="100" style="width:39%">39%</div>
+	        	  		       			</div>
+ 									</td>
+ 								</tr>
+                        	</tbody>
                         </table>
-                        </li>
-                     
-                    <li class="col-sm-6">    
-                        <div class="col-xs-12 rank_chart_title">
-                        	<img src="./images/OffenseIcon.png" class="title_left"><h4 class="title_left">공격 영웅</h4>
+                    </li> 
+                    <li class="col-sm-6">
+                    	<div class="col-xs-12 rank_chart_title">
+                    		<img src="/images/OffenseIcon.png" class="title_left"><h4 class="title_left">공격 영웅</h4>
                             <div class="more">더보기</div>
                         </div>
 		            	<table class="table rank_chart">
-                        <colgroup>
-								<col width="4%">
+		            		<colgroup>
+		            			<col width="4%">
 								<col width="160">
 								<col width="*">
-						</colgroup>
-                        <thead>
-                        <tr>
-                        	<th>#</th>
-                            <th>영웅</th>
-                            <th>승률</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                        	<td>1</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000042.png" class="chart_hero_sm"> 맥크리
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-01" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60%</div>
-	        	  		       </div>
- </td>
+							</colgroup>
+                        	<thead>
+		                        <tr>
+		                        	<th>#</th>
+		                            <th>영웅</th>
+		                            <th>승률</th>
+		                        </tr>
+                        	</thead>
+                        	<tbody>
+                        		<tr>
+                        			<td>1</td>
+	                        		<td>
+		                           		<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000042.png" class="chart_hero_sm"> 맥크리
+                        			</td>
+                        			<td>
+                        				<div class="progress">
+    	    	        		  			<div class="progress-bar progress-bar-striped color-01" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60%</div>
+	        	  		       			</div>
+	        	  		       		</td>
                          
-                        </tr>
-                        <tr>
-                        	<td>2</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E000000000006E.png" class="chart_hero_sm"> 솔져: 76
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-02" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width:49%">49%</div>
-	        	  		       </div>
- </td>
+                        		</tr>
+                        		<tr>
+                        			<td>2</td>
+	                        		<td>
+		                           		<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E000000000006E.png" class="chart_hero_sm"> 솔져: 76
+                        			</td>
+                        			<td>
+                        				<div class="progress">
+    	    	        		  			<div class="progress-bar progress-bar-striped color-02" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width:49%">49%</div>
+	        	  		       			</div>
+ 									</td>
                          
-                        </tr>
-                        <tr>
-                        	<td>3</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-03" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:45%">45%</div>
-	        	  		       </div>
- </td>
+                        		</tr>
+                        		<tr>
+                        			<td>3</td>
+	                        		<td>
+		                           		<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
+                        			</td>
+                        			<td>
+                        				<div class="progress">
+    	    	        		  			<div class="progress-bar progress-bar-striped color-03" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:45%">45%</div>
+	        	  		       			</div>
+ 									</td>
+                         		</tr>
+                        		<tr>
+                        			<td>4</td>
+	                        		<td>
+		                           		<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
+                        			</td>
+                        			<td>
+                        				<div class="progress">
+    	    	        		  			<div class="progress-bar progress-bar-striped color-04" role="progressbar" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100" style="width:42%">42%</div>
+	        	  		       			</div>
+ 									</td>
+                         		</tr>
+                        		<tr>
+                        			<td>5</td>
+	                        		<td>
+		                           		<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
+                        			</td>
+                        			<td>
+                        				<div class="progress">
+    	    	        		  			<div class="progress-bar progress-bar-striped color-05" role="progressbar" aria-valuenow="39" aria-valuemin="0" aria-valuemax="100" style="width:39%">39%</div>
+	        	  		       			</div>
+ 									</td>
                          
-                        </tr>
-                        <tr>
-                        	<td>4</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-04" role="progressbar" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100" style="width:42%">42%</div>
-	        	  		       </div>
- </td>
-                         
-                        </tr>
-                        <tr>
-                        	<td>5</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-05" role="progressbar" aria-valuenow="39" aria-valuemin="0" aria-valuemax="100" style="width:39%">39%</div>
-	        	  		       </div>
- </td>
-                         
-                        </tr>
-                        </tbody>
-                        </table>
-                    </li>
-                    </ul>
-                    <ul class="col-sm-12 list_chart">
-                     <li class="col-sm-6">    
-                        <div class="col-xs-12 rank_chart_title">
-                        	<img src="./images/DefenseIcon.png" class="title_left"><h4 class="title_left">방어 영웅</h4>
-                            <div class="more">더보기</div>
-                        </div>
-		            	<table class="table rank_chart">
-                        <colgroup>
-								<col width="4%">
-								<col width="160">
-								<col width="*">
-						</colgroup>
-                        <thead>
-                        <tr>
-                        	<th>#</th>
-                            <th>영웅</th>
-                            <th>승률</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                        	<td>1</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000042.png" class="chart_hero_sm"> 맥크리
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-01" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60%</div>
-	        	  		       </div>
- </td>
-                         
-                        </tr>
-                        <tr>
-                        	<td>2</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E000000000006E.png" class="chart_hero_sm"> 솔져: 76
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-02" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width:49%">49%</div>
-	        	  		       </div>
- </td>
-                         
-                        </tr>
-                        <tr>
-                        	<td>3</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-03" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:45%">45%</div>
-	        	  		       </div>
- </td>
-                         
-                        </tr>
-                        <tr>
-                        	<td>4</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-04" role="progressbar" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100" style="width:42%">42%</div>
-	        	  		       </div>
- </td>
-                         
-                        </tr>
-                        <tr>
-                        	<td>5</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-05" role="progressbar" aria-valuenow="39" aria-valuemin="0" aria-valuemax="100" style="width:39%">39%</div>
-	        	  		       </div>
- </td>
-                         
-                        </tr>
-                        </tbody>
+                        		</tr>
+                        	</tbody>
                         </table>
                     </li>
-                     <li class="col-sm-6">    
-                        <div class="col-xs-12 rank_chart_title">
-                        	<img src="./images/TankIcon.png" class="title_left"><h4 class="title_left">돌격 영웅</h4>
+                </ul>
+                <ul class="col-sm-12 list_chart">
+                	<li class="col-sm-6">
+                		<div class="col-xs-12 rank_chart_title">
+                			<img src="/images/DefenseIcon.png" class="title_left"><h4 class="title_left">방어 영웅</h4>
                             <div class="more">더보기</div>
                         </div>
 		            	<table class="table rank_chart">
-                        <colgroup>
-								<col width="4%">
+		            		<colgroup>
+		            			<col width="4%">
 								<col width="160">
 								<col width="*">
-						</colgroup>
-                        <thead>
-                        <tr>
-                        	<th>#</th>
-                            <th>영웅</th>
-                            <th>승률</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                        	<td>1</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000042.png" class="chart_hero_sm"> 맥크리
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-01" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60%</div>
-	        	  		       </div>
- </td>
-                         
-                        </tr>
-                        <tr>
-                        	<td>2</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E000000000006E.png" class="chart_hero_sm"> 솔져: 76
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-02" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width:49%">49%</div>
-	        	  		       </div>
- </td>
-                         
-                        </tr>
-                        <tr>
-                        	<td>3</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-03" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:45%">45%</div>
-	        	  		       </div>
- </td>
-                         
-                        </tr>
-                        <tr>
-                        	<td>4</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-04" role="progressbar" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100" style="width:42%">42%</div>
-	        	  		       </div>
- </td>
-                         
-                        </tr>
-                        <tr>
-                        	<td>5</td>
-	                        <td>
-		                           <img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
-                        	</td>
-                        	<td>     		                  <div class="progress">
-    	    	        		  <div class="progress-bar progress-bar-striped color-05" role="progressbar" aria-valuenow="39" aria-valuemin="0" aria-valuemax="100" style="width:39%">39%</div>
-	        	  		       </div>
- </td>
-                         
-                        </tr>
-                        </tbody>
+							</colgroup>
+                        	<thead>
+	                        	<tr>
+		                        	<th>#</th>
+		                            <th>영웅</th>
+		                            <th>승률</th>
+	                        	</tr>
+                        	</thead>
+	                        <tbody>
+	                        	<tr>
+	                        		<td>1</td>
+		                        	<td>
+		                        		<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000042.png" class="chart_hero_sm"> 맥크리
+	                        		</td>
+	                        		<td>
+	                        			<div class="progress">
+	                        				<div class="progress-bar progress-bar-striped color-01" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60%</div>
+		        	  		       		</div>
+	 								</td>
+	 							</tr>
+	                        	<tr>
+	                        		<td>2</td>
+		                        	<td>
+		                        		<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E000000000006E.png" class="chart_hero_sm"> 솔져: 76
+	                        		</td>
+	                        		<td>
+	                        			<div class="progress">
+	    	    	        		  		<div class="progress-bar progress-bar-striped color-02" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width:49%">49%</div>
+		        	  		       		</div>
+		        	  		       	</td>
+	                         	</tr>
+	                        	<tr>
+	                        		<td>3</td>
+		                        	<td>
+		                        		<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
+	                        		</td>
+	                        		<td>
+	                        			<div class="progress">
+	                        				<div class="progress-bar progress-bar-striped color-03" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:45%">45%</div>
+		        	  		       		</div>
+	 								</td>
+	                        	</tr>
+	                        	<tr>
+	                        		<td>4</td>
+		                        	<td>
+		                        		<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
+	                        		</td>
+	                        		<td>
+	                        			<div class="progress">
+	    	    	        		  		<div class="progress-bar progress-bar-striped color-04" role="progressbar" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100" style="width:42%">42%</div>
+		        	  		       		</div>
+	 								</td>
+	                        	</tr>
+	                        	<tr>
+	                        		<td>5</td>
+		                        	<td>
+		                        		<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
+	                        		</td>
+	                        		<td>
+	                        			<div class="progress">
+	    	    	        		  		<div class="progress-bar progress-bar-striped color-05" role="progressbar" aria-valuenow="39" aria-valuemin="0" aria-valuemax="100" style="width:39%">39%</div>
+		        	  		       		</div>
+	 								</td>
+	                        	</tr>
+	                        </tbody>
+                    	</table>
+                   	</li>
+                   	<li class="col-sm-6">
+                   		<div class="col-xs-12 rank_chart_title">
+                   			<img src="/images/TankIcon.png" class="title_left"><h4 class="title_left">돌격 영웅</h4>
+                            <div class="more">더보기</div>
+                        </div>
+		            	<table class="table rank_chart">
+		            		<colgroup>
+		            			<col width="4%">
+								<col width="160">
+								<col width="*">
+							</colgroup>
+                        	<thead>
+	                        	<tr>
+	                        		<th>#</th>
+	                            	<th>영웅</th>
+	                            	<th>승률</th>
+	                        	</tr>
+                        	</thead>
+                        	<tbody>
+                        		<tr>
+                        			<td>1</td>
+	                        		<td>
+	                        			<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000042.png" class="chart_hero_sm"> 맥크리
+                        			</td>
+                        			<td>
+                        				<div class="progress">
+    	    	        		  			<div class="progress-bar progress-bar-striped color-01" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">60%</div>
+	        	  		       			</div>
+ 									</td>
+ 								</tr>
+                        		<tr>
+                        			<td>2</td>
+	                        		<td>
+		                           		<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E000000000006E.png" class="chart_hero_sm"> 솔져: 76
+                        			</td>
+                        			<td>
+                        				<div class="progress">
+    	    	        		  			<div class="progress-bar progress-bar-striped color-02" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width:49%">49%</div>
+	        	  		       			</div>
+ 									</td>
+                         		</tr>
+                         		<tr>
+                        			<td>3</td>
+	                        		<td>
+		                           		<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
+                        			</td>
+                        			<td>
+                        				<div class="progress">
+    	    	        		  			<div class="progress-bar progress-bar-striped color-03" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:45%">45%</div>
+	        	  		       			</div>
+ 									</td>
+                        		</tr>
+                        		<tr>
+                        			<td>4</td>
+	                        		<td>
+	                        			<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
+                        			</td>
+                        			<td>
+                        				<div class="progress">
+    	    	        		  			<div class="progress-bar progress-bar-striped color-04" role="progressbar" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100" style="width:42%">42%</div>
+	        	  		       			</div>
+ 									</td>
+                         		</tr>
+                        		<tr>
+                        			<td>5</td>
+	                        		<td>
+		                           		<img src="https://d1u1mce87gyfbn.cloudfront.net/game/heroes/small/0x02E0000000000079.png" class="chart_hero_sm"> 루시우
+                        			</td>
+                        			<td>
+                        				<div class="progress">
+    	    	        		  			<div class="progress-bar progress-bar-striped color-05" role="progressbar" aria-valuenow="39" aria-valuemin="0" aria-valuemax="100" style="width:39%">39%</div>
+	        	  		       			</div>
+ 									</td>
+ 								</tr>
+                        	</tbody>
                         </table>
                     </li>
-                    </ul>
-    	       
-                </div>
-    		</div>
-          </div>  
-        
-	</div>
+                </ul>
+            </div>
+    	</div>
+    </div>
 	
 	
 <script>

@@ -1,31 +1,38 @@
-
 <div style="padding: 10px;">
 
+
 <table>
+	<% @ary_data.each_with_index do |data, i| %>
 	<tr>
 		<td width="50px">지역</td>
 		<td width="130px" colspan="2">주영웅</td>
-		
-		<td width="130px"  colspan="2">플레이어</td>
+		<td width="130px" colspan="2">플레이어</td>
 		<td width="100px">점수</td>
 		<td width="100px">킬/데스</td>
 		<td width="100px">승률</td>
 		<td width="100px">플레이시간 </td>
 	</tr>
-	<!-- <tr onclick="javascript: get_detail_data()" style="cursor:pointer;"> -->
-	<tr data-link="<%= detail_over_tag_path(@tag_data) %>" style="cursor:pointer;>
-		<td>PC/KR</td>
-		<td><image src="<%=@main_hero.image%>" style="width:50px; height:50px;"></td>
-		<td><%=@main_hero.name%></td>
-		<td><image src="<%= @tag_data.over_profile.avatar %>" style="width:50px; height:50px;"></td>
-		<td><%= @tag_data.tag.split("#")[0] %></td>
+	
+	<tr data-link="<%= detail_over_tag_path(@over_tags[i]) %>" data-param="<%= @over_tags[i].over_user_types[0].user_type %>" style="cursor:pointer;">
 		<td>
-			<%= @tag_data.over_all_hero.Score %>
+			<% @over_tags[i].over_user_types.each do |user_type| %>
+				<%= user_type.user_type %>
+			<% end %>
 		</td>
-		<td><%= (@tag_data.over_all_hero.Eliminations.to_f / @tag_data.over_all_hero.Deaths.to_f) %></td>
-		<td><%= @tag_data.over_profile.win_percentage %>%</td>
-		<td><%= @tag_data.over_profile.playtime %></td>
+		
+		<td><image src='<%= data["hero_avatar"] %>' style="width:50px; height:50px;"></td>
+		<td><%= data["hero_name"] %></td>
+		
+		<td><image src='<%= data["avatar"] %>' style="width:50px; height:50px;"></td>
+		<td><%= data["user_name"] %></td>
+		
+		<td><%= data["점수"] %></td>
+		<td>
+			<%= (data["처치"].delete(",").to_f / data["죽음"].delete(",").to_f).round(2) %></td>
+		<td><%= (data["승리한 게임"].delete(",").to_f / data["치른 게임"].delete(",").to_f).round(2) * 100 %>%</td>
+		<td><%= data["플레이 시간"] %></td>
 	</tr>
+	<% end %>
 </table>
 
 <% if @status==404 %>
@@ -37,6 +44,8 @@
 
 <script>
 	$("tr[data-link]").click(function() {
-	  window.location = $(this).data("link")
+	  var param = "?user_type=" + $(this).data("param")
+	  var link = $(this).data("link") + param;
+	  window.location = link;
 	})
 </script>

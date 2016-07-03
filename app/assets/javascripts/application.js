@@ -14,4 +14,8 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap.min
+//= require circles.js
+//= require overrank.js
+//= require Gruntfile.js
+//= require npm.js
 //= require_tree .
