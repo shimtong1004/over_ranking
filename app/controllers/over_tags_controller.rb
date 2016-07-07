@@ -118,6 +118,12 @@ class OverTagsController < ApplicationController
     rush_kill = 0
     support_kill = 0
     
+    offense_finishing_blow = 0
+    defense_finishing_blow = 0
+    rush_finishing_blow = 0
+    support_finishing_blow = 0
+    
+    
     offense_death = 0
     defense_death = 0
     rush_death = 0
@@ -132,11 +138,18 @@ class OverTagsController < ApplicationController
         tmp_time = @heros_hash[name]["플레이 시간"].to_i
       end
       
+      tmp_game_count = 0
+      tmp_win_game_count = 0
+      tmp_death = 0
+      tmp_kill = 0
+      tmp_finishing_blow = 0
+      
       tmp_game_count = @heros_hash[name]["치른 게임"].delete(",").to_i if @heros_hash[name]["치른 게임"]
       tmp_win_game_count = @heros_hash[name]["승리한 게임"].delete(",").to_i if @heros_hash[name]["승리한 게임"]
-      
       tmp_death = @heros_hash[name]["죽음"].delete(",").to_i if @heros_hash[name]["죽음"]
       tmp_kill = @heros_hash[name]["처치"].delete(",").to_i if @heros_hash[name]["처치"]
+      tmp_finishing_blow = @heros_hash[name]["결정타"].delete(",").to_i if @heros_hash[name]["결정타"]
+      
       
       #자가치유
       if @heros_hash[name]["자가 치유"]
@@ -158,31 +171,34 @@ class OverTagsController < ApplicationController
       
       
       
-      
       if @@offense.any? {|word| name.include?(word)}
         @offense_play_time += tmp_time
         offense_game_count += tmp_game_count
         offense_win_game_count += tmp_win_game_count
-        offense_kill = tmp_kill
-        offense_death = tmp_death
+        offense_kill += tmp_kill
+        offense_finishing_blow += tmp_finishing_blow
+        offense_death += tmp_death
         
       elsif @@defense.any? {|word| name.include?(word)}
         @defense_play_time += tmp_time
         defense_game_count += tmp_game_count
         defense_win_game_count += tmp_win_game_count
         defense_kill += tmp_kill
+        defense_finishing_blow += tmp_finishing_blow
         defense_death += tmp_death
       elsif @@rush.any? {|word| name.include?(word)}
         @rush_play_time += tmp_time
         rush_game_count += tmp_game_count
         rush_win_game_count += tmp_win_game_count
         rush_kill += tmp_kill
+        rush_finishing_blow += tmp_finishing_blow
         rush_death += tmp_death
       elsif @@support.any? {|word| name.include?(word)}
         @support_play_time += tmp_time
         support_game_count += tmp_game_count
         support_win_game_count += tmp_win_game_count
         support_kill += tmp_kill
+        support_finishing_blow += tmp_finishing_blow
         support_death += tmp_death
       end
     end
@@ -216,10 +232,15 @@ class OverTagsController < ApplicationController
     @rush_win_per = (rush_win_game_count.to_f / rush_game_count.to_f).round(2) * 100
     @support_win_per = (support_win_game_count.to_f / support_game_count.to_f).round(2) * 100
     
-    @offense_kd = (offense_kill.to_f / offense_death.to_f).round(2)
-    @defense_kd = (defense_kill.to_f / defense_death.to_f).round(2)
-    @rush_kd = (rush_kill.to_f / rush_death.to_f).round(2)
-    @support_kd = (support_kill.to_f / support_death.to_f).round(2)
+    # @offense_kda = (offense_kill.to_f / offense_death.to_f).round(2)
+    # @defense_kda = (defense_kill.to_f / defense_death.to_f).round(2)
+    # @rush_kda = (rush_kill.to_f / rush_death.to_f).round(2)
+    # @support_kda = (support_kill.to_f / support_death.to_f).round(2)
+    
+    @offense_kd = (offense_finishing_blow.to_f / offense_death.to_f).round(2)
+    @defense_kd = (defense_finishing_blow.to_f / defense_death.to_f).round(2)
+    @rush_kd = (rush_finishing_blow.to_f / rush_death.to_f).round(2)
+    @support_kd = (support_finishing_blow.to_f / support_death.to_f).round(2)
     
 
   end

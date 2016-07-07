@@ -155,12 +155,26 @@
           textAlign:  'center',
           width:      '100%',
 		  color : this._colors[1],
-          height:     this._svgSize + 'px',
-		  backgroundImage: 'url(/images/'+ this._background_img +')',
-		  backgroundRepeat: 'no-repeat',
-
+          height:     this._svgSize + 'px',		  
          // lineHeight: this._svgSize + 'px'
         };
+		if(this._background_img){
+			
+				var style	=	{
+					  position:   'absolute',
+			          top:        0,
+			          left:       0,
+			          textAlign:  'center',
+			          width:      '100%',
+					  color : this._colors[1],
+			          height:     this._svgSize + 'px',		  
+					  backgroundImage: 'url(/images/'+ this._background_img +')',
+		 		  	  backgroundRepeat: 'no-repeat',
+				}; 
+			
+		}
+		
+		
 
         for(var prop in style) {
           this._textContainer.style[prop]	=	style[prop];

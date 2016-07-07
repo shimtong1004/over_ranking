@@ -13,4 +13,7 @@
  *= require_tree .
  *= require_self
  *= require bootstrap.min
+ *= require ms-dropdown/dd
+ *= require jquery.jqplot.css
+ *= require overrank.css
  */

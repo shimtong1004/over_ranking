@@ -1,0 +1,1740 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{
+	letter-spacing:-0.5px;
+}
+
+
+
+.navbar-default .navbar-nav>li>a{
+	color: #fff;
+	font-size:19px;
+}
+.navbar-default .navbar-nav>li>a:focus, 
+.navbar-default .navbar-nav>li>a:hover{
+	color:#fff;
+}
+  
+  
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover{
+	background-color:#2c2c2c;
+	color:#ccc;
+}
+  
+ /*인덱스에서 쓰는거 */ 
+     .container {
+        /* background-color: #cccccc; */
+      }
+      #top_bar {
+        background-color: #2c2c2c;
+      }
+	  
+	  #middle_contents_main, #middle_contents_detail{
+		   background-color: #f3f3f3; padding-top:10px; padding-bottom:20px;
+	  }
+
+      #middle_contents_detail > .col-xs-12 > .container{
+		  background-color:#f3f3f3;
+		  padding : 10px 0px 0px;
+		  min-height:100%;
+	  }
+	  
+	  .profile_card .profile_card_top, .profile_card .profile_card_top>div,
+	  .profile_card .summary, .profile_card .summary .summary_card>div, .profile_card .summary .summary_card .top_per>div,
+	  .profile_card .summary .summary_last, .summary_last_card,
+	  .flex-box, .hero_stat,  .hero_chart_title, .hero_chart_title>.type_select,
+	  .hero_detail_warp .hero_card_top, .hero_warp .hero_card_top, .hero_warp .hero_card_top >div,
+	  .card_top_left, .card_top_left>div, .card_top_right,
+	  .hero_warp .hero_card_top .card_top_rank >div, 
+	  .hero_warp .hero_card_top .card_top_winrate, .hero_warp .hero_card_top  .card_top_reward,
+	  .hero_detail_warp .hero_card_top  .card_top_winrate, .hero_detail_warp .hero_card_top  .card_top_reward,
+	  .hero_card_bottom .panal-important, .hero_card_bottom .panal-important>div,
+	  .static_detail_warp .static_card,
+	  .static_card_bottom_skill .static_box, .static_card_bottom_skill .static_box >div, .static_box>detail_static_data,
+
+	  #middle_contents_detail > .col-xs-12 > .container .sub_menu,
+	  #middle_contents_detail > .col-xs-12 > .container .sub_menu>div,
+	  #middle_contents_detail > .col-xs-12 > .container .sub_menu>div>div{
+		  display: -webkit-box; /* Safari */ 
+		  display: -moz-box; /* Firefox 21- */
+		  display: -ms-flexbox; /* IE 10+ */
+		  display: -webkit-flex; /* Chrome */
+		  display: flex; /* Standard (Firefox 22+) */ 
+		  
+	  }
+	  
+	  
+	  #middle_contents_detail > .col-xs-12 > .container .sub_menu{
+		  padding-top:20px;
+		 
+		  justify-content:space-between;
+		  -webkit-flex-wrap: wrap;
+		  flex-wrap: wrap;
+		  -webkit-align-items: center;
+		  align-items: center;
+		  clear:both;
+		  
+	  }
+	  
+	  #middle_contents_detail > .col-xs-12 > .container .sub_menu>div{
+		  -webkit-flex-wrap: wrap;
+		  flex-wrap: wrap;
+		  -webkit-align-items: center;
+		  align-items: center;
+		  
+	  }
+	  
+  
+	 .sub_menu > .sub_left >div:nth-child(-n+2){	
+		width:120px;
+		height:45px;
+		border:1px solid #c1c1c1;		
+		border-bottom:none;		
+		justify-content:center;
+		align-items:center;
+		font-size:1.2em;	
+		background-color:#fdfcfc;
+		color:#c1c1c1;
+		
+	  }
+	  .sub_menu > .sub_left >div:nth-child(1){
+		  border-right:none;
+	  }
+	  
+	  .sub_menu >.sub_left >.active{
+		background-color:#f3f3f3!important;
+		color:#2b2b2b!important;
+	  }
+	
+	  .sub_menu >.sub_right >div{
+		  margin-left:10px;
+	  }
+	  .sub_menu >.sub_right >div>button{
+		  width:80px;
+		  border-radius:5px;
+		  color:#939393;
+		  background-color:#d4d4d4;
+		  border-color:#959595;	  
+	  }
+	  .sub_menu >.sub_right >div>button img{
+		margin-right:4px;  
+	  }
+	  
+	  .sub_menu >.sub_right > div >.btn.active{
+		background-color:#fff;
+		color:#000;
+		
+	  }
+	  
+	  
+		  
+	  h1 {
+        margin: 100px 0px;
+      }
+	  
+
+
+	   p { margin: 20px 0px; }
+	   
+	   .list_chart{list-style-type:none;}
+	   
+	  
+	   
+
+		   
+		.rank_chart .chart_hero_sm{max-width:32px;}
+		
+		.progress .color-01{background-color:#5cb85c}
+		.progress .color-02{background-color:#5bc0de}
+		.progress .color-03{background-color:#f0ad4e}
+		.progress .color-04{background-color:#5cb85c}
+		.progress .color-05{background-color:#d9534f}
+	   
+	    .main_chart_title{border-bottom: solid 1px #666; margin-bottom:15px; }
+
+		.rank_chart_title, .role_chart_title {padding-right:0px; padding-left:0px; margin-bottom:5px;}
+		.rank_chart_title .title_left{float:left;}
+		.rank_chart_title > img[class^="title"]{max-width:40px; margin-top:3px; margin-right:10px;}
+		.rank_chart_title .more{float:right; margin-top:10px; margin-bottom:10px}
+		.role_chart_title .more{float:right;}
+		.main_content {text-align:center;}
+		.battle_tag_find button{padding:0px; border:none; margin-left:10px;}
+
+ /*인덱스에서 쓰는거 */
+ 
+	 .profile_card .profile_card_top{
+		 justify-content:space-between;
+		 flex-wrap:wrap;
+	 }
+	 
+	 .profile_card .profile_card_top_left{
+		flex-wrap:wrap;		
+	 }
+ 
+ 
+ .profile_card .level {
+	 font-size:3.5rem;
+	 font-weight:bold;
+	 margin-right:15px;
+	 padding-top:40px;
+	 
+	 min-width:12.2rem;
+	 min-height:150px;
+
+     background:url('/images/lv_frame/00590.png') no-repeat;
+	 background-size:170px 170px;
+	 background-position:-24px -21px;
+ }
+ 
+  .profile_card .competitive_level{
+	  font-size:2.8rem;
+	  text-align:center;
+	  line-height:0.4em;
+	  margin-right:0.5em;
+	  
+  }
+  
+    .profile_card .competitive_level img{
+		display:block;
+		width:125px;
+		
+	}
+ 
+ .profile_card_content{
+
+
+ }
+ .profile_card_content > ul > li[class="battle_tag"] { margin-bottom:5px; font-size:35px; font-weight:bold; margin-top:24px;
+ }
+  .profile_card_content > ul > li[class="battle_tag"] > span {margin-left:5px; font-size:11px; padding-top:4px; top:-3px; position:relative;}
+    .profile_card_content > ul > li[class="battle_tag"] > img {max-width:50px; margin-right:10px;}
+  .profile_card_content > ul > li[class="update_button"] { margin-bottom:10px; margin-top:15px;
+ }
+   .profile_card_content > ul > li[class="update_button"] > div{
+	   float:left;
+	   line-height:1.3;}
+
+.profile_card_content > ul > li[class="update_button"] > div > button {
+	   min-height:42px; min-width:105px; margin-right:12px; font-size:15px;}
+
+.update_button .update_summary_warp{
+padding-top:5px;	
+}
+.profile_card_content > ul > li[class="update_button"] > div > span{
+	font-size:0.8em;
+	color:#676767;  
+}
+
+.profile_card_content > ul > li[class="update_button"] > div > .update_summary{
+color:#b1b1b1;
+font-weight:400;
+}
+ .profile_hero_chart{width:385px; padding-top:18px;}
+
+
+  
+  
+
+  .profile_hero_chart .role_rank_chart{
+	margin-bottom:0px;
+  }
+
+  .profile_hero_chart>.table>tbody>tr>td, 
+  .profile_hero_chart>.table>tbody>tr>th, 
+  .profile_hero_chart>.table>tfoot>tr>td, 
+  .profile_hero_chart>.table>tfoot>tr>th, 
+  .profile_hero_chart>.table>thead>tr>td, 
+  .profile_hero_chart>.table>thead>tr>th {
+	padding: 0px;
+    line-height: 13px;
+    vertical-align: top;
+    border-top: none;
+	font-size:0.9em;
+	vertical-align:middle;
+	text-align:center;
+	
+	
+  }
+  .profile_hero_chart>.table>thead>tr>th{
+	padding:10px;  
+  }
+.profile_hero_chart>.table>tbody>tr> td[class="win-rate"]
+{padding-left:3px;}
+
+
+.role_rank_chart .circle_td{
+padding:0px;
+padding-bottom:7px;
+}
+
+
+
+.profile_hero_chart>.table>tbody>.circle_kd >td{
+	font-size:1em;
+	
+}
+.profile_hero_chart>.table>tbody>tr>.circle_col_title{
+	background-image:url(/images/circle_col_back.png);
+	background-repeat:no-repeat;
+	background-position:center right;
+	color:#fff;
+	padding-top:2px;
+	font-weight:400;
+	font-size:0.9em;}
+
+/*
+.profile_hero_chart>.table>tbody>tr>.circle_last_td{
+padding-left:22px;	
+}  
+
+.profile_hero_chart>.table>tbody>.circle_kd>.circle_last_td{
+padding-left:18px;	
+}  
+*/
+/*
+.role_rank_chart .circle {
+			display: inline-block;
+			margin-left: 19px;
+    		margin-right: 17px;
+
+}
+.role_rank_chart #circles-1{
+	margin-left:14px;
+	margin-right:19px;
+	
+}
+.role_rank_chart #circles-4{
+		margin-right:0px;
+		margin-left:20px;
+		background-position-y:1px;
+}
+*/
+.circles-text{
+	padding-top:35px;
+	background-position:center;
+	background-position-y:14px;
+}
+	
+
+#circles-1> div>.circles-text {
+	font-size: 1.1em;	
+	padding-top:40px;
+
+	background-position-y:15px;
+}
+
+
+.profile_card >div{
+	margin-bottom:10px;
+}
+
+
+.profile_card .summary,
+.profile_card .summary .summary_card >div,
+.profile_card .summary .summary_card .top_per>div
+{
+	flex-wrap:wrap;
+	justify-content:space-between;
+	font-size:1.4rem;
+}
+
+
+.profile_card .summary .summary_card,
+.profile_card .summary .summary_last_card{
+	  
+	border:1px solid #959595; min-width:190px;
+  }
+
+
+.profile_card .summary .sumary_contents
+{
+	background-color:#fff;
+	padding:11px 15px;
+}
+
+.profile_card .summary .top_per,
+.profile_card .summary .summary_last
+{
+
+	flex-direction:column;
+	flex-wrap:wrap;
+	justify-content:space-between;
+}
+
+
+.profile_card .summary .sumary_contents_contents{
+	margin-left:15px;	
+	font-size:1.1em;
+}
+.profile_card .summary .sumary_contents_contents span{
+	font-size:0.8em;
+}
+.profile_card .summary .top_per{
+	background-color:#e6e6e6;
+	padding:7px 15px 6px;
+}
+
+.profile_card .summary .top_per_rank{
+	background-color:#e6e6e6;
+	padding:16px 15px;
+}
+
+.profile_card .summary .top_per .sumary_contents_contents{
+	
+}
+
+.profile_card .summary .summary_last_card{
+	background-color:#fff;
+	padding:0px 10px;
+	justify-content:space-between;
+	height:45px;
+	align-items:center;
+}
+
+
+
+
+.profile_contents,
+.hero_rank
+{border-top:solid 1px #c1c1c1; padding-top:5px;}
+
+.profile_contents .hero_warp {
+	float:left;
+	width:60.2%;
+	margin-right:9px;
+}
+
+.profile_contents .static_warp{
+
+	width:39%;
+}
+.profile_contents .static_detail_warp{
+	width:100%;
+}
+
+.profile_contents .static_warp,
+.profile_contents .static_detail_warp{
+
+ display: -webkit-box; /* Safari */ 
+  display: -moz-box; /* Firefox 21- */
+  display: -ms-flexbox; /* IE 10+ */
+  display: -webkit-flex; /* Chrome */
+  display: flex; /* Standard (Firefox 22+) */
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+  
+
+  
+}
+
+
+.profile_contents .hero_card,
+.profile_contents .static_card{
+	border:1px solid #959595;
+	margin-top:15px;
+	margin-bottom:10px;
+	width:100%;
+}
+
+.static_detail_warp .static_card{
+width:100%;	
+flex-direction:column;
+	
+}
+
+
+
+.hero_card_top{
+	min-height:100px;
+	padding:7px 0px 5px 10px;	
+	align-items:flex-start;
+    font-size: 1em;
+    flex-wrap: wrap;
+}
+
+.hero_card_bottom{
+	clear:both;
+	min-height:280px;
+	padding:10px 16px 10px 30px;
+	background-color:#f3f3f3;
+}
+.hero_card_top .hero_icon{
+	float:left
+}
+
+.hero_card_top .play_time_grh .card_top_hero_700{
+	display:none;
+	margin-left:20px;
+	align-items:center;
+}
+
+
+.hero_warp .hero_card_top >div:nth-child(2){
+	flex-direction:column;
+	margin-left:30px;
+}
+
+
+
+.hero_card_top .panel-title{
+	margin-top:5px;
+}
+
+
+.play_time_grh .circle,
+.hero_icon .circle{
+	background-repeat:no-repeat;
+	background-position:8px 8px;
+	background-size:79%;
+}
+
+.hero_card_top .hero_circle{
+	padding-top:73px;
+	font-size:1.3rem;
+}
+
+
+.panel-white .panel-hedding{
+	background-color:#FFF;
+}
+
+
+
+.hero_card .data_list > li{
+float:left;
+}
+
+.panel-summary > .data_list > li{
+	margin-right:38px;
+}
+
+.panel-summary > ul > li[class="top_rank"]{
+	width:157px;
+}
+.panel-summary > ul > li[class="win_per"]{
+	width:134px;
+	
+}
+.panel-summary > ul > li[class="medal"]{
+	min-width:60px;
+	margin-right:10px;
+
+}
+
+
+
+.panal-important{
+	flex-wrap:wrap;
+}
+.panal-important .important-data{
+padding-left:16px;
+padding-right:16px;
+width:25%;
+flex-direction:column;
+}
+
+.panal-important .important-data:nth-child(-n+3){
+
+	border-right : 1px solid #828181;
+}
+.panal-important .important-data:first-child{
+	padding-left:0px;
+}
+.panal-important .important-data:last-child{
+	padding-right:0px;
+}
+
+
+/* 옜날꺼라서 곧 지우면됨 */
+.panal-important .data_list >li{
+padding-left:16px;
+padding-right:16px;
+
+}
+
+.panal-important .data_list >li:nth-child(-n+3){
+	border-right : 1px solid #828181;
+}
+.panal-important .data_list >li:nth-child(1){
+	padding-left:0px;
+}
+.panal-important .data_list >li:nth-child(4){
+	padding-right:0px;
+}
+
+
+/*여기까지 */
+
+.panal-important .rank_dd{
+	font-size:1.2em;
+}
+
+.static_data .static_value{
+	font-size:1.42em;
+}
+.panal-important .data_list .data{
+	margin-bottom:10px;
+}
+
+.panal-important .data_list .rank >dd{
+	margin-top:3px;
+	
+}
+.win_per .progress{
+	margin-bottom:0px;
+	border-radius:3px;
+	box-shadow:none;
+	-webkit-box-shadow:none;
+	height:15px;
+}
+
+.win_per .progress .progress-bar{
+	box-shadow:none;
+	font-size:11px;
+	line-height:17px;
+}
+.progress-bar-win{
+	background-color:#4495bb;
+}
+.progress-bar-lose{
+	background-color:#bb4460;	
+}
+.legion_icon{
+	display:inline-block;
+	
+}
+.medal_count{
+	padding-left:10px;
+}
+.rank_dd{
+	float:right;
+	clear:both;
+}
+
+
+.static_card_top{
+	min-height:50px;
+	padding:2px 10px 2px 10px;
+	display: -webkit-box; /* Safari */ 
+	display: -moz-box; /* Firefox 21- */
+	display: -ms-flexbox; /* IE 10+ */
+	display: -webkit-flex; /* Chrome */
+	display: flex; /* Standard (Firefox 22+) */
+	flex-wrap:wrap;
+ 	align-items:center;
+	justify-content : space-between;
+}
+.static_card_top h2{
+	font-size:1.7em;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+
+.static_card_bottom,
+.static_card_bottom_skill{
+	width:100%;
+	display: -webkit-box; /* Safari */ 
+	display: -moz-box; /* Firefox 21- */
+	display: -ms-flexbox; /* IE 10+ */
+	display: -webkit-flex; /* Chrome */
+	display: flex; /* Standard (Firefox 22+) */
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+	
+	padding:0px;
+	background-color:#e6e6e6;
+}
+
+
+.static_card_bottom .static_box{
+	width:50%;
+	border-bottom:1px solid #FFF;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+	padding:20px 0px;
+	
+}
+
+.static_box .static_data{
+    display: flex;
+    justify-content: space-between;
+    width: 170px;
+	align-items:center;
+}
+
+.static_card_bottom .static_box:nth-child(2n),
+.static_card_bottom .static_box:nth-child(n+6):nth-child(odd)
+{
+border-left:1px solid #FFF;
+}	
+
+
+
+.static_box .static_data:nth-child(1){
+	margin-bottom:13px;
+		
+}
+
+.static_box .static_data:nth-child(2) .rank_dd{
+	padding-top:4px;	
+}
+
+.static_card_bottom .static_box:last-child:not(:nth-child(even)){
+/* 마지막이 짝수가 아닐때 
+	width:100%;
+	padding-left:135px;
+	padding-right:135px;
+	*/
+}
+
+.static_card_bottom .static_box:last-child:nth-child(n+5):nth-child(even),
+.static_card_bottom .static_box:nth-child(5){
+	width:100%;
+
+}
+
+
+
+
+.role_group{
+	margin-left:5px;
+}
+
+
+.btn-group >.btn{
+border-radius:0;
+color: #a1a1a0;
+
+outline:none;
+}
+
+.btn-group > .role_btn{
+height:50px;
+background-color:#fff;
+border-bottom: 4px solid #fff;
+}
+
+.btn-group > .trend_btn{
+	padding:0px 15px;
+	height:40px;
+	background-color:#f3f3f3;
+	font-size:1.4rem;
+	border-bottom: 4px solid #f3f3f3;
+	
+}
+.role_group > .active{
+	border-bottom: 4px solid #000;
+	color : #000000;
+}
+
+
+
+.trend_grh_warp{
+clear:both; padding-top:20px;
+}
+.trend-grh_header{
+	padding-right:10px;
+	padding-left:10px;
+	height:30px;
+}
+
+.trend-grh_header> .legion_icon{
+	padding-top:10px;
+}
+
+.role_btn.focus, 
+.role_btn.active,
+.role_btn.hover,
+.role_btn:active, 
+.role_btn:focus, 
+.role_btn:hover
+.role_btn.active{
+	border-bottom: 4px solid #000;
+	color : #000000;
+	outline:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+	
+}
+
+.trend_btn.focus, 
+.trend_btn.active,
+.trend_btn.hover,
+.trend_btn:active, 
+.trend_btn:focus, 
+.trend_btn:hover
+.trend_btn.active{
+	border-bottom: 4px solid #000;
+	color : #000000;
+	outline:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+	
+}
+
+
+
+.hero_detail_warp .hero_card_top .panel-title {
+	margin-left:11px;
+	padding-left:0px;
+}
+
+.hero_detail_warp .hero_card_top{
+	min-height:60px;
+	justify-content:space-between;
+	align-items:center;
+	font-size:1em;
+	padding:7px 10px 5px 10px;
+	flex-wrap:wrap;
+}
+
+.hero_warp .hero_card_top .card_top_left,
+.hero_detail_warp .hero_card_top .card_top_left,
+.hero_detail_warp .hero_card_top .card_top_right{
+	flex-wrap:wrap;
+}
+
+
+.hero_warp .hero_card_top .card_top_left >div{
+	margin-right:40px;
+	align-items:center;
+	flex-direction: column;
+    justify-content: center;
+}
+
+.hero_detail_warp .hero_card_top .card_top_left >div{
+	margin-right:20px;
+	align-items:center;
+}
+
+
+.hero_detail_warp .hero_card_top .card_top_title{
+	font-size:1.1em;
+	margin-right:10px;
+}
+
+.hero_warp .hero_card_top .card_top_left .card_top_rank >div{
+	justify-content:space-between;
+	width:150px;
+}
+
+.hero_warp .hero_card_top .card_top_left .card_top_winrate{
+	min-width:150px;	
+}
+.hero_detail_warp .hero_card_top .card_top_left .card_top_winrate{
+	min-width:230px;
+}
+
+
+
+
+
+.card_top_winrate .flex-box{
+	justify-content:space-between;
+	width:100%;
+}
+
+.hero_detail_warp .hero_card_top .card_top_left .card_top_winrate .progress {
+	width:60%;	
+	margin-bottom:0px;
+	margin-right:5px;
+}
+
+.hero_warp .hero_card_top .card_top_left .card_top_winrate .progress{
+	width:100%;
+	margin-bottom:0px;
+}
+
+
+
+.hero_warp .hero_card_top .card_top_left .card_top_rank >div img,
+.hero_warp .hero_card_top .card_top_left .card_top_reward img,
+.hero_detail_warp .hero_card_top .card_top_left .card_top_rank >div img,
+.hero_detail_warp .hero_card_top .card_top_left .card_top_rank >div{
+	margin-right:10px;
+}
+
+.hero_warp .hero_card_top .card_top_right .card_top_reward,
+.hero_detail_warp .hero_card_top .card_top_right .card_top_reward{
+	width:220px;
+	flex-wrap:wrap;
+	font-size:0.9em;
+	
+}
+
+
+.hero_detail_warp .hero_card_top .card_top_right .card_top_reward >div >span:first-child{
+	margin-right:7px;
+}
+
+.hero_detail_warp .hero_card_top .card_top_right .card_top_reward >div{
+	width:47%;
+}
+
+.hero_detail_warp .hero_card_top .card_top_right .card_top_reward >div:nth-child(odd){
+	margin-right:10px;
+}
+
+.hero_detail_warp .hero_card_top .card_top_right .card_top_reward .gold{
+	color:#ab840d;
+}
+.hero_detail_warp .hero_card_top .card_top_right .card_top_reward .silver{
+	color:#848484;
+}
+
+.hero_detail_warp .hero_card_top .card_top_right .card_top_reward .bronze{
+	color:#a9764a;
+}
+.hero_detail_warp .hero_card_top .card_top_right .card_top_reward .goodcard{
+	color:#569bbc;
+}
+
+
+
+
+
+.hero_rank_warp >div,
+.hero_rank_warp >div .hero_nav_heros,
+.role_rank_warp > div,
+.role_rank_warp .role_title,
+.role_rank_warp .role_table{
+	width:100%;
+	display: -webkit-box; /* Safari */ 
+	display: -moz-box; /* Firefox 21- */
+	display: -ms-flexbox; /* IE 10+ */
+	display: -webkit-flex; /* Chrome */
+	display: flex; /* Standard (Firefox 22+) */
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.role_rank_warp .role_rank_top{
+	flex-wrap:nowrap;
+	margin-bottom:15px;
+}
+
+.role_rank_warp .role_rank_top >div{
+min-height:53px;
+align-items:flex-end;
+
+}
+
+
+.role_rank_warp .top_title{
+	min-width:145px;
+	border-bottom:solid 1px #2c2c2c;
+
+	color:#a3a3a3;
+	padding-bottom:10px;
+	justify-content:center;
+}
+.hero_rank_warp h2,
+.role_rank_warp .top_title h2{
+	font-size:2.35rem;
+	color:#a3a3a3;
+	margin:0;
+	padding:0;
+}
+	
+
+.role_rank_warp .top_date{
+	border-bottom:solid 1px #d4d4d4;
+	width:100%;
+	justify-content:flex-end;
+	padding-bottom:5px;	
+}
+
+
+.role_rank_table_warp{
+	flex-direction:column;
+	margin-top:30px;
+}
+
+
+.role_rank_table_warp .role_title{
+	align-items	:center;	
+	margin-bottom:15px;
+}
+.role_rank_table_warp .role_title >h3{
+	margin:0px;
+	margin-left:10px;
+}
+
+.hero_rank_table table,
+.role_rank_table table{
+	border:1px solid #d4d4d4;
+}
+
+.hero_rank_table table th,
+.role_rank_table table th{
+ 	border-bottom:none!important;	
+	background-color:#FFF;
+	color:#a5a5a5;
+	text-align:center;
+	
+}
+
+.hero_rank_table table td,
+.role_rank_table table td{
+	border-top:none!important;
+	background-color:#eeeeee;
+	vertical-align:middle !important;
+	text-align:center;	
+	font-size:1.2rem;	
+}
+
+.role_rank_table table td{
+	padding-bottom:7px!important;
+	padding-top:7px!important;
+}
+
+.hero_rank_table table tr:first-child td,
+.role_rank_table table tr:first-child td{
+	padding-top:17px!important;
+}
+
+.role_rank_table table td:nth-child(2){
+	text-align:left;
+	padding-left:15px;
+}
+
+.hero_rank_table table td:not(last-child),
+.role_rank_table table td:not(last-child){
+	border-right:1px solid #d4d4d4;
+}
+
+.role_rank_table .rank_table_rank{width:40px;}
+.role_rank_table .rank_table_hero{width:150px;}
+.role_rank_table .rank_table_winrate{width:auto;}
+.role_rank_table .rank_table_time{width:auto;}
+.role_rank_table .rank_table_avr{width:120px;}
+.role_rank_table .rank_table_kda{width:100px;}
+
+.role_rank_table table td >img{
+	margin-right:10px;	
+}
+.role_rank_table table .top_data{
+	color:#4495bb;
+}
+
+.hero_rank_table .table .progress,
+.role_rank_table .table .progress
+{
+display: inline-block;
+    width: 70%;
+	margin-bottom:0px;
+	margin-right:5px;
+	background-color:#c2c2c2;
+}
+
+
+.role_rank_table table .role_rank_kda span:last-child{
+color:#a5a5a5;
+}
+
+
+
+.hero_rank_warp .hero_nav,
+.hero_rank_warp .hero_rank_top,
+.hero_rank_warp .hero_summary_warp{
+	flex-direction: column;
+}
+
+.hero_rank_warp .hero_nav{
+	margin-bottom:25px;
+}
+
+.hero_nav_heros{
+	justify-content:space-between;
+	margin-top:20px;
+	
+}
+
+.hero_nav_heros img{
+	width:100%
+}
+.hero_nav_heros >div{
+	text-align:center;
+	width:50px;
+}
+.hero_nav_heros >div:nth-child(-n+6){
+	color:#cc4547;
+}
+.hero_nav_heros >div:nth-child(n+7){
+	color:#44ae82;
+}
+.hero_nav_heros >div:nth-child(n+13){
+	color:#4473ae;
+}
+
+.hero_nav_heros >div:nth-child(n+18){
+	color:#cc9e45;
+}
+
+
+
+.hero_nav_heros img{
+	display:block;
+}
+
+.hero_summary_warp{
+	color:#fff;
+	padding:36px 0px 25px 0px;
+	margin-bottom:0px;	
+	
+}
+.hero_summary_warp > div:not(.hero_chart_warp){
+	margin-bottom:11px;
+	margin-left:63px;
+}
+
+.hero_summary_warp > .hero_chart_warp{
+	padding:10px 63px 0px;
+	background-color:rgba(0, 0, 0, 0.5);	
+}
+
+.hero_summary_warp .hero_stat >div{
+	margin-right:20px;
+}
+.hero_summary_warp .hero_stat >div:first-child{
+	color:#44ae82; 
+}
+
+.hero_summary_warp .hero_stat img{
+	margin-right:5px;
+}
+.hero_summary_warp .top_title h2{
+	color:#fff;
+}
+.hero_summary_warp .top_title div{
+	color:#919191;
+}
+
+
+.static_card_bottom_skill:not(last-child){
+	border-bottom:1px solid #c9c9c9;
+}
+.static_card_bottom_skill .static_box{
+	flex-wrap:wrap;
+	justify-content:flex-start;	
+	align-items:stretch;
+
+}
+
+
+.static_card_bottom_skill .static_box .static_title{
+	background-color:#f3f3f3;
+	align-items:center;
+	width:150px;
+	justify-content:center;
+	font-size:1.1em;
+	text-align:center;
+}
+
+
+.static_card_bottom_skill .static_box .detail_static_data{
+	flex-direction: column;
+	align-items:flex-start;
+	justify-content:center;
+	background-color:#e7e7e7;
+	font-size:0.95em;
+}
+.static_card_bottom_skill .static_box .static_title,
+.static_card_bottom_skill .static_box .detail_static_data{
+	padding:15px 10px;
+	
+}
+
+.static_box > .static_data_warp{
+	padding-left:15px;
+	flex:1;
+	flex-wrap:wrap;
+}
+
+
+
+.detail_static_data .static_value{
+	font-size:1.2em;
+}
+
+.detail_static_data img{
+	margin-right:5px;
+}
+.detail_static_data > div:not(last-child){
+	margin-bottom:5px;
+}
+
+
+
+
+.hero_chart_warp{
+	margin-top:20px;
+}
+.hero_chart_warp > div{
+
+	margin-right:20px;
+
+}
+
+.hero_chart_warp .hero_chart_title{
+	justify-content:space-between;
+}
+
+.hero_chart_warp .hero_chart_title .type_select>div{
+	padding:0 10px;
+	color:#919191;
+}
+.hero_chart_warp .hero_chart_title .type_select>div:first-child{
+	border-right:1px solid #919191;
+}
+
+
+.hero_chart_warp .hero_chart_title .type_select > .active{
+	color:#fff
+}
+
+.hero_chart_warp .hero_chart_grh{
+height:100px;
+width:350px;
+}
+
+.hero_summary_warp{
+		background-repeat:no-repeat;
+	background-position :right;
+}
+
+/*
+.hero_genji
+.hero_mccree
+.hero_pharah
+.hero_reaper
+.hero_soldier
+.hero_tracer
+.hero_bastion
+.hero_hanzo
+.hero_junkret
+.hero_mei
+.hero_tor
+*/
+.hero_widow{
+	background-image:url('/images/hero_profile/widowmaker.jpg');
+}
+/*
+.hero_dva
+.hero_reinhardt
+.hero_roadhog
+.hero_winston
+.hero_zarya
+.hero_lucio
+.hero_mercy
+.hero_symmetra
+.hero_zenyatta
+*/
+
+
+.hero_rank_table table tr td{
+	padding:3px;
+}
+
+
+.hero_rank_table .rank_table_rank{
+	width:60px;
+}
+
+.hero_rank_table .rank_table_hero{
+	width:56px;
+}
+.hero_rank_table .rank_table_region{
+	width:50px;
+}
+
+
+.hero_rank_table  .rank_table_player{
+	font-size:1.1em;
+	padding-left:15px;
+	width:130px;
+}
+
+ .hero_rank_table  .rank_table_player >img{
+	 display:none;
+ }
+.hero_rank_table .rank_table_score{
+	width:80px;
+}
+.hero_rank_table .rank_table_kda{
+	width:120px;
+}
+
+.hero_rank_table .rank_table_kill{
+	width:100px;
+}
+
+.hero_rank_table .rank_table_heal{
+	width:100px;
+}
+.hero_rank_table .rank_table_winrate{
+	width:200px;
+}
+
+.hero_rank_table .rank_table_time{
+	width:150px;
+}
+
+
+
+
+
+
+.hero_rank_table  .rank_table_player > span{
+	font-size:0.9em;
+	color:#a2a2a2
+}
+
+.jqplot-series-0{
+	color:#8b8b8b;
+	font-size:0.9rem!important;
+}
+.jqplot-series-1{
+	color:#000;	
+	font-size:0.9rem!important;
+}
+
+.font_size_14{
+	font-size:1rem!important;
+}
+.top_rank_s{
+	font-size:0.9em!important; 
+}
+.top_rank_xs{
+	font-size:0.8em!important;
+}
+.top_rank_xxs{
+	font-size:0.7em!important;
+}
+
+.text-left{
+	text-align:left!important;
+}
+
+@media (min-width:992px){
+	
+	.profile_hero_chart {padding-top:0px;}
+
+
+     /*
+     #middle_contents_detail > .col-12 > .container{
+		  padding : 0px 0px 20px;
+		  
+	  }*/
+	/*  .profile_contents .hero_warp{
+		  width:60.2%;
+	  }
+	  .profile_contents .static_warp{
+		  width:39%
+	  } */
+
+	  
+	
+	
+}
+@media(max-width:1029px){
+.profile_card .profile_card_top,
+.profile_card .profile_card_top .profile_card_top_left{
+	justify-content:center;
+}
+	
+}
+
+ @media(max-width:1199px){
+	   .profile_contents .hero_warp,
+ 	   .profile_contents .static_warp{
+		  width:100%;
+	  }
+	 .static_warp .static_card{
+		 width:49.5%;
+	 }
+
+	.profile_card .summary .summary_card, 
+	.profile_card .summary .summary_last_card,
+	.hero_detail_warp .hero_card_top .card_top_left >div{
+	margin-bottom:10px;
+	}
+	
+
+	.profile_card .summary .summary_last{
+		flex-direction:row;
+		width:100%
+	}
+	.profile_card .summary .summary_last_card{
+		width:49%;
+		margin-bottom:10px;
+	}
+
+ }
+
+
+@media (max-width:991px){
+	  .profile_hero_chart {padding-top:15px;}
+	  .profile_card .summary{}
+	  	#middle_contents_detail > .col-xs-12 > .container{
+		  padding : 0px 0px 0px;
+	  
+	  }
+	
+	  	
+ }
+ 
+  
+ 
+
+  
+  @media (max-width:820px){
+	  .static_warp .static_card{ min-width:100%; }  
+	  .profile_contents .static_warp{flex-direction:column;}
+	  /*.profile_contents .static_card_bottom .static_box{width:49.8%;}*/
+	  .static_card_bottom .static_box{padding:7p;} 
+	  .static_box .static_data{width:100%; }
+	  .static_box .static_data:nth-child(1){margin-bottom:0px;}
+
+	  .profile_card .summary .summary_card{	min-width:49%;}
+	  .profile_card .summary .summary_card:nth-child(n+3):not(last-child){
+		min-width:49%;
+		width:49%;
+	  }
+	  
+	  .profile_card .summary .summary_card:nth-child(3) .sumary_contents .sumary_contents_contents,
+	  .profile_card .summary .summary_card:nth-child(4) .sumary_contents .sumary_contents_contents{
+		  text-align:right;
+	  }
+	  .profile_card .summary .summary_card:nth-child(3) .sumary_contents .sumary_contents_contents>span,
+	  .profile_card .summary .summary_card:nth-child(4) .sumary_contents .sumary_contents_contents>span{
+		  display:block;
+
+	  }
+	  
+
+	  
+	  .profile_card .summary .sumary_contents_contents{margin-left:0px;}	
+
+      
+	  .profile_card .summary .sumary_contents{padding:11px 7px;}
+	  .profile_card .summary .top_per, .profile_card .summary .top_per_rank{padding:5px 7px;}
+	  
+	
+	.profile_card .summary .summary_last{width:49%; max-width:49%; flex-direction:column; margin-bottom:10px;}
+	
+	
+	.profile_card .summary .summary_last_card{min-width:100%;margin-bottom:0px;}
+	  
+	  
+	  
+  }
+  
+  @media (max-width:767px){
+	.navbar-right{display:none; visibility:hidden;}
+    .mobile-battletag{display:block; visibility:visible; width:98%; margin-left:auto; margin-right:auto;}
+	.mobile-battletag .form-control{
+		 width:65%; font-size:0.9em;}
+    .mobile-battletag .custom_input{display:inline-block; margin-right:5px;}
+	.btn-default{background:none;}
+	 
+ }
+ 
+  @media (min-width:768px){
+      .mobile-battletag{display:none; visibility:hidden;}
+  }
+  
+  
+  
+  
+  @media (min-width:701px){
+	  body{font-size:14px;}
+  }
+  @media (max-width:700px){
+	  body{font-size:13px;}  
+	  .profile_card .level{
+		  margin-left:10px;
+	  }
+	  .profile_card .competitive_level{
+		  margin-right:0px;
+	  }
+	  .profile_card .profile_card_top_left{
+		justify-content:center;  
+		  
+	  }
+ 
+	  
+   	.profile_card .summary .sumary_contents_contents span{
+		font-size:0.6em;
+	}
+	  
+	  
+	  .hero_warp .hero_card_top .card_top_hero_700{
+		  display: -webkit-box; /* Safari */ 
+		  display: -moz-box; /* Firefox 21- */
+		  display: -ms-flexbox; /* IE 10+ */
+		  display: -webkit-flex; /* Chrome */
+		  display: flex; /* Standard (Firefox 22+) */ 
+		 
+	  }
+	  .hero_warp .hero_card_top >div:nth-child(2){
+		  margin-left:0px;
+		  margin-top:20px;
+		  width:100%;
+	  }
+	  .hero_warp .hero_card_top >div:nth-child(2) .card_top_hero{
+		  display:none;		 
+	  }
+
+
+      .hero_warp .hero_card_top .card_top_left{
+		 margin-bottom:5px; 
+	  }
+	  
+
+	  .hero_warp .hero_card_top .card_top_left>div{
+		  margin-right:20px;
+		  
+	  }
+	  .hero_warp .hero_card_top .card_top_left>div:last-child{
+		  margin-right:0px;
+	  }
+	  .hero_warp .hero_card_top .card_top_left .card_top_rank>div{
+		  width:130px;
+	  }
+	  .hero_warp .hero_card_top .card_top_left .card_top_winrate{
+		  min-width:100px;
+	  }
+	 	  
+		  
+	  .panal-important .important-data{	width:50%; margin-bottom:15px;	  }
+
+	   .panal-important .important-data:nth-child(odd){
+
+		border-right : 1px solid #828181;
+		padding-left:10px;
+		}
+		
+		.panal-important .important-data:nth-child(even){
+
+		border-right : none;
+		padding-right:10px;
+		}
+		
+
+		  
+		  
+		  
+	  
+   	  .hero_rank_table .rank_table_rank{width:60px;}
+
+	  .hero_rank_table .rank_table_hero{width:56px; display:none;}
+	  .hero_rank_table .rank_table_region{width:50px; display:none;}
+	.hero_rank_table  .rank_table_player{
+		font-size:1.1em;
+		padding-left:15px;
+		width:150px;}
+		
+     .hero_rank_table  .rank_table_player >img{
+		display:block; 
+		width:40px;
+		margin-bottom:5px;
+		
+	 }
+	.hero_rank_table .rank_table_score{width:70px;}
+	.hero_rank_table .rank_table_kda{width:90px;}
+	.hero_rank_table .rank_table_kill{width:100px; display:none;}
+	.hero_rank_table .rank_table_heal{width:100px;display:none;}
+	.hero_rank_table .rank_table_winrate{width:170px;}
+	.hero_rank_table .rank_table_time{width:150px;display:none;}
+
+	.role_rank_table .rank_table_rank{width:25px;}
+	.role_rank_table .rank_table_hero{width:95px;}
+	.role_rank_table .rank_table_hero >img{display:block; margin-bottom:5px;}		
+	.role_rank_table .rank_table_winrate,
+	.role_rank_table .rank_table_time{
+		text-align:initial;}	
+	.role_rank_table .table .progress{width:100%; margin-right:0px; }
+	.role_rank_table .rank_table_avr{width:65px;}
+	.role_rank_table .rank_table_avr >span{display:block;}
+	.role_rank_table .rank_table_kda{width:75px;}
+	.role_rank_table .rank_table_kda >span{display:block;}
+
+	
+	
+	.hero_rank_warp .hero_nav{
+		margin-bottom:10px;
+	}
+	.hero_nav_heros >div{
+		text-align:center;
+		width:60px;
+		margin-bottom:7px;
+	}
+	
+	
+	.hero_summary_warp{
+		background-color:#000;
+		padding:20px 0px;	
+		background-size:140%;
+		background-position:right top;
+	}
+	
+	.hero_summary_warp > div:not(.hero_chart_warp){
+		margin-bottom:11px;
+		margin-left:10px;
+	}
+
+	.hero_summary_warp > .hero_chart_warp{
+		padding:10px 10px 0px;
+
+	}
+
+	
+	
+	
+		
+	.hero_chart_warp{
+		 flex-direction: column;
+	}		
+	.hero_chart_warp> div{
+		margin-bottom:15px;
+		margin-right:0px;
+	}
+	
+	.hero_chart_warp .hero_chart_grh{
+		width:100%;
+	}
+	
+	.sub_menu > .sub_left >div:nth-child(-n+2){
+		width:80px;
+		height:40px;
+		font-size:1.2em;
+	}
+	.sub_menu >.sub_right{
+		margin-bottom:4px;	
+	}
+	.sub_menu >.sub_right >div>button{
+		width:73px;
+		font-size:1em;
+		padding:6px 5px 4px 5px;
+	}
+	
+
+	
+	.hero_card_bottom{
+		padding:5px;
+	
+	}
+	.hero_detail_warp .hero_card_top .card_top_right,
+	.hero_detail_warp .hero_card_top .card_top_right .card_top_reward{
+		width:100%
+	}
+	
+	.hero_detail_warp .hero_card_top .card_top_right .card_top_reward >div{
+		width:23%;
+		margin-right:2px;
+	}
+	
+	.trend_grh_warp,
+	.trend-grh_header> .legion_icon{
+		padding-top:5px;	
+	}	
+	.trend-grh_header > div:first-child{
+		display:block;
+	}
+	
+	.jqplot-target{
+		margin-top:20px;
+	}
+	
+
+	 .btn-group > .trend_btn {
+		 font-size:1.1em;
+		 padding:0px 7px;
+	 }
+	 
+	 .static_card_bottom_skill .static_box .static_title{
+		 width:110px;
+	 }
+	 .static_card_bottom_skill .static_box .static_title, 
+	 .static_card_bottom_skill .static_box .detail_static_data{
+		 padding:5px;
+	 }
+	 
+
+	 .role_rank_warp .top_title{
+		 min-width:97px;
+	 }
+	 .role_rank_warp .role_rank_top >div{
+		 min-height: 42px;
+	 }
+	 
+	 .hero_rank_warp h2, .role_rank_warp .top_title h2{
+		 font-size:1.8em;
+	 }
+	 
+	 .role_rank_table_warp .role_title >h3{
+		 font-size:1.6em;
+	 }
+	 
+	 
+	 
+  }
+  
+  	 @media (max-width: 400px){
+	
+	.profile_card .summary, .profile_card .summary .summary_card >div, .profile_card .summary .summary_card .top_per>div{
+		font-size:1em;
+	 }
+	 .profile_card .summary .summary_last_card{
+		 height:40px;
+	 }
+	 
+	 .sub_menu > .sub_left >div:nth-child(-n+2){
+		 font-size:1.1em;	 
+		 width:75px;
+		 height:35px;
+	 }
+	 
+	 .sub_menu >.sub_right >div>button{
+		 width:70px;
+	 }
+	 
+	 .hero_warp .hero_card_top .card_top_left .card_top_winrate{
+		 min-width:85px;
+	 }
+	 .hero_warp .hero_card_top .card_top_left>div{
+		 margin-right:15px;
+	 }
+	 .mobile-battletag .form-control{
+		 width:60%;
+		 font-size:0.8em;
+	 }
+	 
+	 .static_warp .static_card_top>div:nth-child(1){
+		 order:1;
+		 margin-top:5px;
+	 }
+	 .static_warp .static_card_top>div:nth-child(2){
+	 	order:3;
+	 }
+	 .static_warp .static_card_top>div:nth-child(3){
+	 	order:2;
+		margin-top:5px;
+	 }
+	 
+	 .btn-group > .role_btn{
+		 height:35px;
+	 }
+	 .static_card .btn{
+
+		 }
+  
+

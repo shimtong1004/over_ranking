@@ -108,6 +108,11 @@ class OverTag < ActiveRecord::Base
           keyword = "level"
           OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, keyword: keyword, value: level)
           
+          if play_type_id == 2
+            competitive_rank = doc.css(".competitive-rank").text
+            OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, keyword: "competitive_rank", value: competitive_rank)
+          end
+          
           #quick-play 일반
           play_type_doc = doc.css("##{play_type_str}")
           # 주요통계
@@ -159,7 +164,7 @@ class OverTag < ActiveRecord::Base
             end
           end
           #통계 end
-        end        
+        end
       end
     end
     UpdateLog.create(over_tag_id: over_tag_id, table_name: "over_hero_master", log_type: "create")
