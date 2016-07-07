@@ -60,4 +60,3 @@ gem 'ssl_requirement'
 
 gem "watir", "~>4.0"
 gem 'watir-scroll'
-gem 'ms-dropdown-rails'

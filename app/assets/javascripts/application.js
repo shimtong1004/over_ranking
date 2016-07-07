@@ -14,7 +14,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap.min.js
-//= require jquery.dd.min
+//= require drop_down.js
 //= require circles.js
 //= require jquery.jqplot.js
 //= require jqplot.canvasAxisTickRenderer.js
