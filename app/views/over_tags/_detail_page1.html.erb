@@ -1,0 +1,421 @@
+<div class="col-xs-12 profile_contents" >
+            <div class="container"> 
+             
+             <div class="hero_warp">
+             	<% @hero_names.each_with_index do |hero_name, i| %>
+	             	<% win = @heros_hash[hero_name]["승리한 게임"] != nil ? @heros_hash[hero_name]["승리한 게임"].delete(",").to_i : 0 %>
+	             	<% play_count = @heros_hash[hero_name]["치른 게임"] != nil ? @heros_hash[hero_name]["치른 게임"].delete(",").to_i : 0 %>
+	             	
+					<% win_per = (win.to_f / play_count.to_f).round(2) * 100 %>
+	                <% lose = play_count.to_i - win.to_i %> 
+	                <% lose_per = 100 - win_per %>
+	                <% gold = @heros_hash[hero_name]["메달 - 금"] %>
+               	<div class="hero_card panel-white"> 
+                	<div class="hero_card_top panel-hedding">
+	                      <div class="play_time_grh">
+                          		<div class="circle" id="circles-<%=i+5%>">
+                          		</div>
+                                <div class="card_top_hero_700">
+                          		<h2 class="panel-title"><%=hero_name%></h2>
+		                        </div>                                                   		
+                          </div>
+                          <div>
+                          <div class="card_top_hero">
+                          		<h2 class="panel-title"><%=hero_name%></h2>
+                          </div>      
+                          <div class="card_top_left">
+                          
+                          <div class="card_top_rank">
+                          		<div class="kor_rank">
+                                	<div><img src="/images/kor_icon.png"></div><div><span class="top_rank_s">#1,293</span><span class="top_rank_xs">(Top 50%)</span></div>
+                                </div>
+                                <div class="global_rank">
+                                	<div><img src="/images/global_icon.png"></div><div><span class="top_rank_s">#1,293</span><span class="top_rank_xs">(Top 50%)</span></div>
+                                </div>
+                           </div>     
+                           <div class="card_top_winrate">
+	                           	<div class="flex-box">
+                               		<div class="card_top_title">승률</div>                                            
+                               		<div class="top_rank_s"><%= win_per %></div>
+                               	</div>
+                           		<div class="progress win-rate">
+										<div class="progress-bar progress-bar-win" role="progressbar" style="width:<%= win_per %>%">W <%= win %></div>
+                                        <div class="progress-bar progress-bar-lose" role="progressbar" style="width:<%= lose_per %>%">L <%= lose %></div>
+                                </div> 
+                                
+                           </div>
+                           <div  class="card_top_reward">
+                           		<div><div class="gold">금메달</div><div><img src="/images/gold_medal.png"><%=gold%></div></div>                                
+                           </div>
+                           </div>
+                           </div>               
+                           
+                                
+                    </div>             
+                	
+                
+                	
+                    <div class="hero_card_bottom panel-body">
+                          <div class="panal-important">
+                          
+                               	 <div class="important-data"> 
+	                                <dl class="data"><dt class="legion_icon top_rank_s">평균처치</dt><dd class="rank_dd"><%=@heros_hash[hero_name]["평균 처치"]%></dd></dl> 
+                                 	<dl class="rank"><dt class="legion_icon"><img src="/images/kor_icon.png"></dt><dd class="rank_dd top_rank_xs">#1,293<span class="top_rank_xxs">(Top 50%)</span></dd></dl> 
+                                	<dl class="rank"><dt class="legion_icon"><img src="/images/global_icon.png"></dt><dd class="rank_dd top_rank_xs">#154,293<span class="top_rank_xxs">(Top 50%)</span></dd></dl>
+                                 </div>
+                                 <div class="important-data"> 
+	                                <dl class="data"><dt class="legion_icon top_rank_s">평균딜량</dt><dd class="rank_dd">5,235</dd></dl> 
+                                 	<dl class="rank"><dt class="legion_icon"><img src="/images/kor_icon.png"></dt><dd class="rank_dd top_rank_xs">#1,293<span class="top_rank_xxs">(Top 50%)</span></dd></dl> 
+                                	<dl class="rank"><dt class="legion_icon"><img src="/images/global_icon.png"></dt><dd class="rank_dd top_rank_xs">#154,293<span class="top_rank_xxs">(Top 50%)</span></dd></dl>			
+                                 </div>
+                                 <div class="important-data"> 
+                                 	<dl class="data"><dt class="legion_icon top_rank_s">명중률</dt><dd class="rank_dd">5,235</dd></dl> 
+                                 	<dl class="rank"><dt class="legion_icon"><img src="/images/kor_icon.png"></dt><dd class="rank_dd top_rank_xs">#1,293<span class="top_rank_xxs">(Top 50%)</span></dd></dl> 
+                                	<dl class="rank"><dt class="legion_icon"><img src="/images/global_icon.png"></dt><dd class="rank_dd top_rank_xs">#154,293<span class="top_rank_xxs">(Top 50%)</span></dd></dl>
+                                </div>
+                                <div class="important-data">                                 
+	                                <dl class="data"><dt class="legion_icon top_rank_s">KDA</dt><dd class="rank_dd">5,235</dd></dl> 
+                                	<dl class="rank"><dt class="legion_icon"><img src="/images/kor_icon.png"></dt><dd class="rank_dd top_rank_xs">#1,293<span class="top_rank_xxs">(Top 50%)</span></dd></dl> 
+                                	<dl class="rank"><dt class="legion_icon"><img src="/images/global_icon.png"></dt><dd class="rank_dd top_rank_xs">#154,293<span class="top_rank_xxs">(Top 50%)</span></dd></dl>
+                                </div>
+                                
+                          </div>                        
+                          
+                         
+                          
+                          
+                          
+                          
+                          
+                          <div class="trend_grh_warp">
+                            <div class="trend-grh_header">
+                            	<div class="legion_icon top_rank_s">트랜드 평균 그래프</div>
+	                            <div class="rank_dd"> 
+    	                        	 <div class="btn-group role_group" role="group" aria-label="...">
+										  <button type="button" class="btn trend_btn active">평균처치</button>
+										  <button type="button" class="btn trend_btn">평균딜량</button>
+										  <button type="button" class="btn trend_btn">명중률</button>
+                    	          			<button type="button" class="btn trend_btn">KDA</button>
+                            		</div> 
+                            	</div>
+                            </div>
+                          	<div id="chart_<%=i+1%>" class="trend_grh"style="height:120px;"></div>
+                          </div>
+                    </div>
+                
+                </div>
+                <% end %>
+                
+                
+   
+            <!-- 왼쪽 내용 끝. -->    
+            </div>
+            <!-- 왼쪽 테두리 끝 -->
+            
+            
+            <!-- 오른쪽 테두리 시작. -->
+            <div class="static_warp">
+                       
+            <div class="static_card panel-white">
+                   	<div class="static_card_top panel-hedding">
+                         <div>평균 통계</div>
+                         <div class="btn-group role_group" role="group" aria-label="...">
+							  <button type="button" class="btn role_btn active">전체</button>
+							  <button type="button" class="btn role_btn">공격</button>
+							  <button type="button" class="btn role_btn">돌격</button>
+                              <button type="button" class="btn role_btn">지원</button>
+                              <button type="button" class="btn role_btn">방어</button>
+						</div> 
+                        <div>
+                        랭크
+                        <select name="drop-average" id="drop-average" style="width:60px;">
+						      <option value='kor' data-image="/images/kor_drop_icon.png" data-imagecss="kor" data-title="kor"></option>
+						      <option value='global' data-image="/images/global_icon.png" data-imagecss="global" data-title="global"></option>
+      
+						</select>
+                        </div>
+                     </div>
+                     
+                     <div class="static_card_bottom panel-body">
+                     	<div class="static_box">
+                        	<div class="static_data"><div>평균처치</div><div class="static_value"><%= @main_hash["처치 - 평균"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>평균결정타</div><div class="static_value"><%= @main_hash["결정타 - 평균"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>평균치유</div><div class="static_value"><%= @main_hash["치유 - 평균"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>평균딜량</div><div class="static_value"><%= @main_hash["준 피해 - 평균"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>평균죽음</div><div class="static_value"><%= @main_hash["죽음 - 평균"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>평균 단독처치</div><div class="static_value"><%= @main_hash["단독 처치 - 평균"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>평균근접공격결정타</div><div class="static_value"><%= @main_hash["근접 공격 결정타 - 평균"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>평균임무기여처치</div><div class="static_value"><%= @main_hash["임무 기여 처치 - 평균"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>평균폭주시간</div><div class="static_value"><%= @main_hash["폭주 시간 - 평균"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>평균임무기여시간</div><div class="static_value"><%= @main_hash["임무 기여 시간 - 평균"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <% if @main_hash["점수"] %>
+                         <div class="static_box">
+                        	<div class="static_data"><div>1분당 평균점수 획득</div><div class="static_value"><%= ((@main_hash["점수"].delete(",").to_f) / (@main_hash["플레이 시간"].delete(",").to_i*60)).round(2) %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <% else %>
+                        <div class="static_box">
+                        	<div class="static_data"><div>1분당 평균점수 획득</div><div class="static_value">-</div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <% end %>
+                        
+                     </div>
+             
+                </div>
+               	<div class="static_card panel-white">
+                   	<div class="static_card_top panel-hedding">
+                         <div>전투 통계</div>
+                           <div class="btn-group role_group" role="group" aria-label="...">
+							  <button type="button" class="btn role_btn active">전체</button>
+							  <button type="button" class="btn role_btn">공격</button>
+							  <button type="button" class="btn role_btn">돌격</button>
+                              <button type="button" class="btn role_btn">지원</button>
+                              <button type="button" class="btn role_btn">방어</button>
+						</div>
+                        <div>
+                        랭크
+                        <select name="drop-combat" id="drop-combat" style="width:60px;">
+						      <option value='kor' data-image="/images/kor_drop_icon.png" data-imagecss="kor" data-title="kor"></option>
+						      <option value='global' data-image="/images/global_icon.png" data-imagecss="global" data-title="global"></option>
+      
+						</select> 
+                        </div>
+                     </div>
+                     <div class="static_card_bottom panel-body">
+                     	<div class="static_box">
+                        	<div class="static_data"><div>처치</div><div class="static_value"><%= @main_hash["처치"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>결정타</div><div class="static_value"><%= @main_hash["결정타"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>단독처치</div><div class="static_value"><%= @main_hash["단독 처치"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>임무기여처치</div><div class="static_value"><%= @main_hash["임무 기여 처치"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>딜량</div><div class="static_value"><%= @main_hash["준 피해"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>동시처치</div><div class="static_value"><%= @main_hash["동시 처치"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>근접공격결정타</div><div class="static_value"><%= @main_hash["근접 공격 결정타"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>임무기여시간</div><div class="static_value"><%= @main_hash["임무 기여 시간"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>폭주시간</div><div class="static_value"><%= @main_hash["폭주 시간"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>환경요소로처치</div><div class="static_value"><%= @main_hash["환경 요소로 처치"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        
+                     </div>
+             
+                </div>
+                
+                
+                
+                
+                <div class="static_card panel-white">
+                   	<div class="static_card_top panel-hedding">
+                        <div> 치유/지원</div>
+                           <div class="btn-group role_group" role="group" aria-label="...">
+							  <button type="button" class="btn role_btn active">전체</button>
+							  <button type="button" class="btn role_btn">공격</button>
+							  <button type="button" class="btn role_btn">돌격</button>
+                              <button type="button" class="btn role_btn">지원</button>
+                              <button type="button" class="btn role_btn">방어</button>
+						</div> 
+                        <div>
+                        랭크
+                        <select name="drop-heal" id="drop-heal" style="width:60px;">
+						      <option value='kor' data-image="/images/kor_drop_icon.png" data-imagecss="kor" data-title="kor"></option>
+						      <option value='global' data-image="/images/global_icon.png" data-imagecss="global" data-title="global"></option>
+      
+						</select> 
+                        </div>
+                     </div>
+                     <div class="static_card_bottom panel-body">
+                     	<div class="static_box">
+                        	<div class="static_data"><div>치유</div><div class="static_value"><%= @main_hash["치유"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>자가치유</div><div class="static_value"><%= @self_healing.to_s(:delimited) %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<% value = @main_hash["처치 시야 지원"] ? @main_hash["처치 시야 지원"] : "-" %>
+                        	<div class="static_data"><div>처치 시야지원</div><div class="static_value"><%= value %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>순간이동기 파괴</div><div class="static_value"><%= @teleporter_destroyed.to_s(:delimited) %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>포탑파괴</div><div class="static_value"><%= @turrets_destroyed.to_s(:delimited) %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        
+                     </div>
+             
+                </div>
+                
+                <div class="static_card panel-white">
+                   	<div class="static_card_top panel-hedding">
+                        <div> 죽음</div>
+                          <div class="btn-group role_group" role="group" aria-label="...">
+							  <button type="button" class="btn role_btn active">전체</button>
+							  <button type="button" class="btn role_btn">공격</button>
+							  <button type="button" class="btn role_btn">돌격</button>
+                              <button type="button" class="btn role_btn">지원</button>
+                              <button type="button" class="btn role_btn">방어</button>
+						</div> 
+                        <div>
+                        랭크
+                        <select name="drop-death" id="drop-death" style="width:60px;">
+						      <option value='kor' data-image="/images/kor_drop_icon.png" data-imagecss="kor" data-title="kor"></option>
+						      <option value='global' data-image="/images/global_icon.png" data-imagecss="global" data-title="global"></option>
+      
+						</select> 
+                        </div>
+                     </div>
+                     <div class="static_card_bottom panel-body">
+                     	<div class="static_box">
+                        	<div class="static_data"><div>죽음</div><div class="static_value"><%= @main_hash["죽음"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>환경요소로 죽음</div><div class="static_value"><%= @main_hash["환경 요소로 죽음"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#154,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                        </div>
+                        
+                     </div>
+             
+                </div>
+                
+            </div>
+            </div>
+            </div>
+            
+<script>
+	//도넛 그래프 스크립트
+
+
+var circle_cnt = $( '.circle' ).length;
+
+if(circle_cnt) {
+	
+	var colors = [
+					['#959595', '#cc4548'], ['#959595', '#cc9e45'], ['#959595', '#4473ae'], ['#959595', '#96ceb7']
+				  ], circles = [];
+	// var play_time = ['18H','7H','2H','2m'];
+	var play_time = ['<%= @offense_play_time %>','<%= @support_play_time %>','<%= @rush_play_time %>','<%= @defense_play_time %>'];
+	<% total_time = @offense_play_time.to_i + @support_play_time.to_i + @rush_play_time.to_i + @defense_play_time.to_i %>
+	var background_img =['offence_icon.png','support.png','tank_icon.png','defence_icon.png'];
+	
+	var per = [<%= (@offense_play_time.to_f / total_time.to_f) * 100 %>, <%= (@support_play_time.to_f / total_time.to_f) * 100 %>, 
+				<%= (@rush_play_time.to_f / total_time.to_f) * 100 %>, <%= (@defense_play_time.to_f / total_time.to_f) * 100 %>];
+
+		for (var i = 1; i <= 4; i++) {
+
+		var child = document.getElementById('circles-' + i), percentage = per[i-1];
+			
+			if(i==1){
+				circles.push(Circles.create({
+				id:         child.id,
+				value:		percentage,
+				radius:     35,
+				width:      8,
+				colors:     colors[i - 1],
+				text:play_time[i-1],
+				background_img : background_img[i-1],
+				duration :0
+
+			}));					
+				
+			}
+			else{
+			
+			circles.push(Circles.create({
+				id:         child.id,
+				value:		percentage,
+				radius:     28,
+				width:      5,
+				colors:     colors[i - 1],
+				text:play_time[i-1],
+				background_img : background_img[i-1],
+				duration :0
+
+			}));
+			}
+		}
+	
+	var textclass = 'hero_circle';
+	<% @hero_names.each_with_index do |name, i| %>
+			var id_num = <%= i + 5 %>;
+			var child = document.getElementById('circles-' + id_num), percentage = <%= @hero_circle["#{name}"][:hero_per].to_f%>;
+			circles.push(Circles.create({
+				id:         child.id,
+				value:		percentage,
+				radius:     35,
+				width:      8,
+				colors:     <%= raw @hero_circle[name][:color] %>,
+				text: 	    "<%= @hero_circle[name][:play_time]%>",
+				textClass : textclass,
+				duration :0
+			}));
+			var hero_icon_url = "url(/images/hero_circle/"+ "<%= @hero_circle[name][:img_name]%>" +"_circle.png)";
+			document.getElementById('circles-'+id_num).style.backgroundImage = hero_icon_url;
+	<% end %>
+}
+</script>

@@ -61,12 +61,28 @@ class OverTagsController < ApplicationController
   end
   
   def detail
-    over_tag = @over_tag
+    session[:user_type] = params[:user_type] if params[:user_type]
     
+    unless params[:play_type]
+      session[:play_type] = "2"
+    else
+      session[:play_type] = params[:play_type]
+    end
+    
+    unless params[:info_type]
+      session[:info_type] = "1"
+    else
+      session[:info_type] = params[:info_type]
+    end
+    
+    
+    over_tag = @over_tag
     @main_hash = {}
-    over_user_type = over_tag.over_user_types.find_by_user_type(params[:user_type])
+    over_user_type = over_tag.over_user_types.find_by_user_type(session[:user_type])
+    @competitive_rank = over_user_type.over_hero_masters.where(play_type: 2, keyword: "competitive_rank").first.value
+    
     hero_name = "모든 영웅"      
-    main_datas = over_user_type.over_hero_masters.where(play_type: 1, hero_name: hero_name)
+    main_datas = over_user_type.over_hero_masters.where(play_type: session[:play_type], hero_name: hero_name)
     main_datas.each do |main_data|
       @main_hash[main_data.keyword] = main_data.value
     end
@@ -74,11 +90,11 @@ class OverTagsController < ApplicationController
     @heros_hash = {}
     keyword = "플레이 시간"
     view_group = "상위 영웅"
-    @hero_names = over_user_type.over_hero_masters.where(play_type: 1, keyword: keyword, view_group: view_group).pluck(:hero_name)
+    @hero_names = over_user_type.over_hero_masters.where(play_type: session[:play_type], keyword: keyword, view_group: view_group).pluck(:hero_name)
     view_group = "통계"
     @hero_names.each do |hero_name|
       tmp_hash = {}
-      hero_datas = over_user_type.over_hero_masters.where(play_type: 1, hero_name: hero_name, view_group: view_group)
+      hero_datas = over_user_type.over_hero_masters.where(play_type: session[:play_type], hero_name: hero_name, view_group: view_group)
       hero_datas.each do |hero_data|
         tmp_hash[hero_data.keyword] = hero_data.value
       end
@@ -86,7 +102,7 @@ class OverTagsController < ApplicationController
     end
     
     @main_hash["main_hero"] = @hero_names[0]
-    @main_hash["level"] = over_user_type.over_hero_masters.where(play_type: 1, keyword: "level").first.value
+    @main_hash["level"] = over_user_type.over_hero_masters.where(play_type: session[:play_type], keyword: "level").first.value
     
     @offense_play_time = 0
     @defense_play_time = 0
@@ -128,15 +144,76 @@ class OverTagsController < ApplicationController
     defense_death = 0
     rush_death = 0
     support_death = 0
+    tmp_time = 0
+    
+    
+    @hero_circle = Hash.new
+    hero_img_name = Hash.new
     
     
     
+    hero_img_name["D.Va"] = ["dva", "#4473ae"]
+    hero_img_name["겐지"] = ["genji", "#cc4548"]
+    hero_img_name["라인하르트"] = ["reinhardt", "#4473ae"]
+    hero_img_name["로드호그"] = ["roadhog", "#4473ae"]
+    hero_img_name["루시우"] = ["lucio", "#cc9e45"]
+    hero_img_name["리퍼"] = ["reaper", "#cc4548"]
+    hero_img_name["맥크리"] = ["mercy", "#cc4548"]
+    hero_img_name["메르시"] = ["mccree", "#cc9e45"]
+    hero_img_name["메이"] = ["mei", "#96ceb7"]
+    hero_img_name["바스티온"] = ["bastion", "#96ceb7"]
+    hero_img_name["솔저: 76"] = ["soldier", "#cc4548"]
+    hero_img_name["시메트라"] = ["symmetra", "#cc9e45"]
+    hero_img_name["위도우메이커"] = ["widow", "#96ceb7"]
+    hero_img_name["윈스턴"] = ["winston", "#4473ae"]
+    hero_img_name["자리야"] = ["zarya", "#4473ae"]
+    hero_img_name["정크랫"] = ["junkrat", "#96ceb7"]
+    hero_img_name["젠야타"] = ["zenyatta", "#cc9e45"]
+    hero_img_name["토르비욘"] = ["tor", "#96ceb7"]
+    hero_img_name["트레이서"] = ["tracer", "#cc4548"]
+    hero_img_name["파라"] = ["pharah", "#cc4548"]
+    hero_img_name["한조"] = ["hanzo", "#96ceb7"]
+    
+    
+    
+    total_play_time_min = 0
     @hero_names.each do |name|
-      if @heros_hash[name]["플레이 시간"].include?("시간")
+      if @heros_hash[name]["플레이 시간"] == nil
+      elsif @heros_hash[name]["플레이 시간"].include?("시간")
         tmp_time = @heros_hash[name]["플레이 시간"].to_i * 60
       elsif @heros_hash[name]["플레이 시간"].include?("분")
         tmp_time = @heros_hash[name]["플레이 시간"].to_i
+      elsif @heros_hash[name]["플레이 시간"].include?("초")
+        tmp_time = 1
       end
+      total_play_time_min += tmp_time
+    end
+    
+    @hero_names.each do |name|
+      if @heros_hash[name]["플레이 시간"] == nil
+      elsif @heros_hash[name]["플레이 시간"].include?("시간")
+        tmp_time = @heros_hash[name]["플레이 시간"].to_i * 60
+      elsif @heros_hash[name]["플레이 시간"].include?("분")
+        tmp_time = @heros_hash[name]["플레이 시간"].to_i
+      elsif @heros_hash[name]["플레이 시간"].include?("초")
+        tmp_time = 1
+      end
+      
+      if tmp_time != 0 && total_play_time_min != 0
+        hero_per = (tmp_time.to_f / total_play_time_min.to_f) * 100
+      else
+        hero_per = 0
+      end
+      @heros_hash["#{name}"]["플레이 시간"] = nil if @heros_hash["#{name}"]["플레이 시간"] == "--"
+      unless @heros_hash["#{name}"]["플레이 시간"]
+        play_time = "-"
+      else
+        play_time2 = @heros_hash["#{name}"]["플레이 시간"]
+        play_time = play_time2.split(" ")[0].to_i.to_s + " "  + play_time2.split(" ")[1]
+      end
+      
+      @hero_circle["#{name}"] = {img_name: hero_img_name["#{name}"][0], color: ["#959595", "#{hero_img_name["#{name}"][1]}"], hero_per: hero_per, play_time: play_time}
+      
       
       tmp_game_count = 0
       tmp_win_game_count = 0
@@ -242,7 +319,14 @@ class OverTagsController < ApplicationController
     @rush_kd = (rush_finishing_blow.to_f / rush_death.to_f).round(2)
     @support_kd = (support_finishing_blow.to_f / support_death.to_f).round(2)
     
-
+    
+    # # @hero_names.each do |hero_name|
+      # # total_play_time_min += @heros_hash["#{hero_name}"]["플레이 시간"].include?("시간") ? @heros_hash["#{hero_name}"]["플레이 시간"].to_i * 60 : @heros_hash["#{hero_name}"]["플레이 시간"].to_i
+    # # end
+#     
+    # @hero_names.each do |hero_name|
+#       
+    # end
   end
 
   # GET /over_tags/1/edit

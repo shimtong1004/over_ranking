@@ -1,6 +1,28 @@
 // JavaScript Document
 
 $(document).ready(function(){
+	
+	$("span[data-link]").click(function() {
+	  var param = "?user_type=" + $(this).data("param")
+	  var link = $(this).data("link") + param;
+	  window.location = link;
+	})
+	
+	$("button[data-link]").click(function() {
+	  var param = "?play_type=" + $(this).data("param")
+	  var link = $(this).data("link") + param;
+	  window.location = link;
+	})
+	
+	$(".detail_info[data-link]").click(function() {
+	  var param = "?" + $(this).data("param")
+	  var link = $(this).data("link") + param;
+	  window.location = link;
+	})
+	
+	
+	
+	
 
 $('.btn').click(function(){
  
@@ -195,102 +217,102 @@ if(hero_chart_cnt){
 
 //도넛 그래프 스크립트
 
-
-var circle_cnt = $( '.circle' ).length;
-
-if(circle_cnt){
-
-	var i=1;
-	var colors = [
-			['#959595', '#cc4548'], ['#959595', '#cc9e45'], ['#959595', '#4473ae'], ['#959595', '#96ceb7']
-		],circles = [];
-	var play_time=['18H','7H','2H','2m'];
-	var background_img =['offence_icon.png','support.png','tank_icon.png','defence_icon.png'];
-	var per = [60,30,50,5];
-
-		for (var i = 1; i <= 4; i++) {
-
-		var child = document.getElementById('circles-' + i), percentage = per[i-1];
-			
-			if(i==1){
-				circles.push(Circles.create({
-				id:         child.id,
-				value:		percentage,
-				radius:     35,
-				width:      8,
-				colors:     colors[i - 1],
-				text:play_time[i-1],
-				background_img : background_img[i-1],
-				duration :0
-
-			}));					
-				
-			}
-			else{
-			
-			circles.push(Circles.create({
-				id:         child.id,
-				value:		percentage,
-				radius:     28,
-				width:      5,
-				colors:     colors[i - 1],
-				text:play_time[i-1],
-				background_img : background_img[i-1],
-				duration :0
-
-			}));
-			}
-		}
-		
-
-		//영웅 그래프
-	var hero_colors = [
-			['#959595', '#cc9e45'], ['#959595', '#cc2d45'], ['#959595', '#3373ae'], ['#959595', '#67ceb7'], ['#959595', '#cc9e34'],
-			['#959595', '#cc9e45'], ['#959595', '#cc2d45'], ['#959595', '#3373ae'], ['#959595', '#67ceb7'], ['#959595', '#cc9e34'],
-			['#959595', '#cc9e45'], ['#959595', '#cc2d45'], ['#959595', '#3373ae'], ['#959595', '#67ceb7'], ['#959595', '#cc9e34'],
-			['#959595', '#cc9e45'], ['#959595', '#cc2d45'], ['#959595', '#3373ae'], ['#959595', '#67ceb7'], ['#959595', '#cc9e34'],
-			['#959595', '#cc9e45']
-		]  //플레이한 영웅 퍼센트 순서대로 해당되는 색깔 입력 
-	       // 공격군은 ['#959595', '#cc4548']
-		   // 지원군은 ['#959595', '#cc9e45']
-		   // 돌격군은 ['#959595', '#4473ae']
-		   // 수비군은 ['#959595', '#96ceb7']
-	
-
-
-	
-	var hero_per = [90,80,70,65,34,34,23,43,23,12,34,23,43,23,42,32,24,21,23,23,3]; //플레이한 영웅 퍼센트 순서대로 입력
-	var hero_play_time=['18시간','7시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간']; 
-	 //플레이한 영웅 시간순서대로 입력
-   
-    var hero_icon=['pharah','reaper','soldier','genji','tracer',
-				   'mccree','mei','hanzo','tor','junkrat','widow','bastion',
-				   'dva','zarya','reinhardt','winston','roadhog','mercy',
-				   'symmetra','zenyatta','lucio']; //플레이한 영웅 순서대로 icon 이미지 파일명 입력
-    
-    var textclass = 'hero_circle';
-		for (var i = 1; i <= 21; i++) {
-			var id_num = i+4;
-				
-			var child = document.getElementById('circles-' + id_num), percentage = hero_per[i-1];
-			
-				circles.push(Circles.create({
-				id:         child.id,
-				value:		percentage,
-				radius:     35,
-				width:      8,
-				colors:     hero_colors[i - 1],
-				text: 	    hero_play_time[i-1],
-				textClass : textclass,
-				duration :0
-				
-
-			}));
-			
-			var hero_icon_url = 'url(/images/hero_circle/'+hero_icon[i-1]+'_circle.png)';
-			document.getElementById('circles-'+id_num).style.backgroundImage = hero_icon_url;
-		
-		}
-}
- 
+// 
+// var circle_cnt = $( '.circle' ).length;
+// 
+// if(circle_cnt){
+// 
+	// var i=1;
+	// var colors = [
+			// ['#959595', '#cc4548'], ['#959595', '#cc9e45'], ['#959595', '#4473ae'], ['#959595', '#96ceb7']
+		// ],circles = [];
+	// var play_time=['18H','7H','2H','2m'];
+	// var background_img =['offence_icon.png','support.png','tank_icon.png','defence_icon.png'];
+	// var per = [60,30,50,5];
+// 
+		// for (var i = 1; i <= 4; i++) {
+// 
+		// var child = document.getElementById('circles-' + i), percentage = per[i-1];
+// 			
+			// if(i==1){
+				// circles.push(Circles.create({
+				// id:         child.id,
+				// value:		percentage,
+				// radius:     35,
+				// width:      8,
+				// colors:     colors[i - 1],
+				// text:play_time[i-1],
+				// background_img : background_img[i-1],
+				// duration :0
+// 
+			// }));					
+// 				
+			// }
+			// else{
+// 			
+			// circles.push(Circles.create({
+				// id:         child.id,
+				// value:		percentage,
+				// radius:     28,
+				// width:      5,
+				// colors:     colors[i - 1],
+				// text:play_time[i-1],
+				// background_img : background_img[i-1],
+				// duration :0
+// 
+			// }));
+			// }
+		// }
+// 		
+// 
+		// //영웅 그래프
+	// var hero_colors = [
+			// ['#959595', '#cc9e45'], ['#959595', '#cc2d45'], ['#959595', '#3373ae'], ['#959595', '#67ceb7'], ['#959595', '#cc9e34'],
+			// ['#959595', '#cc9e45'], ['#959595', '#cc2d45'], ['#959595', '#3373ae'], ['#959595', '#67ceb7'], ['#959595', '#cc9e34'],
+			// ['#959595', '#cc9e45'], ['#959595', '#cc2d45'], ['#959595', '#3373ae'], ['#959595', '#67ceb7'], ['#959595', '#cc9e34'],
+			// ['#959595', '#cc9e45'], ['#959595', '#cc2d45'], ['#959595', '#3373ae'], ['#959595', '#67ceb7'], ['#959595', '#cc9e34'],
+			// ['#959595', '#cc9e45']
+		// ]  //플레이한 영웅 퍼센트 순서대로 해당되는 색깔 입력 
+	       // // 공격군은 ['#959595', '#cc4548']
+		   // // 지원군은 ['#959595', '#cc9e45']
+		   // // 돌격군은 ['#959595', '#4473ae']
+		   // // 수비군은 ['#959595', '#96ceb7']
+// 	
+// 
+// 
+// 	
+	// var hero_per = [90,80,70,65,34,34,23,43,23,12,34,23,43,23,42,32,24,21,23,23,3]; //플레이한 영웅 퍼센트 순서대로 입력
+	// var hero_play_time=['18시간','7시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간','2시간']; 
+	 // //플레이한 영웅 시간순서대로 입력
+//    
+    // var hero_icon=['pharah','reaper','soldier','genji','tracer',
+				   // 'mccree','mei','hanzo','tor','junkrat','widow','bastion',
+				   // 'dva','zarya','reinhardt','winston','roadhog','mercy',
+				   // 'symmetra','zenyatta','lucio']; //플레이한 영웅 순서대로 icon 이미지 파일명 입력
+//     
+    // var textclass = 'hero_circle';
+		// for (var i = 1; i <= 21; i++) {
+			// var id_num = i+4;
+// 				
+			// var child = document.getElementById('circles-' + id_num), percentage = hero_per[i-1];
+// 			
+				// circles.push(Circles.create({
+				// id:         child.id,
+				// value:		percentage,
+				// radius:     35,
+				// width:      8,
+				// colors:     hero_colors[i - 1],
+				// text: 	    hero_play_time[i-1],
+				// textClass : textclass,
+				// duration :0
+// 				
+// 
+			// }));
+// 			
+			// var hero_icon_url = 'url(/images/hero_circle/'+hero_icon[i-1]+'_circle.png)';
+			// document.getElementById('circles-'+id_num).style.backgroundImage = hero_icon_url;
+// 		
+		// }
+// }
+//  
 });
