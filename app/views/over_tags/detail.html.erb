@@ -152,6 +152,8 @@
 
 <script>
 	function update_data(){
+		$(".btn.btn-default.btn-sm").text("업데이트 중...")
+		$(".btn.btn-default.btn-sm").attr("disabled","disabled")
 		$.ajax({
 			url: "/over_tags/<%=@over_tag.id%>/update_data",
 			dataType:'json',
