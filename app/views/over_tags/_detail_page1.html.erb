@@ -11,6 +11,9 @@
 	                <% lose_per = 100 - win_per %>
 	                <% gold = @heros_hash[hero_name]["메달 - 금"] %>
                	<div class="hero_card panel-white"> 
+               		<% if @heros_hash[hero_name]["치른 게임"] == nil %>
+	                	게임 기록 없음.
+	                <% end %>
                 	<div class="hero_card_top panel-hedding">
 	                      <div class="play_time_grh">
                           		<div class="circle" id="circles-<%=i+5%>">
@@ -360,11 +363,10 @@ if(circle_cnt) {
 				  ], circles = [];
 	// var play_time = ['18H','7H','2H','2m'];
 	var play_time = ['<%= @offense_play_time %>','<%= @support_play_time %>','<%= @rush_play_time %>','<%= @defense_play_time %>'];
-	<% total_time = @offense_play_time.to_i + @support_play_time.to_i + @rush_play_time.to_i + @defense_play_time.to_i %>
 	var background_img =['offence_icon.png','support.png','tank_icon.png','defence_icon.png'];
 	
-	var per = [<%= (@offense_play_time.to_f / total_time.to_f) * 100 %>, <%= (@support_play_time.to_f / total_time.to_f) * 100 %>, 
-				<%= (@rush_play_time.to_f / total_time.to_f) * 100 %>, <%= (@defense_play_time.to_f / total_time.to_f) * 100 %>];
+	var per = [<%= (@offense_play_time_min.to_f / @total_play_time_min.to_f) * 100 %>, <%= (@support_play_time_min.to_f / @total_play_time_min.to_f) * 100 %>, 
+				<%= (@rush_play_time_min.to_f / @total_play_time_min.to_f) * 100 %>, <%= (@defense_play_time_min.to_f / @total_play_time_min.to_f) * 100 %>];
 
 		for (var i = 1; i <= 4; i++) {
 

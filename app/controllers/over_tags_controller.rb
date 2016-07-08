@@ -4,7 +4,8 @@ class OverTagsController < ApplicationController
   @@defense = ["메이", "바스티온", "위도우메이커", "정크랫", "토르비욘", "한조"] #수비
   @@rush = ["D.Va", "라인하르트", "로드호그", "윈스턴", "자리야"] #돌격
   @@support = ["루시우", "메르시", "시메트라", "젠야타"] #지원
-  before_action :set_over_tag, only: [:show, :edit, :update, :destroy, :detail]
+  before_action :set_over_tag, only: [:show, :edit, :update, :destroy, :detail, :update_data]
+  skip_before_filter :verify_authenticity_token, :only => [:update_data]
 
   # GET /over_tags
   # GET /over_tags.json
@@ -60,12 +61,18 @@ class OverTagsController < ApplicationController
     render 'show'
   end
   
+  def update_data
+    over_user_type = @over_tag.over_user_types.find_by_user_type(session[:user_type])
+    OverTag.update_hero_master(over_user_type, session[:play_type])
+    render json: {status: :ok}
+  end
+  
   def detail
     session[:user_type] = params[:user_type] if params[:user_type]
     
-    unless params[:play_type]
+    if session[:play_type] == nil
       session[:play_type] = "2"
-    else
+    elsif params[:play_type]
       session[:play_type] = params[:play_type]
     end
     
@@ -75,13 +82,33 @@ class OverTagsController < ApplicationController
       session[:info_type] = params[:info_type]
     end
     
-    
     over_tag = @over_tag
     @main_hash = {}
-    over_user_type = over_tag.over_user_types.find_by_user_type(session[:user_type])
+    over_user_type = over_tag.over_user_types.find_by_user_type(session[:user_type])    
+    
+    update_time = UpdateLog.where(over_tag_id: @over_tag.id, table_name: "over_hero_master", log_type: "create", sub_name: "#{over_user_type.user_type}_#{session[:play_type]}").last
+    
+    unless update_time
+      @update_time = UpdateLog.where(over_tag_id: @over_tag.id, table_name: "over_hero_master", log_type: "create", sub_name: nil).last.created_at
+      befor_sec = Time.now.utc - @update_time
+    else
+      @update_time = update_time.created_at
+      befor_sec = Time.now.utc - @update_time
+    end
+    
+    if befor_sec < 20
+      @update_time = "방금전"
+    elsif befor_sec > 60 && befor_sec < 3600
+      @update_time = (befor_sec.to_i / 60).to_s + "분 전"
+    elsif befor_sec > 3600 && befor_sec < 3600 * 24
+      @update_time = (befor_sec.to_i / 3600).to_s + "시간 전"
+    else
+      @update_time = (befor_sec.to_i / 3600*24).to_s + "일 전"
+    end
+    
     @competitive_rank = over_user_type.over_hero_masters.where(play_type: 2, keyword: "competitive_rank").first.value
     
-    hero_name = "모든 영웅"      
+    hero_name = "모든 영웅"
     main_datas = over_user_type.over_hero_masters.where(play_type: session[:play_type], hero_name: hero_name)
     main_datas.each do |main_data|
       @main_hash[main_data.keyword] = main_data.value
@@ -220,7 +247,6 @@ class OverTagsController < ApplicationController
       tmp_death = 0
       tmp_kill = 0
       tmp_finishing_blow = 0
-      
       tmp_game_count = @heros_hash[name]["치른 게임"].delete(",").to_i if @heros_hash[name]["치른 게임"]
       tmp_win_game_count = @heros_hash[name]["승리한 게임"].delete(",").to_i if @heros_hash[name]["승리한 게임"]
       tmp_death = @heros_hash[name]["죽음"].delete(",").to_i if @heros_hash[name]["죽음"]
@@ -280,24 +306,29 @@ class OverTagsController < ApplicationController
       end
     end
     
+    
+    @offense_play_time_min = @offense_play_time
     if @offense_play_time >= 60
-      @offense_play_time = (@offense_play_time.to_i/60).to_s + "H" 
+      @offense_play_time = (@offense_play_time.to_i/60).to_s + "H"  
     else
       @offense_play_time = @offense_play_time.to_s + "m"
     end
     
+    @defense_play_time_min = @defense_play_time
     if @defense_play_time >= 60
       @defense_play_time = (@defense_play_time.to_i/60).to_s + "H" 
     else
       @defense_play_time = @defense_play_time.to_s + "m"
     end
     
+    @rush_play_time_min = @rush_play_time
     if @rush_play_time >= 60
       @rush_play_time = (@rush_play_time.to_i/60).to_s + "H" 
     else
       @rush_play_time = @rush_play_time.to_s + "m"
     end
     
+    @support_play_time_min = @support_play_time
     if @support_play_time >= 60
       @support_play_time = (@support_play_time.to_i/60).to_s + "H" 
     else
@@ -309,6 +340,10 @@ class OverTagsController < ApplicationController
     @rush_win_per = (rush_win_game_count.to_f / rush_game_count.to_f).round(2) * 100
     @support_win_per = (support_win_game_count.to_f / support_game_count.to_f).round(2) * 100
     
+    @offense_win_per = 0 if @offense_win_per.nan?
+    @defense_win_per = 0 if @defense_win_per.nan?
+    @rush_win_per = 0 if @rush_win_per.nan?
+    @support_win_per = 0 if @support_win_per.nan?
     # @offense_kda = (offense_kill.to_f / offense_death.to_f).round(2)
     # @defense_kda = (defense_kill.to_f / defense_death.to_f).round(2)
     # @rush_kda = (rush_kill.to_f / rush_death.to_f).round(2)
@@ -318,6 +353,8 @@ class OverTagsController < ApplicationController
     @defense_kd = (defense_finishing_blow.to_f / defense_death.to_f).round(2)
     @rush_kd = (rush_finishing_blow.to_f / rush_death.to_f).round(2)
     @support_kd = (support_finishing_blow.to_f / support_death.to_f).round(2)
+    
+    @total_play_time_min = total_play_time_min
     
     
     # # @hero_names.each do |hero_name|

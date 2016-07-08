@@ -20,9 +20,6 @@ $(document).ready(function(){
 	  window.location = link;
 	})
 	
-	
-	
-	
 
 $('.btn').click(function(){
  

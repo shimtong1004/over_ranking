@@ -20,8 +20,10 @@
 	               				<% end %>
 	               			</li>
                             <li class="update_button">
-                                <div class="update_button_warp"><button type="button" class="btn btn-default btn-sm" data-loading-text="<i class='fa fa-spinner fa-spin'></i> 전적 업데이트 중...">전적 업데이트</button></div>
-                                <div class="update_summary_warp"><span> 최근 업데이트 : 3시간전 </span><br><span class="update_summary">정보를 갱신해야 마지막 접속 기록이 반영됩니다</span></div>
+                                <div class="update_button_warp">
+                                	<button onclick="javascript:update_data();" type="button" class="btn btn-default btn-sm" data-loading-text="<i class='fa fa-spinner fa-spin'></i> 전적 업데이트 중...">전적 업데이트</button>
+                                </div>
+                                <div class="update_summary_warp"><span> 최근 업데이트 : <%=@update_time%> </span><br><span class="update_summary">정보를 갱신해야 마지막 접속 기록이 반영됩니다</span></div>
                             
                             
                             </li>
@@ -58,10 +60,10 @@
                         </tr>
                         <tr >
                         	<td class="circle_col_title">승률</td>
-	                        <td  class="win-rate"><span><%=@offense_win_per%>%</td>
-                        	<td class="win-rate"><span ><%=@support_win_per%>%</td>
-                            <td class="win-rate"><span ><%=@rush_win_per%>%</td>
-                            <td class="circle_last_td"><%=@defense_win_per%>%</td>
+	                        <td  class="win-rate"><span><%=@offense_win_per.round(2)%>%</td>
+                        	<td class="win-rate"><span ><%=@support_win_per.round(2)%>%</td>
+                            <td class="win-rate"><span ><%=@rush_win_per.round(2)%>%</td>
+                            <td class="circle_last_td"><%=@defense_win_per.round(2)%>%</td>
                         </tr>                        
                         </tbody>
                         </table>
@@ -147,6 +149,23 @@
             	<%= render 'detail_page2' %>
             <% end %>           
          </div>
+
+<script>
+	function update_data(){
+		$.ajax({
+			url: "/over_tags/<%=@over_tag.id%>/update_data",
+			dataType:'json',
+			type:'PUT',
+			success: function(data){
+				location.reload();
+			}
+		});
+	}
+
+	
+
+</script>
+
 <!-- 
 <script>
 		//@ http://jsfromhell.com/array/shuffle [v1.0]

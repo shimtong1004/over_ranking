@@ -45,6 +45,102 @@ class OverTag < ActiveRecord::Base
     UpdateLog.create(over_tag_id: self.id, table_name: "over_tag", log_type: "update")
   end
   
+  def self.update_hero_master(over_user_type, play_type)
+    over_hero_masters = over_user_type.over_hero_masters.where(play_type: play_type)
+    tag = over_user_type.over_tag.tag
+    tag.gsub!(/#/, '-')
+    
+    user_type = over_user_type.user_type
+    user_type_id = over_user_type.id
+    if user_type == "PC - KR"
+      region = "pc/kr"
+    elsif user_type == "PC - US"
+      region = "pc/us"
+    elsif user_type == "PC - EU"
+      region = "pc/eu"
+    end
+    url = "https://playoverwatch.com/ko-kr/career/#{region}/#{tag}"
+    uri = Addressable::URI.parse(url)
+    url = uri.normalize.to_s
+    html = open(url).read
+    ActiveRecord::Base.transaction do
+      over_hero_masters.destroy_all
+      play_types = []
+      if play_type == "1"
+        play_types.push id: 1, value:"quick-play"
+      else
+        play_types.push id: 2, value:"competitive-play"
+      end
+      doc = Nokogiri::HTML(html)
+        
+      play_types.each do |play_type|
+        play_type_id = play_type[:id]
+        play_type_str = play_type[:value]
+          
+        #level
+        level = doc.css(".u-vertical-center").text
+        keyword = "level"
+        OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, keyword: keyword, value: level)
+          
+        if play_type_id == 2
+          competitive_rank = doc.css(".competitive-rank").text
+          OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, keyword: "competitive_rank", value: competitive_rank)
+        end
+          
+        #quick-play 일반
+        play_type_doc = doc.css("##{play_type_str}")
+        # 주요통계
+          
+        view_group = play_type_doc.css(".content-box.page-wrapper.highlights-section .h3.header").text
+        for i in 0...8
+          value = play_type_doc.css(".content-box.page-wrapper.highlights-section .card-heading")[i].text
+          keyword = play_type_doc.css(".content-box.page-wrapper.highlights-section .card-copy")[i].text
+          OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, keyword: keyword, value: value, view_group: view_group)
+        end
+          
+        #상위영웅 start
+        view_group = play_type_doc.css(".content-box.page-wrapper.hero-comparison-section .h3.header").text
+          
+        heroes_sort_condition = play_type_doc.css(".content-box.page-wrapper.hero-comparison-section .js-career-select option")
+        hero_sort_datas = play_type_doc.css(".progress-category.toggle-display")
+        
+        heroes_sort_condition.each_with_index do |sort_condition, hero_sort_index|
+          keyword = sort_condition.text
+          hero_sort_data = hero_sort_datas[hero_sort_index]
+          for i in 0...21
+            hero_name = hero_sort_data.css(".bar-text .title")[i].text
+            value = hero_sort_data.css(".bar-text .description")[i].text
+            OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, hero_name: hero_name, keyword: sort_condition.text, value: value, view_group: view_group)
+          end
+        end
+        #상위영웅 end
+          
+        #통계 start
+        view_group = play_type_doc.css(".content-box.page-wrapper.career-stats-section .h3.header").text
+        stats = play_type_doc.css(".content-box.page-wrapper.career-stats-section .js-stats.toggle-display")
+        stats_names =  play_type_doc.css(".content-box.page-wrapper.career-stats-section .js-career-select option")
+          
+          
+        stats.each_with_index do |data, i|
+          hero_name = stats_names[i].text
+          tables = data.css(".column.xs-12.md-6.xl-4.margin-xs.margin-no-sides table")
+          tables.each do |table|
+            view_group_detail = table.css("thead tr").text
+            trs = table.css("tbody tr")
+              trs.each do |tr|
+              keyword = tr.css("td")[0].text
+              value = tr.css("td")[1].text
+              OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, hero_name: hero_name, keyword: keyword, value: value, view_group: view_group, view_group_detail: view_group_detail)
+            end
+          end
+        end
+        #통계 end
+      end
+    end
+    UpdateLog.create(over_tag_id: over_user_type.over_tag.id, table_name: "over_hero_master", log_type: "create", sub_name: "#{user_type}_#{play_type}")
+    
+  end
+  
   def self.set_data_from_bnet(tag, over_tag_id)
     tag.gsub!(/#/, '-')
     
@@ -124,9 +220,6 @@ class OverTag < ActiveRecord::Base
             OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, keyword: keyword, value: value, view_group: view_group)
           end
           
-          
-          
-          
           #상위영웅 start
           view_group = play_type_doc.css(".content-box.page-wrapper.hero-comparison-section .h3.header").text
           
@@ -170,66 +263,7 @@ class OverTag < ActiveRecord::Base
     UpdateLog.create(over_tag_id: over_tag_id, table_name: "over_hero_master", log_type: "create")
     
     return region
-    
   end
-  
-  # def self.set_data_from_bnet(tag, over_tag_id)
-    # tag.gsub!(/#/, '-')
-    # url = "https://playoverwatch.com/ko-kr/career/pc/kr/#{tag}"
-    # uri = Addressable::URI.parse(url)
-    # url = uri.normalize.to_s
-#     
-    # html = open(url).read
-    # doc = Nokogiri::HTML(html)
-#     
-    # # 주요통계
-    # ActiveRecord::Base.transaction do
-      # view_group = doc.css("#highlights-section h1").text
-      # for i in 0...8
-        # value = doc.css(".card-heading")[i].text
-        # keyword = doc.css(".card-copy")[i].text
-        # OverHeroMaster.create(over_tag_id: over_tag_id, keyword: keyword, value: value, view_group: view_group)
-      # end
-#       
-      # #상위영웅 start
-      # view_group = doc.css("#top-heroes-section h1").text
-#       
-      # heroes_sort_condition = doc.css("#top-heroes-section .js-career-select option")
-      # hero_sort_datas = doc.css(".progress-category.toggle-display")
-#       
-      # heroes_sort_condition.each_with_index do |sort_condition, hero_sort_index|
-        # keyword = sort_condition.text
-        # hero_sort_data = hero_sort_datas[hero_sort_index]
-        # for i in 0...21
-          # hero_name = hero_sort_data.css(".bar-text .title")[i].text
-          # value = hero_sort_data.css(".bar-text .description")[i].text
-          # OverHeroMaster.create(over_tag_id: over_tag_id, hero_name: hero_name, keyword: sort_condition.text, value: value, view_group: view_group)
-        # end
-      # end
-      # #상위영웅 end    
-#       
-      # #통계 start
-      # stats = doc.css(".js-stats.toggle-display")
-      # stats_names =  doc.css(".js-career-select")[1].css("option")
-      # view_group = doc.css("#stats-section h1").text
-#       
-#       
-      # stats.each_with_index do |data, i|
-        # hero_name = stats_names[i].text
-        # tables = data.css(".column.xs-12.md-6.xl-4.margin-xs.margin-no-sides table")
-        # tables.each do |table|
-          # view_group_detail = table.css("thead tr").text
-          # trs = table.css("tbody tr")
-            # trs.each do |tr|
-            # keyword = tr.css("td")[0].text
-            # value = tr.css("td")[1].text
-            # OverHeroMaster.create(over_tag_id: over_tag_id, hero_name: hero_name, keyword: keyword, value: value, view_group: view_group, view_group_detail: view_group_detail)
-          # end
-        # end
-      # end
-    # end
-    # UpdateLog.create(over_tag_id: over_tag_id, table_name: "over_hero_master", log_type: "create")
-  # end
   
   def self.set_data(tag)
     over_tag = OverTag.find_by_tag(tag)

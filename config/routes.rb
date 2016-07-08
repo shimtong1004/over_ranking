@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   resources :over_tags do
     member do
       get 'detail'
+      put 'update_data'
     end
   end
   resources :over_heros
