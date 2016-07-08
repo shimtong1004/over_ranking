@@ -96,11 +96,11 @@ class OverTagsController < ApplicationController
       befor_sec = Time.now.utc - @update_time
     end
     
-    if befor_sec < 20
+    if befor_sec < 60
       @update_time = "방금전"
-    elsif befor_sec > 60 && befor_sec < 3600
+    elsif befor_sec >= 60 && befor_sec < 3600
       @update_time = (befor_sec.to_i / 60).to_s + "분 전"
-    elsif befor_sec > 3600 && befor_sec < 3600 * 24
+    elsif befor_sec >= 3600 && befor_sec < 3600 * 24
       @update_time = (befor_sec.to_i / 3600).to_s + "시간 전"
     else
       @update_time = (befor_sec.to_i / 3600*24).to_s + "일 전"
