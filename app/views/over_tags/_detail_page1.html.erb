@@ -3,6 +3,7 @@
              
              <div class="hero_warp">
              	<% @hero_names.each_with_index do |hero_name, i| %>
+             		<% break if i > 4%>
 	             	<% win = @heros_hash[hero_name]["승리한 게임"] != nil ? @heros_hash[hero_name]["승리한 게임"].delete(",").to_i : 0 %>
 	             	<% play_count = @heros_hash[hero_name]["치른 게임"] != nil ? @heros_hash[hero_name]["치른 게임"].delete(",").to_i : 0 %>
 	             	
@@ -39,7 +40,7 @@
                            <div class="card_top_winrate">
 	                           	<div class="flex-box">
                                		<div class="card_top_title">승률</div>                                            
-                               		<div class="top_rank_s"><%= win_per %></div>
+                               		<div class="top_rank_s"><%= win_per.round(2) %></div>
                                	</div>
                            		<div class="progress win-rate">
 										<div class="progress-bar progress-bar-win" role="progressbar" style="width:<%= win_per %>%">W <%= win %></div>

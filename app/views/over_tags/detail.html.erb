@@ -81,7 +81,12 @@
                     </div>        
                     
                     <div class="summary_card">
-          					<div class="sumary_contents"><div class="sumary_contents_title">승률</div><div class="sumary_contents_contents">30% <span class="">(2174승 3544패)</span></div></div>
+          					<div class="sumary_contents">
+          						<div class="sumary_contents_title">승률</div>
+          						<div class="sumary_contents_contents"><%= ((@main_hash["승리한 게임"].delete(",").to_f / @main_hash["치른 게임"].delete(",").to_f) * 100).round(2) %>
+          							<span class="">(<%= @main_hash["승리한 게임"]%>승 <%=(@main_hash["치른 게임"].delete(",").to_i - @main_hash["승리한 게임"].delete(",").to_i).to_s(:delimited)%>패)</span>
+          						</div>
+          					</div>
                             <div class="top_per">
                                  <div>
                                  	<div><img src="/images/kor_icon.png"></div>
@@ -96,14 +101,23 @@
                      </div>
                      
                      <div class="summary_card">
-          					<div class="sumary_contents"><div class="sumary_contents_title">K/D</div><div class="sumary_contents_contents">1.13<span class="">(5214/3245)</span></div></div>
+          					<div class="sumary_contents"><div class="sumary_contents_title">K/D</div>
+	          					<div class="sumary_contents_contents"><%=(@main_hash["결정타"].to_f/@main_hash["죽음"].to_f).round(2)%>
+	          						<span class="">(5214/3245)</span>
+	          					</div>
+          					</div>
                             <div class="top_per">
                                  <div><div><img src="/images/kor_icon.png"></div><div class="sumary_contents_contents top_rank_s">##1,293<span class="top_rank_xs">(Top 50%)</span></div></div>
                                  <div><div><img src="/images/global_icon.png"></div><div class="sumary_contents_contents top_rank_s">##1,293<span class="top_rank_xs">(Top 50%)</span></div></div>
                             </div>
                      </div>
                      <div class="summary_card">
-          					<div class="sumary_contents"><div class="sumary_contents_title">KDA</div><div class="sumary_contents_contents">0.23<span class="">(341/2345)</span></div></div>
+          					<div class="sumary_contents">
+          						<div class="sumary_contents_title">KDA</div>
+	          						<div class="sumary_contents_contents"><%=(@main_hash["처치"].to_f/@main_hash["죽음"].to_f).round(2)%>
+	          							<span class="">(341/2345)</span>
+	          						</div>
+          						</div>
                             <div class="top_per">
                                  <div><div><img src="/images/kor_icon.png"></div><div class="sumary_contents_contents top_rank_s">##1,293<span class="top_rank_xs">(Top 50%)</span></div></div>
                                  <div><div><img src="/images/global_icon.png"></div><div class="sumary_contents_contents top_rank_s">##1,293<span class="top_rank_xs">(Top 50%)</span></div></div>

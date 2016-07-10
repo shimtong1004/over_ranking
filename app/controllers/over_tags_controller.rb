@@ -103,7 +103,7 @@ class OverTagsController < ApplicationController
     elsif befor_sec >= 3600 && befor_sec < 3600 * 24
       @update_time = (befor_sec.to_i / 3600).to_s + "시간 전"
     else
-      @update_time = (befor_sec.to_i / 3600*24).to_s + "일 전"
+      @update_time = (befor_sec.to_i / (3600*24)).to_s + "일 전"
     end
     
     @competitive_rank = over_user_type.over_hero_masters.where(play_type: 2, keyword: "competitive_rank").first.value
