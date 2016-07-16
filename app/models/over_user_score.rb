@@ -128,6 +128,7 @@ class OverUserScore < ActiveRecord::Base
       final_blows += value if key == "결정타"
       value = value.to_f / hero_cnt.to_f if avr_key.index(key) && hero_type
       keyword_head = "#{hero_type}_" if hero_type
+      value = 0.0 if value.nan?
       OverUserScore.create(over_user_type_id: over_user_type_id, user_type: user_type.user_type, play_type: play_type, keyword: "#{keyword_head}#{key}", score: value)
     end
     
