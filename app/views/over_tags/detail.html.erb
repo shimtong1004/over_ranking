@@ -6,15 +6,15 @@
                	  	<div class="profile_card_top_left">
                     
                     <div class="level text-center">
-          	        	<%=@main_hash["level"]%>
+          	        	<%= @level %>
 	                </div>
                     <div class="competitive_level">
-                    	<img src="/images/compe_rank/rank-10.png"><%=@competitive_rank%>
+                    	<img src="/images/compe_rank/rank-10.png"><%= @competitive_rank %>
                     </div>
                 	
                     <div class="profile_card_content">
                         <ul class="list-unstyled">
-                        	<li class="battle_tag"><%=@over_tag.tag_name%>
+                        	<li class="battle_tag"><%= @over_tag.tag_name %>
 	               				<% @over_tag.over_user_types.each do |over_user_tag| %>
 	               					<span class="label label-default" data-link="<%= detail_over_tag_path(@over_tag) %>" data-param="<%= over_user_tag.user_type %>" style="cursor:pointer;"><%= over_user_tag.user_type %></span>
 	               				<% end %>
@@ -53,17 +53,17 @@
                         </tr>
                         <tr>
                         	<td class="circle_col_title">KD</td>
-	                        <td><%=@offense_kd%></td>
-                        	<td><%=@support_kd%></td>
-                            <td><%=@rush_kd%></td>
-                            <td class="circle_last_td"><%=@defense_kd%></td>
+	                        <td><%= @data_hash["offense_KD"] %></td>
+                        	<td><%= @data_hash["support_KD"] %></td>
+                            <td><%= @data_hash["rush_KD"]%></td>
+                            <td class="circle_last_td"><%= @data_hash["defense_KD"]%></td>
                         </tr>
                         <tr >
                         	<td class="circle_col_title">승률</td>
-	                        <td  class="win-rate"><span><%=@offense_win_per.round(2)%>%</td>
-                        	<td class="win-rate"><span ><%=@support_win_per.round(2)%>%</td>
-                            <td class="win-rate"><span ><%=@rush_win_per.round(2)%>%</td>
-                            <td class="circle_last_td"><%=@defense_win_per.round(2)%>%</td>
+	                        <td  class="win-rate"><span><%= @data_hash["offense_승률"].round(2)%>%</td>
+                        	<td class="win-rate"><span ><%= @data_hash["support_승률"].round(2)%>%</td>
+                            <td class="win-rate"><span ><%= @data_hash["rush_승률"].round(2)%>%</td>
+                            <td class="circle_last_td"><%= @data_hash["defense_승률"].round(2)%>%</td>
                         </tr>                        
                         </tbody>
                         </table>
@@ -71,64 +71,64 @@
                 </div>
                 <div class="summary">
                 	<div class="summary_card">
-                   			<div class="sumary_contents"><div class="sumary_contents_title">전체순위</div><div class="sumary_contents_contents">23,439위</div></div>
-                            <div class="top_per_rank"><div class="sumary_contents_title">상위</div><div class="sumary_contents_contents">10%</div></div>                                       
+                   			<div class="sumary_contents"><div class="sumary_contents_title">전체순위</div><div class="sumary_contents_contents"><%= @data_hash["플레이 시간_rank"] %>위</div></div>
+                            <div class="top_per_rank"><div class="sumary_contents_title">상위</div><div class="sumary_contents_contents">10%</div></div>
                     </div>
                     
                     <div class="summary_card">
-                            <div class="sumary_contents"><div class="sumary_contents_title">지역순위<span class="top_rank_xs">(kr)</span></div><div class="sumary_contents_contents">23,439위</div></div>
+                            <div class="sumary_contents"><div class="sumary_contents_title">지역순위<span class="top_rank_xs">(kr)</span></div><div class="sumary_contents_contents"><%= @data_hash["플레이 시간_local_rank"] %>위</div></div>
                             <div class="top_per_rank"><div class="sumary_contents_title">상위</div><div class="sumary_contents_contents">10%</div></div>              
                     </div>        
                     
                     <div class="summary_card">
           					<div class="sumary_contents">
           						<div class="sumary_contents_title">승률</div>
-          						<div class="sumary_contents_contents"><%= ((@main_hash["승리한 게임"].delete(",").to_f / @main_hash["치른 게임"].delete(",").to_f) * 100).round(2) %>
-          							<span class="">(<%= @main_hash["승리한 게임"]%>승 <%=(@main_hash["치른 게임"].delete(",").to_i - @main_hash["승리한 게임"].delete(",").to_i).to_s(:delimited)%>패)</span>
+          						<div class="sumary_contents_contents"><%= @data_hash["승률"].round(2) %>
+          							<span class="">(<%= @data_hash["승리한 게임"] %>승 <%= @data_hash["치른 게임"] - @data_hash["승리한 게임"] %>패)</span>
           						</div>
           					</div>
                             <div class="top_per">
                                  <div>
                                  	<div><img src="/images/kor_icon.png"></div>
                                     <div class="sumary_contents_contents top_rank_s">
-                                    	##1,293<span class="top_rank_xs">(Top 50%)</span>
+                                    	#<%= @data_hash["승률_local_rank"] %><span class="top_rank_xs">(Top 50%)</span>
                                      </div>
                                  </div>
                                  <div>
                                  	<div><img src="/images/global_icon.png"></div>
-                                    <div class="sumary_contents_contents top_rank_s">##1,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                                    <div class="sumary_contents_contents top_rank_s">#<%= @data_hash["승률_rank"] %><span class="top_rank_xs">(Top 50%)</span></div></div>
                             </div>
                      </div>
                      
                      <div class="summary_card">
           					<div class="sumary_contents"><div class="sumary_contents_title">K/D</div>
-	          					<div class="sumary_contents_contents"><%=(@main_hash["결정타"].to_f/@main_hash["죽음"].to_f).round(2)%>
-	          						<span class="">(5214/3245)</span>
+	          					<div class="sumary_contents_contents"><%=@data_hash["KD"].round(2)%>
+	          						<span class="">(<%= @data_hash["결정타"] %>/<%= @data_hash["죽음"] %>)</span>
 	          					</div>
           					</div>
                             <div class="top_per">
-                                 <div><div><img src="/images/kor_icon.png"></div><div class="sumary_contents_contents top_rank_s">##1,293<span class="top_rank_xs">(Top 50%)</span></div></div>
-                                 <div><div><img src="/images/global_icon.png"></div><div class="sumary_contents_contents top_rank_s">##1,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                                 <div><div><img src="/images/kor_icon.png"></div><div class="sumary_contents_contents top_rank_s">##<%= @data_hash["KD_local_rank"] %><span class="top_rank_xs">(Top 50%)</span></div></div>
+                                 <div><div><img src="/images/global_icon.png"></div><div class="sumary_contents_contents top_rank_s">##<%= @data_hash["KD_rank"] %><span class="top_rank_xs">(Top 50%)</span></div></div>
                             </div>
                      </div>
                      <div class="summary_card">
           					<div class="sumary_contents">
           						<div class="sumary_contents_title">KDA</div>
-	          						<div class="sumary_contents_contents"><%=(@main_hash["처치"].to_f/@main_hash["죽음"].to_f).round(2)%>
-	          							<span class="">(341/2345)</span>
+	          						<div class="sumary_contents_contents"><%= @data_hash["KDA"].round(2) %>
+	          							<span class="">(<%= @data_hash["처치"] %>/<%= @data_hash["죽음"] %>)</span>
 	          						</div>
           						</div>
                             <div class="top_per">
-                                 <div><div><img src="/images/kor_icon.png"></div><div class="sumary_contents_contents top_rank_s">##1,293<span class="top_rank_xs">(Top 50%)</span></div></div>
-                                 <div><div><img src="/images/global_icon.png"></div><div class="sumary_contents_contents top_rank_s">##1,293<span class="top_rank_xs">(Top 50%)</span></div></div>
+                                 <div><div><img src="/images/kor_icon.png"></div><div class="sumary_contents_contents top_rank_s">##<%=@data_hash["KDA_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                                 <div><div><img src="/images/global_icon.png"></div><div class="sumary_contents_contents top_rank_s">##<%=@data_hash["KDA_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
                             </div>
                      </div>
                      <div class="summary_last">
           					<div class="summary_last_card">
-                           <div class="sumary_contents_title">플레이시간</div><div class="sumary_contents_contents"><%=@main_hash["플레이 시간"]%></div>
+                           <div class="sumary_contents_title">플레이시간</div><div class="sumary_contents_contents"><%= @data_hash["플레이 시간"].to_i/60 %>시간</div>
                             </div>
                             <div class="summary_last_card">
-                            <div class="sumary_contents_title">선호영웅</div><div class="sumary_contents_contents"><%=@main_hash["main_hero"]%></div>
+                            <div class="sumary_contents_title">선호영웅</div><div class="sumary_contents_contents"><%= @hero_names[0] %></div>
                             </div>
                      </div>
                      
@@ -161,7 +161,7 @@
             	<%= render 'detail_page1' %>
             <% else %>
             	<%= render 'detail_page2' %>
-            <% end %>           
+            <% end %>
          </div>
 
 <script>

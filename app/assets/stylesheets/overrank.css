@@ -39,7 +39,8 @@ body{
 		  padding : 10px 0px 0px;
 		  min-height:100%;
 	  }
-	  
+	  .main_content,.main_content .main-form-group,.main_content .main-form,
+	  .main_chart_warp,.main_chart,.main_chart_title,
 	  .profile_card .profile_card_top, .profile_card .profile_card_top>div,
 	  .profile_card .summary, .profile_card .summary .summary_card>div, .profile_card .summary .summary_card .top_per>div,
 	  .profile_card .summary .summary_last, .summary_last_card,
@@ -134,31 +135,86 @@ body{
       }
 	  
 
-
-	   p { margin: 20px 0px; }
-	   
-	   .list_chart{list-style-type:none;}
-	   
-	  
-	   
-
-		   
-		.rank_chart .chart_hero_sm{max-width:32px;}
+	.main_content{
+		flex-direction:column;
+		align-items:center;
+	}
+	.main_content .main-form{
+		width:494px;
+		flex-direction: column;
+   		align-items: center;
+	}
+	
+	.main-form-group{
+		margin-bottom:10px;
+		width:100%;
+	}
+	.main-form-group .btn-main-tag,
+	.main-form-group input{
+		background-color:#fafafa;
+		border:1px solid #dcdcdc;
+		border-radius:5px;	
 		
-		.progress .color-01{background-color:#5cb85c}
-		.progress .color-02{background-color:#5bc0de}
-		.progress .color-03{background-color:#f0ad4e}
-		.progress .color-04{background-color:#5cb85c}
-		.progress .color-05{background-color:#d9534f}
-	   
-	    .main_chart_title{border-bottom: solid 1px #666; margin-bottom:15px; }
+	}
+	.main-form-group .btn-main-tag{
+		background-image:url('../images/main_img/main_tag_btn.png');
+		background-repeat:no-repeat;
+		background-position:center center;
+		width:230px;
+		border-top-left-radius:0;
+		border-bottom-left-radius:0;
+		border-left:none;
+		
+		-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  	  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  	
 
-		.rank_chart_title, .role_chart_title {padding-right:0px; padding-left:0px; margin-bottom:5px;}
-		.rank_chart_title .title_left{float:left;}
-		.rank_chart_title > img[class^="title"]{max-width:40px; margin-top:3px; margin-right:10px;}
-		.rank_chart_title .more{float:right; margin-top:10px; margin-bottom:10px}
-		.role_chart_title .more{float:right;}
-		.main_content {text-align:center;}
+	}
+	.main-form-group input{
+		border-top-right-radius:0;
+		border-bottom-right-radius:0;
+		border-right:none;
+		font-size:1em;
+		
+	}
+	
+	#middle_contents_main_chart{background-color:#e1e1e1;padding-bottom: 20px;}
+	
+	#middle_contents_main_chart h2{justify-content:center;margin-bottom:23px; color:#646464; font-size:2em;}
+	.main_chart_warp{width:750px; margin-right:auto; margin-left:auto; justify-content:space-between;flex-wrap:wrap;}
+	
+	.main_chart{width:49.5%; flex-wrap-wrap; flex-direction:column; border:1px solid #d4d4d4; background-color:#eeeeee; margin-bottom:10px;}
+	.main_chart_title{background-color:#f9f9f9; justify-content:space-between; height:40px; align-items:center; padding:0 15px; font-size:1.2em;}	
+						  
+	.main_chart_title img:first-child{margin-right:17px;}	
+	.main_chart_title.offence{color:#cc4547;}
+	.main_chart_title.defence{color:#44ae82;}
+	.main_chart_content table{background-color:#eeeeee; width:100%; margin-top:15px;margin-bottom:15px;}
+		
+		
+	.main_chart_content table td{height:45px;}
+	.main_chart_content table td img{margin-right:15px;}
+	.main_chart_content table td .progress{margin-bottom:0px; background-color:#787878;}
+	.main_chart_content table td:first-child{padding-left:15px; width:37px;}
+	.main_chart_content table td:last-child{padding-right:15px; width:190px;}
+	 
+		   
+	.rank_chart .chart_hero_sm{max-width:32px;}
+		
+	.progress .color-01{background-color:#5cb85c}
+	.progress .color-02{background-color:#5bc0de}
+	.progress .color-03{background-color:#f0ad4e}
+	.progress .color-04{background-color:#5cb85c}
+	.progress .color-05{background-color:#d9534f}
+	  
+
+
+	.rank_chart_title, .role_chart_title {padding-right:0px; padding-left:0px; margin-bottom:5px;}
+	.rank_chart_title .title_left{float:left;}
+	.rank_chart_title > img[class^="title"]{max-width:40px; margin-top:3px; margin-right:10px;}
+	.rank_chart_title .more{float:right; margin-top:10px; margin-bottom:10px}
+	.role_chart_title .more{float:right;}
+
 		.battle_tag_find button{padding:0px; border:none; margin-left:10px;}
 
  /*인덱스에서 쓰는거 */
@@ -182,7 +238,7 @@ body{
 	 min-width:12.2rem;
 	 min-height:150px;
 
-     background:url('/images/lv_frame/00590.png') no-repeat;
+     background:url('../images/lv_frame/00590.png') no-repeat;
 	 background-size:170px 170px;
 	 background-position:-24px -21px;
  }
@@ -275,7 +331,7 @@ padding-bottom:7px;
 	
 }
 .profile_hero_chart>.table>tbody>tr>.circle_col_title{
-	background-image:url(/images/circle_col_back.png);
+	background-image:url(../images/circle_col_back.png);
 	background-repeat:no-repeat;
 	background-position:center right;
 	color:#fff;
@@ -1015,6 +1071,8 @@ align-items:flex-end;
 .role_rank_table .rank_table_winrate{width:auto;}
 .role_rank_table .rank_table_time{width:auto;}
 .role_rank_table .rank_table_avr{width:120px;}
+.role_rank_table .rank_table_avr_deal{width:120px;}
+.role_rank_table .rank_table_avr_heal{width:120px;}
 .role_rank_table .rank_table_kda{width:100px;}
 
 .role_rank_table table td >img{
@@ -1382,11 +1440,17 @@ width:350px;
 
 @media (max-width:991px){
 	  .profile_hero_chart {padding-top:15px;}
-	  .profile_card .summary{}
+
 	  	#middle_contents_detail > .col-xs-12 > .container{
 		  padding : 0px 0px 0px;
 	  
 	  }
+	  
+	  
+	  .hero_nav_heros{justify-content:flex-start;}
+	  .hero_nav_heros >div{margin-right:5px; margin-bottom:10px;}
+	  .hero_rank_warp .hero_nav{margin-bottom:0px;}
+		  
 	
 	  	
  }
@@ -1398,10 +1462,17 @@ width:350px;
   @media (max-width:820px){
 	  .static_warp .static_card{ min-width:100%; }  
 	  .profile_contents .static_warp{flex-direction:column;}
-	  /*.profile_contents .static_card_bottom .static_box{width:49.8%;}*/
-	  .static_card_bottom .static_box{padding:7p;} 
+	  .profile_contents .static_card_bottom .static_box{width:49.8%;}
+	  .static_data .static_value{font-size:1.1em;}
+	  
+	  .static_card_bottom .static_box:last-child:nth-child(n+5):nth-child(even), 
+	  .static_card_bottom .static_box:nth-child(5){width:100%;}
+	  .static_card_bottom .static_box:last-child:nth-child(n+5):nth-child(even)>.static_data, 
+	  .static_card_bottom .static_box:nth-child(5)>.static_data{width:40%;}
+	  
+	  .static_card_bottom .static_box{padding:10px 7px;} 
 	  .static_box .static_data{width:100%; }
-	  .static_box .static_data:nth-child(1){margin-bottom:0px;}
+	  .static_box .static_data:nth-child(1){margin-bottom:3px;}
 
 	  .profile_card .summary .summary_card{	min-width:49%;}
 	  .profile_card .summary .summary_card:nth-child(n+3):not(last-child){
@@ -1444,6 +1515,11 @@ width:350px;
 		 width:65%; font-size:0.9em;}
     .mobile-battletag .custom_input{display:inline-block; margin-right:5px;}
 	.btn-default{background:none;}
+	.main_chart_warp{width:100%;}
+	
+	
+	
+	
 	 
  }
  
@@ -1458,7 +1534,12 @@ width:350px;
 	  body{font-size:14px;}
   }
   @media (max-width:700px){
-	  body{font-size:13px;}  
+	  body{font-size:13px;}
+	  
+	  .main_img img{width:100%;}
+	  .main_content .main-form{width:100%;}
+	  
+	  .main_chart{width:100%; margin-bottom:10px;}
 	  .profile_card .level{
 		  margin-left:10px;
 	  }
@@ -1562,8 +1643,14 @@ width:350px;
 	.role_rank_table .rank_table_time{
 		text-align:initial;}	
 	.role_rank_table .table .progress{width:100%; margin-right:0px; }
-	.role_rank_table .rank_table_avr{width:65px;}
-	.role_rank_table .rank_table_avr >span{display:block;}
+	.role_rank_table .rank_table_avr,
+	.role_rank_table .rank_table_avr_deal,
+	.role_rank_table .rank_table_avr_heal{width:65px;}
+
+	.role_rank_table .rank_table_avr >span,
+	.role_rank_table .rank_table_avr_deal>span,
+	.role_rank_table .rank_table_avr_heal>span
+	{display:block;}
 	.role_rank_table .rank_table_kda{width:75px;}
 	.role_rank_table .rank_table_kda >span{display:block;}
 
@@ -1687,8 +1774,28 @@ width:350px;
 	 
 	 
   }
+
+	@media (max-width: 600px){
+	.role_rank_table .rank_table_avr_deal,
+	.role_rank_table .rank_table_avr_heal{display:none;}
+		
+	}
   
   	 @media (max-width: 400px){
+		 
+    .profile_card .level{
+		font-size:2em;
+		padding-top:31px;
+		min-width:87px;
+		min-height:109px;
+		background-size:120px 120px;
+		background-position:-17px -13px;				
+	}
+
+	.profile_card .competitive_level img{max-width:83px;}
+	
+	.profile_card_content > ul > li[class="battle_tag"]{margin-top:8px;}
+	.profile_card_content > ul > li[class="update_button"]{margin-top:6px;}
 	
 	.profile_card .summary, .profile_card .summary .summary_card >div, .profile_card .summary .summary_card .top_per>div{
 		font-size:1em;
@@ -1736,6 +1843,6 @@ width:350px;
 	 .static_card .btn{
 
 		 }
-		 }
+		 
+	 }
   
-

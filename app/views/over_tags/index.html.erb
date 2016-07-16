@@ -1,8 +1,114 @@
+	<div id="middle_contents_main" class="row">
+         	<div class="container">
+         		<div class="main_content">
+                	<div class="main_img">
+                    <img src="/images/main_img/overrank_main_tracer.png">
+                    </div>
+                	<div class="">
+                		<form action="/over_tags/new" accept-charset="UTF-8" method="get" class="main-form" role="search">
+					  	<div class="main-form-group">
+					   	 <input name="tag" id="tag" type="text" class="form-control" placeholder="배틀태그#1234 또는 플레이어 이름으로 전적 검색" value="<%= session[:btag] %>">
+					   	 	<%= session[:btag] = nil %>
+                         <input type="submit" name="commit" value="" class="btn btn-main-tag">
+						 </div>
+                     	<div class="battle_tag_find" data-link="/auth/bnet" style="cursor:pointer;">
+                     		<img src="/images/battlenet_logo.png">
+                     	</div>
+						</form>
+                     </div>
+                 </div>
+                 </div>    
+    		</div>
+    		
+    		<div id="middle_contents_main_chart" class="row">
+          <div class="container">
+           	<h2 class="flex-box">영웅별 승률순위</h2>
+          	<div class="main_chart_warp">
 
-  	<div id="middle_contents_main" class="row">
+                	<div class="main_chart">
+                    	<div class="main_chart_title offence"><span><img src="/images/offence_icon.png">공격</span><img src="/images/more.png"></div>
+                        <div class="main_chart_content">
+                        	<table>
+                        		<% OFFENSE_HERO.each_with_index do |hero, no| %>
+                            	<tr>
+                                	<td><%= no + 1 %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[hero]%>"><%= hero %></td>
+                                    <td><div class="progress">
+										<div class="progress-bar progress-bar-win" role="progressbar" style="width:60%">50%</div></div>
+                                    </td>
+                                </tr>
+                                <% end %>
+                            </table>
+                            
+                        </div>    
+                        
+                    </div>
+                    
+                    <div class="main_chart">
+                    	<div class="main_chart_title defence"><span><img src="/images/defence_icon.png">수비</span><img src="/images/more.png"></div>
+                        <div class="main_chart_content">
+                        	<table>
+                        		<% DEFENSE_HERO.each_with_index do |hero, no| %>
+                            	<tr>
+                                	<td><%= no + 1 %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[hero]%>"><%= hero %></td>
+                                    <td><div class="progress">
+										<div class="progress-bar progress-bar-win" role="progressbar" style="width:60%">50%</div></div>
+                                    </td>
+                                </tr>
+                                <% end %>
+                            </table>
+                        </div>    
+                        
+                    </div>
+                    
+                    <div class="main_chart">
+                    	<div class="main_chart_title tank"><span><img src="/images/tank_icon.png">돌격</span><img src="/images/more.png"></div>
+                        <div class="main_chart_content">
+                        	<table>
+                            	<% RUSH_HERO.each_with_index do |hero, no| %>
+                            	<tr>
+                                	<td><%= no + 1 %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[hero]%>"><%= hero %></td>
+                                    <td><div class="progress">
+										<div class="progress-bar progress-bar-win" role="progressbar" style="width:60%">50%</div></div>
+                                    </td>
+                                </tr>
+                                <% end %>
+                            </table>
+                        </div>    
+                        
+                    </div>
+                    
+                    <div class="main_chart">
+                    	<div class="main_chart_title support"><span><img src="/images/support.png">지원</span><img src="/images/more.png"></div>
+                        <div class="main_chart_content">
+                        	<table>
+                            	<% SUPPORT_HERO.each_with_index do |hero, no| %>
+                            	<tr>
+                                	<td><%= no + 1 %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[hero]%>"><%= hero %></td>
+                                    <td><div class="progress">
+										<div class="progress-bar progress-bar-win" role="progressbar" style="width:60%">50%</div></div>
+                                    </td>
+                                </tr>
+                                <% end %>
+                            </table>
+                        </div>    
+                        
+                    </div>
+           
+                	    	       
+                </div>
+                </div>
+           </div>
+          
+          
+        
+	</div>
+    		
+
+
+  	<!-- <div id="middle_contents_main" class="row">
   		<div class="container">
   			<div class="main_content">
-  				<img src="/images/owrank_main.jpg">
+  				<img src="/images/main_img/overrank_main_tracer.png">
             </div>
             
             <div class="col-xs-12 main_content">
@@ -12,8 +118,8 @@
             			<%= session[:btag] = nil %>
 					</div>
 					<input type="submit" name="commit" value="확인" class="btn btn-default">
-					<div class="battle_tag_find" data-link="/auth/bnet" style="cursor:pointer;>
-						<img src="/images/battlenet_logo.png"> 배틀태그 확인하기
+					<div class="battle_tag_find" data-link="/auth/bnet" style="cursor:pointer;">
+						<img src="/images/battlenet_logo.png">
                     </div>
 				</form>
 			</div>
@@ -340,7 +446,7 @@
                 </ul>
             </div>
     	</div>
-    </div>
+    </div> -->
 	
 	
 <script>

@@ -41,6 +41,9 @@ Rails.application.routes.draw do
       get 'detail'
       put 'update_data'
     end
+    collection do
+      get 'over_role_rank'
+    end
   end
   resources :over_heros
   resources :over_heros do

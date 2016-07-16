@@ -1,0 +1,229 @@
+
+<div id="middle_contents_detail" class="row">
+    	<div class="col-xs-12">
+            <div class="container">
+         		<div class="role_rank_warp">
+               	  	<div class="role_rank_top">
+                    		<div class="top_title flex-box"><h2>역할 통계</h2></div>
+                            <div class="top_date flex-box"><span>기간 : <%= @date %> 지역:korea</span></div>
+                    </div>
+                    <!--테이블시작 -->
+                    <div class="role_rank_table_warp">
+                    <div class="role_title">
+                         <img src="/images/suport_icon_blk.png"><h3>지원 영웅 통계</h3>
+                    </div>
+                    <div class="role_rank_table">
+                    	<table class="table rank_chart ">
+                        
+                        <thead>
+                        <tr>
+                        	<th class="rank_table_rank">#</th>
+                            <th class="rank_table_hero">영웅</th>
+                            <th class="rank_table_winrate">승률</th>
+                            <th class="rank_table_time">플레이 시간</th>
+                            <th class="rank_table_avr"><span>게임당</span> <span>평균 치유</span></th>
+                            <th class="rank_table_kda">KDA</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        	<% SUPPORT_HERO.each_with_index do |hero, no| %>
+                        	<tr>
+                            	<td class="rank_table_rank"><%= no+1 %></td>
+                                <td class="rank_table_hero"><img src="/images/hero_square/<%=HERO_SQUARE_IMG[hero]%>"><%= hero %></td>
+                                <td class="rank_table_winrate"><div class="progress win-rate">
+										<div class="progress-bar progress-bar-win" role="progressbar" style="width:70%">W<%=@support_hero_hash[hero].games_won %></div>
+										<div class="progress-bar progress-bar-lose" role="progressbar" style="width:30%">L<%=@support_hero_hash[hero].games_lost %></div>
+                                    </div> <span class="<%= 'top_data' if @support_won_top == @support_hero_hash[hero].games_won_per %>"><%=@support_hero_hash[hero].games_won_per %>%</span>
+                                </td>
+                                <td class="rank_table_time">
+                                	<div class="progress">
+										<div class="progress-bar progress-bar-win" role="progressbar" style="width:40%">
+											<%= @support_hero_hash[hero].time_played / 60 %>시간
+										</div>
+									</div>
+									<span class="<%= 'top_data' if @support_time_top == @support_hero_hash[hero].time_played %>">
+										<%= ((@support_hero_hash[hero].time_played.to_f / @total_time_played.to_f) * 100).round(2) %>%
+									</span>
+								</td>
+                                <td class="rank_table_avr <%= 'top_data' if @support_done_top == @support_hero_hash[hero].healing_done_avr%>">
+                                	<%= @support_hero_hash[hero].healing_done_avr %>
+                                </td>
+                                <td class="rank_table_kda">
+                                	<span class="<%= 'top_data' if @support_kda_top == @support_hero_hash[hero].kda %>"><%= @support_hero_hash[hero].kda %></span>
+                                	<span class="top_rank_xs">(<%= @support_hero_hash[hero].eliminations %>/<%= @support_hero_hash[hero].deaths %>)</span>
+                                </td>
+                            </tr>
+                            <% end %>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="role_title">
+                         <img src="/images/offence_icon_blk.png"><h3>공격 영웅 통계</h3>
+                    </div>
+                    <div class="role_rank_table">
+                    	<table class="table rank_chart ">
+                        <colgroup>
+								<col width="40">
+								<col width="150">
+								<col width="*">
+                                <col width="*">
+                                <col width="120">
+                                <col width="100">
+						</colgroup>
+                        <thead>
+                        <tr>
+                        	<th>#</th>
+                            <th>영웅</th>
+                            <th>승률</th>
+                            <th>플레이 시간</th>
+                            <th>게임당 평균 피해</th>
+                            <th>KDA</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        	<% OFFENSE_HERO.each_with_index do |hero, no| %>
+	                        	<tr>
+	                            	<td class="rank_table_rank"><%= no+1 %></td>
+	                                <td class="rank_table_hero"><img src="/images/hero_square/<%=HERO_SQUARE_IMG[hero]%>"><%= hero %></td>
+	                                <td class="rank_table_winrate"><div class="progress win-rate">
+											<div class="progress-bar progress-bar-win" role="progressbar" style="width:70%">W<%=@offense_hero_hash[hero].games_won %></div>
+											<div class="progress-bar progress-bar-lose" role="progressbar" style="width:30%">L<%=@offense_hero_hash[hero].games_lost %></div>
+	                                    </div> <span class="<%= 'top_data' if @offense_won_top == @offense_hero_hash[hero].games_won_per %>"><%=@offense_hero_hash[hero].games_won_per %>%</span>
+	                                </td>
+	                                <td class="rank_table_time">
+	                                	<div class="progress">
+											<div class="progress-bar progress-bar-win" role="progressbar" style="width:40%">
+												<%= @offense_hero_hash[hero].time_played / 60 %>시간
+											</div>
+										</div>
+										<span class="<%= 'top_data' if @offense_time_top == @offense_hero_hash[hero].time_played %>">
+											<%= ((@offense_hero_hash[hero].time_played.to_f / @total_time_played.to_f) * 100).round(2) %>%
+										</span>
+									</td>
+	                                <td class="rank_table_avr <%= 'top_data' if @offense_done_top == @offense_hero_hash[hero].damage_done_avr%>"><%= @offense_hero_hash[hero].damage_done_avr %></td>
+	                                <td class="rank_table_kda">
+	                                	<span class="<%= 'top_data' if @offense_kda_top == @offense_hero_hash[hero].kda %>"><%= @offense_hero_hash[hero].kda %></span>
+	                                	<span class="top_rank_xs">(<%= @offense_hero_hash[hero].eliminations %>/<%= @offense_hero_hash[hero].deaths %>)</span></td>
+	                            </tr>
+                            <% end %>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    
+                    <div class="role_title">
+                         <img src="/images/deffence_icon_blk.png"> <h3>수비 영웅 통계</h3>
+                    </div>
+                    <div class="role_rank_table">
+                    	<table class="table rank_chart ">
+                        <colgroup>
+								<col width="40">
+								<col width="150">
+								<col width="*">
+                                <col width="*">
+                                <col width="120">
+                                <col width="100">
+						</colgroup>
+                        <thead>
+                        <tr>
+                        	<th>#</th>
+                            <th>영웅</th>
+                            <th>승률</th>
+                            <th>플레이 시간</th>
+                            <th>게임당 평균 피해</th>
+                            <th>KDA</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        	<% DEFENSE_HERO.each_with_index do |hero, no| %>
+	                        	<tr>
+	                            	<td class="rank_table_rank"><%= no+1 %></td>
+	                                <td class="rank_table_hero"><img src="/images/hero_square/<%=HERO_SQUARE_IMG[hero]%>"><%= hero %></td>
+	                                <td class="rank_table_winrate"><div class="progress win-rate">
+											<div class="progress-bar progress-bar-win" role="progressbar" style="width:70%">W<%=@defense_hero_hash[hero].games_won %></div>
+											<div class="progress-bar progress-bar-lose" role="progressbar" style="width:30%">L<%=@defense_hero_hash[hero].games_lost %></div>
+	                                    </div> <span class="<%= 'top_data' if @defense_won_top == @defense_hero_hash[hero].games_won_per %>"><%=@defense_hero_hash[hero].games_won_per %>%</span>
+	                                </td>
+	                                <td class="rank_table_time">
+	                                	<div class="progress">
+											<div class="progress-bar progress-bar-win" role="progressbar" style="width:40%">
+												<%= @defense_hero_hash[hero].time_played / 60 %>시간
+											</div>
+										</div>
+										<span class="<%= 'top_data' if @defense_time_top == @defense_hero_hash[hero].time_played %>">
+											<%= ((@defense_hero_hash[hero].time_played.to_f / @total_time_played.to_f) * 100).round(2) %>%
+										</span>
+									</td>
+	                                <td class="rank_table_avr <%= 'top_data' if @defense_done_top == @defense_hero_hash[hero].damage_done_avr%>"><%= @defense_hero_hash[hero].damage_done_avr %></td>
+	                                <td class="rank_table_kda">
+	                                	<span class="<%= 'top_data' if @defense_kda_top == @defense_hero_hash[hero].kda %>"><%= @defense_hero_hash[hero].kda %></span>
+	                                	<span class="top_rank_xs">(<%= @defense_hero_hash[hero].eliminations %>/<%= @defense_hero_hash[hero].deaths %>)</span></td>
+	                            </tr>
+                            <% end %>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    
+                    <div class="role_title">
+                          <img src="/images/tank_icon_blk.png"><h3>돌격 영웅 통계</h3>
+                    </div>
+                    <div class="role_rank_table">
+                    	<table class="table rank_chart ">
+                        <colgroup>
+								<col width="40">
+								<col width="150">
+								<col width="*">
+                                <col width="*">
+                                <col width="120">
+                                <col width="100">
+						</colgroup>
+                        <thead>
+                        <tr>
+                        	<th>#</th>
+                            <th>영웅</th>
+                            <th>승률</th>
+                            <th>플레이 시간</th>
+                            <th>게임당 평균 피해</th>
+                            <th>KDA</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        	<% RUSH_HERO.each_with_index do |hero, no| %>
+	                        	<tr>
+	                            	<td class="rank_table_rank"><%= no+1 %></td>
+	                                <td class="rank_table_hero"><img src="/images/hero_square/<%=HERO_SQUARE_IMG[hero]%>"><%= hero %></td>
+	                                <td class="rank_table_winrate"><div class="progress win-rate">
+											<div class="progress-bar progress-bar-win" role="progressbar" style="width:70%">W<%=@rush_hero_hash[hero].games_won %></div>
+											<div class="progress-bar progress-bar-lose" role="progressbar" style="width:30%">L<%=@rush_hero_hash[hero].games_lost %></div>
+	                                    </div> <span class="<%= 'top_data' if @rush_won_top == @rush_hero_hash[hero].games_won_per %>"><%=@rush_hero_hash[hero].games_won_per %>%</span>
+	                                </td>
+	                                <td class="rank_table_time">
+	                                	<div class="progress">
+											<div class="progress-bar progress-bar-win" role="progressbar" style="width:40%">
+												<%= @rush_hero_hash[hero].time_played / 60 %>시간
+											</div>
+										</div>
+										<span class="<%= 'top_data' if @rush_time_top == @rush_hero_hash[hero].time_played %>">
+											<%= ((@rush_hero_hash[hero].time_played.to_f / @total_time_played.to_f) * 100).round(2) %>%
+										</span>
+									</td>
+	                                <td class="rank_table_avr <%= 'top_data' if @rush_done_top == @rush_hero_hash[hero].damage_done_avr%>"><%= @rush_hero_hash[hero].damage_done_avr %></td>
+	                                <td class="rank_table_kda">
+	                                	<span class="<%= 'top_data' if @rush_kda_top == @rush_hero_hash[hero].kda %>"><%= @rush_hero_hash[hero].kda %></span>
+	                                	<span class="top_rank_xs">(<%= @rush_hero_hash[hero].eliminations %>/<%= @rush_hero_hash[hero].deaths %>)</span></td>
+	                            </tr>
+                            <% end %>
+                            </tbody>
+                        </table>
+                    </div>
+                                                
+                 </div>
+                 <!--테이블 끝 -->   
+                 </div>
+                 
+                 
+            </div>        
+         </div>
+    </div>

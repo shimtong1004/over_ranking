@@ -45,8 +45,10 @@ class OverTag < ActiveRecord::Base
     UpdateLog.create(over_tag_id: self.id, table_name: "over_tag", log_type: "update")
   end
   
-  def self.update_hero_master(over_user_type, play_type)
-    over_hero_masters = over_user_type.over_hero_masters.where(play_type: play_type)
+  # def self.update_hero_master(over_user_type, play_type)
+  def self.update_hero_master(over_user_type)
+    # over_hero_masters = over_user_type.over_hero_masters.where(play_type: play_type)
+    over_hero_masters = over_user_type.over_hero_masters
     tag = over_user_type.over_tag.tag
     tag.gsub!(/#/, '-')
     
@@ -65,13 +67,16 @@ class OverTag < ActiveRecord::Base
     html = open(url).read
     ActiveRecord::Base.transaction do
       over_hero_masters.destroy_all
-      play_types = []
-      if play_type == "1"
-        play_types.push id: 1, value:"quick-play"
-      else
-        play_types.push id: 2, value:"competitive-play"
-      end
+      # play_types = []
+      # if play_type == "1"
+        # play_types.push id: 1, value:"quick-play"
+      # else
+        # play_types.push id: 2, value:"competitive-play"
+      # end
       doc = Nokogiri::HTML(html)
+      play_types = []
+      play_types.push id: 1, value:"quick-play"
+      play_types.push id: 2, value:"competitive-play"
         
       play_types.each do |play_type|
         play_type_id = play_type[:id]
@@ -137,7 +142,7 @@ class OverTag < ActiveRecord::Base
         #통계 end
       end
     end
-    UpdateLog.create(over_tag_id: over_user_type.over_tag.id, table_name: "over_hero_master", log_type: "create", sub_name: "#{user_type}_#{play_type}")
+    UpdateLog.create(over_tag_id: over_user_type.over_tag.id, table_name: "over_hero_master", log_type: "create", sub_name: "#{user_type}")
     
   end
   
@@ -276,18 +281,27 @@ class OverTag < ActiveRecord::Base
     
     OverTag.set_data_from_bnet(tag, over_tag.id) if hero_master_data.blank?
     
-    if over_tag.over_user_types[0].user_type == "PC - KR"
-      region = "pc/kr"
-    elsif over_tag.over_user_types[0].user_type == "PC - US"
-      region = "pc/us"
-    elsif over_tag.over_user_types[0].user_type == "PC - EU"
-      region = "pc/eu"
+    
+    user_types = over_tag.over_user_types
+    user_types.each do |user_type|
+      OverUserScore.add_score(user_type) if user_type.over_user_scores.blank?
     end
     
-    over_profile = over_tag.over_profile
-    unless over_profile
-      self.get_profile(tag, over_tag.id, region)
-    end
+    
+    
+    
+    # if over_tag.over_user_types[0].user_type == "PC - KR"
+      # region = "pc/kr"
+    # elsif over_tag.over_user_types[0].user_type == "PC - US"
+      # region = "pc/us"
+    # elsif over_tag.over_user_types[0].user_type == "PC - EU"
+      # region = "pc/eu"
+    # end
+    
+    # over_profile = over_tag.over_profile
+    # unless over_profile
+      # self.get_profile(tag, over_tag.id, region)
+    # end
     
     return over_tag.id
   end

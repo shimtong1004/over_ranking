@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160703085351) do
+ActiveRecord::Schema.define(version: 20160713025023) do
 
   create_table "authorizations", force: :cascade do |t|
     t.string   "provider",   limit: 255
@@ -86,6 +86,28 @@ ActiveRecord::Schema.define(version: 20160703085351) do
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
   end
+
+  create_table "over_daily_data", force: :cascade do |t|
+    t.integer  "over_tag_id",      limit: 4
+    t.string   "hero_name",        limit: 255
+    t.integer  "play_type",        limit: 4
+    t.integer  "games_won",        limit: 4
+    t.integer  "games_lost",       limit: 4
+    t.integer  "games_played",     limit: 4
+    t.float    "games_won_per",    limit: 24
+    t.integer  "time_played",      limit: 4
+    t.integer  "eliminations",     limit: 4
+    t.integer  "deaths",           limit: 4
+    t.integer  "final_blows",      limit: 4
+    t.float    "kd",               limit: 24
+    t.float    "kda",              limit: 24
+    t.float    "healing_done_avr", limit: 24
+    t.float    "damage_done_avr",  limit: 24
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
+  add_index "over_daily_data", ["over_tag_id", "hero_name", "play_type", "created_at"], name: "tag_id_name_type_date", using: :btree
 
   create_table "over_data_histories", force: :cascade do |t|
     t.integer  "over_tag_id", limit: 4
@@ -293,13 +315,9 @@ ActiveRecord::Schema.define(version: 20160703085351) do
     t.datetime "updated_at",                    null: false
   end
 
-  add_index "over_hero_masters", ["over_user_type_id", "play_type"], name: "index_over_hero_masters_on_over_user_type_id_and_play_type", using: :btree
-  add_index "over_hero_masters", ["over_user_type_id"], name: "index_over_hero_masters_on_over_user_type_id", using: :btree
   add_index "over_hero_masters", ["play_type", "over_user_type_id", "hero_name", "keyword"], name: "over_hero_id_name_keyword", using: :btree
-  add_index "over_hero_masters", ["play_type", "over_user_type_id", "hero_name", "view_group", "view_group_detail"], name: "over_hero_id_name_grop_detail", using: :btree
+  add_index "over_hero_masters", ["play_type", "over_user_type_id", "hero_name", "view_group", "keyword"], name: "over_hero_id_name_grop_key", using: :btree
   add_index "over_hero_masters", ["play_type", "over_user_type_id", "hero_name", "view_group"], name: "over_hero_id_name_grop", using: :btree
-  add_index "over_hero_masters", ["play_type", "over_user_type_id", "hero_name"], name: "over_hero_id_name", using: :btree
-  add_index "over_hero_masters", ["play_type", "over_user_type_id", "keyword"], name: "over_hero_id_keyword", using: :btree
 
   create_table "over_hero_mc_crees", force: :cascade do |t|
     t.integer  "over_tag_id",                  limit: 4
@@ -596,6 +614,27 @@ ActiveRecord::Schema.define(version: 20160703085351) do
     t.datetime "updated_at",                   null: false
   end
 
+  create_table "over_role_calculations", force: :cascade do |t|
+    t.string   "hero_name",        limit: 255
+    t.integer  "play_type",        limit: 4
+    t.integer  "games_won",        limit: 4
+    t.integer  "games_lost",       limit: 4
+    t.integer  "games_played",     limit: 4
+    t.float    "games_won_per",    limit: 24
+    t.integer  "time_played",      limit: 4
+    t.integer  "eliminations",     limit: 4
+    t.integer  "deaths",           limit: 4
+    t.integer  "final_blows",      limit: 4
+    t.float    "kd",               limit: 24
+    t.float    "kda",              limit: 24
+    t.float    "healing_done_avr", limit: 24
+    t.float    "damage_done_avr",  limit: 24
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
+  add_index "over_role_calculations", ["hero_name", "play_type", "created_at"], name: "name_type_date", using: :btree
+
   create_table "over_tag_tmps", force: :cascade do |t|
     t.string   "tag",        limit: 255
     t.string   "tag_head",   limit: 255
@@ -618,6 +657,21 @@ ActiveRecord::Schema.define(version: 20160703085351) do
   add_index "over_tags", ["is_create_data"], name: "index_over_tags_on_is_create_data", using: :btree
   add_index "over_tags", ["tag"], name: "index_over_tags_on_tag", using: :btree
   add_index "over_tags", ["tag_name"], name: "index_over_tags_on_tag_name", using: :btree
+
+  create_table "over_user_scores", force: :cascade do |t|
+    t.integer  "over_user_type_id", limit: 4
+    t.string   "user_type",         limit: 255
+    t.integer  "play_type",         limit: 4
+    t.string   "keyword",           limit: 255
+    t.decimal  "score",                         precision: 11, scale: 2
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
+  end
+
+  add_index "over_user_scores", ["over_user_type_id", "play_type", "keyword"], name: "id_type_key", using: :btree
+  add_index "over_user_scores", ["over_user_type_id", "play_type"], name: "id_play_type", using: :btree
+  add_index "over_user_scores", ["over_user_type_id"], name: "index_over_user_scores_on_over_user_type_id", using: :btree
+  add_index "over_user_scores", ["play_type", "user_type", "keyword", "score"], name: "play_key_score", using: :btree
 
   create_table "over_user_types", force: :cascade do |t|
     t.integer  "over_tag_id", limit: 4
