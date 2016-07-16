@@ -60,11 +60,11 @@ class OverTagsController < ApplicationController
         hash_data[data.keyword] = data.value
       end
         
-      hash_data["user_name"] = over_tag.over_profile.username
-      hash_data["avatar"] = over_tag.over_profile.avatar
-          
-      keyword = "region"
-      hash_data["region"] = over_tag.over_user_types[0].over_hero_masters.where(play_type: session[:play_type], keyword: keyword).pluck(:value)
+      # hash_data["user_name"] = over_tag.over_profile.username
+      # hash_data["avatar"] = over_tag.over_profile.avatar
+#           
+      # keyword = "region"
+      # hash_data["region"] = over_tag.over_user_types[0].over_hero_masters.where(play_type: session[:play_type], keyword: keyword).pluck(:value)
       @ary_data.push hash_data
     end
     @over_tags = over_tags
