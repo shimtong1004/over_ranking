@@ -183,7 +183,7 @@ body{
 	#middle_contents_main_chart h2{justify-content:center;margin-bottom:23px; color:#646464; font-size:2em;}
 	.main_chart_warp{width:750px; margin-right:auto; margin-left:auto; justify-content:space-between;flex-wrap:wrap;}
 	
-	.main_chart{width:49.5%; flex-wrap-wrap; flex-direction:column; border:1px solid #d4d4d4; background-color:#eeeeee; margin-bottom:10px;}
+	.main_chart{width:49.5%; flex-wrap: wrap; flex-direction:column; border:1px solid #d4d4d4; background-color:#eeeeee; margin-bottom:10px;}
 	.main_chart_title{background-color:#f9f9f9; justify-content:space-between; height:40px; align-items:center; padding:0 15px; font-size:1.2em;}	
 						  
 	.main_chart_title img:first-child{margin-right:17px;}	
