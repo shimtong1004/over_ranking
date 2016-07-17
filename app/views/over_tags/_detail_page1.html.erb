@@ -3,11 +3,10 @@
              
              <div class="hero_warp">
              	<% @hero_names.each_with_index do |hero_name, i| %>
-             		<% break if i > 3%>
-               	<div class="hero_card panel-white"> 
-               		<% if @data_hash["#{hero_name}_치른 게임"] == 0 %>
+               	<div class="hero_card panel-white" style="<%='display: none' if i > 2%>"> 
+               		<!-- <% if @data_hash["#{hero_name}_치른 게임"] == 0 %>
 	                	게임 기록 없음.
-	                <% end %>
+	                <% end %> -->
                 	<div class="hero_card_top panel-hedding">
 	                      <div class="play_time_grh">
                           		<div class="circle" id="circles-<%=i+5%>">
@@ -24,15 +23,21 @@
                           
                           <div class="card_top_rank">
                           		<div class="kor_rank">
-                                	<div><img src="/images/kor_icon.png"></div><div><span class="top_rank_s">#<%=@data_hash["#{hero_name}_플레이 시간_rank"]%></span><span class="top_rank_xs">(Top 50%)</span></div>
+                                	<div>
+                                		<img src="/images/kor_icon.png">
+                                	</div>
+                                	<div>
+                                		<span class="top_rank_s">#<%=@data_hash["#{hero_name}_플레이 시간_rank"]%></span>
+                                		<span class="top_rank_xs">(Top <%= (@data_hash["#{hero_name}_플레이 시간_rank"].to_f / @hero_count["#{hero_name}"].to_f) * 100 %>%)</span>
+                                	</div>
                                 </div>
                                 <div class="global_rank">
-                                	<div><img src="/images/global_icon.png"></div><div><span class="top_rank_s">#<%=@data_hash["#{hero_name}_플레이 시간_local_rank"]%></span><span class="top_rank_xs">(Top 50%)</span></div>
+                                	<div><img src="/images/global_icon.png"></div><div><span class="top_rank_s">#<%=@data_hash["#{hero_name}_플레이 시간_local_rank"]%></span><span class="top_rank_xs">(Top <%= (@data_hash["#{hero_name}_플레이 시간_local_rank"].to_f / @local_hero_count["#{hero_name}"].to_f) * 100 %>%)</span></div>
                                 </div>
                            </div>     
                            <div class="card_top_winrate">
 	                           	<div class="flex-box">
-                               		<div class="card_top_title">승률</div>                                            
+                               		<div class="card_top_title">승률</div>
                                		<div class="top_rank_s"><%= @data_hash["#{hero_name}_승률"].round(2) %></div>
                                	</div>
                            		<div class="progress win-rate">
@@ -44,7 +49,7 @@
                                 
                            </div>
                            <div  class="card_top_reward">
-                           		<div><div class="gold">금메달</div><div><img src="/images/gold_medal.png"><%= @medal_hash[hero_name] %></div></div>                                
+                           		<div><div class="gold">금메달</div><div><img src="/images/gold_medal.png"><%= @data_hash["#{hero_name}_메달 - 금"].to_i %></div></div>                                
                            </div>
                            </div>
                            </div>               
@@ -65,7 +70,7 @@
                                  	<dl class="rank"><dt class="legion_icon"><img src="/images/kor_icon.png"></dt>
                                  		<dd class="rank_dd top_rank_xs">
                                  			#<%=@data_hash["#{hero_name}_처치 - 평균_local_rank"]%>
-                                 			<span class="top_rank_xxs">(Top 50%)</span>
+                                 			<span class="top_rank_xxs">(Top <%= (@data_hash["#{hero_name}_처치 - 평균_local_rank"].to_f / @local_hero_count["#{hero_name}"].to_f) * 100 %>%)</span>
                                  		</dd>
                                  	</dl> 
                                 	<dl class="rank">
@@ -75,35 +80,27 @@
                                 		<dd class="rank_dd top_rank_xs">
                                 			#<%=@data_hash["#{hero_name}_처치 - 평균_rank"]%>
                                 			<span class="top_rank_xxs">
-                                				(Top 50%)
+                                				(Top <%= (@data_hash["#{hero_name}_처치 - 평균_rank"].to_f / @hero_count["#{hero_name}"].to_f) * 100 %>%)
                                 			</span>
                                 		</dd>
                                 	</dl>
                                  </div>
                                  <div class="important-data"> 
 	                                <dl class="data"><dt class="legion_icon top_rank_s">평균딜량</dt><dd class="rank_dd"><%= @data_hash["#{hero_name}_준 피해 - 평균"] %></dd></dl> 
-                                 	<dl class="rank"><dt class="legion_icon"><img src="/images/kor_icon.png"></dt><dd class="rank_dd top_rank_xs">#<%=@data_hash["#{hero_name}_준 피해 - 평균_local_rank"]%><span class="top_rank_xxs">(Top 50%)</span></dd></dl> 
-                                	<dl class="rank"><dt class="legion_icon"><img src="/images/global_icon.png"></dt><dd class="rank_dd top_rank_xs">#<%=@data_hash["#{hero_name}_준 피해 - 평균_rank"]%><span class="top_rank_xxs">(Top 50%)</span></dd></dl>			
+                                 	<dl class="rank"><dt class="legion_icon"><img src="/images/kor_icon.png"></dt><dd class="rank_dd top_rank_xs">#<%=@data_hash["#{hero_name}_준 피해 - 평균_local_rank"]%><span class="top_rank_xxs">(Top <%= (@data_hash["#{hero_name}_준 피해 - 평균_local_rank"].to_f / @local_hero_count["#{hero_name}"].to_f) * 100 %>%)</span></dd></dl> 
+                                	<dl class="rank"><dt class="legion_icon"><img src="/images/global_icon.png"></dt><dd class="rank_dd top_rank_xs">#<%=@data_hash["#{hero_name}_준 피해 - 평균_rank"]%><span class="top_rank_xxs">(Top <%= (@data_hash["#{hero_name}_준 피해 - 평균_rank"].to_f / @hero_count["#{hero_name}"].to_f) * 100 %>%)</span></dd></dl>			
                                  </div>
                                  <div class="important-data"> 
                                  	<dl class="data"><dt class="legion_icon top_rank_s">명중률</dt><dd class="rank_dd"><%= @data_hash["#{hero_name}_명중률"] %></dd></dl> 
-                                 	<dl class="rank"><dt class="legion_icon"><img src="/images/kor_icon.png"></dt><dd class="rank_dd top_rank_xs">#<%=@data_hash["#{hero_name}_명중률_local_rank"]%><span class="top_rank_xxs">(Top 50%)</span></dd></dl> 
-                                	<dl class="rank"><dt class="legion_icon"><img src="/images/global_icon.png"></dt><dd class="rank_dd top_rank_xs">#<%=@data_hash["#{hero_name}_명중률_rank"]%><span class="top_rank_xxs">(Top 50%)</span></dd></dl>
+                                 	<dl class="rank"><dt class="legion_icon"><img src="/images/kor_icon.png"></dt><dd class="rank_dd top_rank_xs">#<%=@data_hash["#{hero_name}_명중률_local_rank"]%><span class="top_rank_xxs">(Top <%= (@data_hash["#{hero_name}_명중률_local_rank"].to_f / @local_hero_count["#{hero_name}"].to_f) * 100 %>%)</span></dd></dl> 
+                                	<dl class="rank"><dt class="legion_icon"><img src="/images/global_icon.png"></dt><dd class="rank_dd top_rank_xs">#<%=@data_hash["#{hero_name}_명중률_rank"]%><span class="top_rank_xxs">(Top <%= (@data_hash["#{hero_name}_명중률_rank"].to_f / @hero_count["#{hero_name}"].to_f) * 100 %>%)</span></dd></dl>
                                 </div>
                                 <div class="important-data">                                 
 	                                <dl class="data"><dt class="legion_icon top_rank_s">KDA</dt><dd class="rank_dd"><%= @data_hash["#{hero_name}_KDA"] %></dd></dl> 
-                                	<dl class="rank"><dt class="legion_icon"><img src="/images/kor_icon.png"></dt><dd class="rank_dd top_rank_xs">#<%=@data_hash["#{hero_name}_KDA_local_rank"]%><span class="top_rank_xxs">(Top 50%)</span></dd></dl> 
-                                	<dl class="rank"><dt class="legion_icon"><img src="/images/global_icon.png"></dt><dd class="rank_dd top_rank_xs">#<%=@data_hash["#{hero_name}_KDA_rank"]%><span class="top_rank_xxs">(Top 50%)</span></dd></dl>
+                                	<dl class="rank"><dt class="legion_icon"><img src="/images/kor_icon.png"></dt><dd class="rank_dd top_rank_xs">#<%=@data_hash["#{hero_name}_KDA_local_rank"]%><span class="top_rank_xxs">(Top <%= (@data_hash["#{hero_name}_KDA_local_rank"].to_f / @local_hero_count["#{hero_name}"].to_f) * 100 %>%)</span></dd></dl> 
+                                	<dl class="rank"><dt class="legion_icon"><img src="/images/global_icon.png"></dt><dd class="rank_dd top_rank_xs">#<%=@data_hash["#{hero_name}_KDA_rank"]%><span class="top_rank_xxs">(Top <%= (@data_hash["#{hero_name}_KDA_rank"].to_f / @hero_count["#{hero_name}"].to_f) * 100 %>%)</span></dd></dl>
                                 </div>
-                                
-                          </div>                        
-                          
-                         
-                          
-                          
-                          
-                          
-                          
+                          </div>
                           <div class="trend_grh_warp">
                             <div class="trend-grh_header">
                             	<div class="legion_icon top_rank_s">트랜드 평균 그래프</div>
@@ -122,6 +119,7 @@
                 
                 </div>
                 <% end %>
+               	<div onclick="javascript: show_hero_data();">더보기</div>
                 
                 
    
@@ -156,36 +154,36 @@
                      <div class="static_card_bottom panel-body">
                      	<div class="static_box">
                         	<div class="static_data"><div>평균처치</div><div class="static_value"><%= @data_hash["처치 - 평균"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["처치 - 평균_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["처치 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["처치 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>평균결정타</div><div class="static_value"><%= @data_hash["결정타 - 평균"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["결정타 - 평균_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["결정타 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["결정타 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>평균치유</div><div class="static_value"><%= @data_hash["치유 - 평균"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["치유 - 평균_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["치유 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["치유 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>평균딜량</div><div class="static_value"><%= @data_hash["준 피해 - 평균"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["준 피해 - 평균_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["준 피해 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["준 피해 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>평균죽음</div><div class="static_value"><%= @data_hash["죽음 - 평균"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["죽음 - 평균_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["죽음 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["죽음 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>평균 단독처치</div><div class="static_value"><%= @data_hash["단독 처치 - 평균"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["단독 처치 - 평균_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["단독 처치 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["단독 처치 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>평균근접공격결정타</div><div class="static_value"><%= @data_hash["근접 공격 결정타 - 평균"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["근접 공격 결정타 - 평균_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["근접 공격 결정타 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["근접 공격 결정타 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>평균임무기여처치</div><div class="static_value"><%= @data_hash["임무 기여 처치 - 평균"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["임무 기여 처치 - 평균_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["임무 기여 처치 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["임무 기여 처치 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <div class="static_box">
                         	<div class="static_data">
@@ -213,7 +211,7 @@
 	                        		<%= min + ":" + sec %>
                         		</div>
                         	</div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["폭주 시간 - 평균_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["폭주 시간 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["폭주 시간 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>평균임무기여시간</div>
@@ -240,17 +238,17 @@
                         		<%= min + ":" + sec %>
                         	</div>
                         </div>
-                        <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["임무 기여 시간 - 평균_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                        <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["임무 기여 시간 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["임무 기여 시간 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <% if @data_hash["점수"] %>
                          <div class="static_box">
                         	<div class="static_data"><div>1분당 평균점수 획득</div><div class="static_value"><%= @data_hash["점수"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["점수_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["점수_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["점수_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <% else %>
                         <div class="static_box">
                         	<div class="static_data"><div>1분당 평균점수 획득</div><div class="static_value">-</div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">-<span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">-<span class="top_rank_xs">(Top -)</span></div></div>
                         </div>
                         <% end %>
                         
@@ -279,44 +277,44 @@
                      <div class="static_card_bottom panel-body">
                      	<div class="static_box">
                         	<div class="static_data"><div>처치</div><div class="static_value"><%= @data_hash["처치"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["처치_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["처치_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["처치_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>결정타</div><div class="static_value"><%= @data_hash["결정타"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["결정타_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["결정타_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["결정타_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>단독처치</div><div class="static_value"><%= @data_hash["단독 처치"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["단독 처치_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["단독 처치_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["단독 처치_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>임무기여처치</div><div class="static_value"><%= @data_hash["임무 기여 처치"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["임무 기여 처치_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["임무 기여 처치_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["임무 기여 처치_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>딜량</div><div class="static_value"><%= @data_hash["준 피해"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["준 피해_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["준 피해_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["준 피해_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>동시처치</div><div class="static_value"><%= @data_hash["동시 처치"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["동시 처치_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["동시 처치_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["동시 처치_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>근접공격결정타</div><div class="static_value"><%= @data_hash["근접 공격 결정타"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["근접 공격 결정타_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["근접 공격 결정타_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["근접 공격 결정타_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>임무기여시간</div><div class="static_value"><%= @data_hash["임무 기여 시간"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["임무 기여 시간_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["임무 기여 시간_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["임무 기여 시간_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>폭주시간</div><div class="static_value"><%= @data_hash["폭주 시간"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["폭주 시간_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["폭주 시간_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["폭주 시간_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>환경요소로처치</div><div class="static_value"><%= @data_hash["환경 요소로 처치"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["환경 요소로 처치_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["환경 요소로 처치_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["환경 요소로 처치_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         
                      </div>
@@ -348,21 +346,21 @@
                      <div class="static_card_bottom panel-body">
                      	<div class="static_box">
                         	<div class="static_data"><div>치유</div><div class="static_value"><%= @data_hash["치유"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["치유_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["치유_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["치유_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>자가치유</div><div class="static_value"><%= @data_hash["자가 치유"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["자가 치유_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["자가 치유_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["자가 치유_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <div class="static_box">
                         	
                         	<div class="static_data"><div>처치 시야지원</div><div class="static_value"><%= @data_hash["처치 시야 지원"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["처치 시야 지원_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["처치 시야 지원_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["처치 시야 지원_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>순간이동기 파괴</div><div class="static_value"><%= @data_hash["순간이동기 파괴"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["순간이동기 파괴_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["순간이동기 파괴_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["순간이동기 파괴_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         
                      </div>
@@ -391,12 +389,12 @@
                      <div class="static_card_bottom panel-body">
                      	<div class="static_box">
                         	<div class="static_data"><div>죽음</div><div class="static_value"><%= @data_hash["죽음"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["죽음_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["죽음_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["죽음_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         
                         </div>
                         <div class="static_box">
                         	<div class="static_data"><div>환경요소로 죽음</div><div class="static_value"><%= @data_hash["환경 요소로 죽음"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["환경 요소로 죽음_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["환경 요소로 죽음_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["환경 요소로 죽음_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
                         </div>
                         
                      </div>
@@ -420,7 +418,16 @@ if(circle_cnt) {
 					['#959595', '#cc4548'], ['#959595', '#cc9e45'], ['#959595', '#4473ae'], ['#959595', '#96ceb7']
 				  ], circles = [];
 	// var play_time = ['18H','7H','2H','2m'];
-	var play_time = ['<%= @data_hash["offense_플레이 시간"] %>','<%= @data_hash["support_플레이 시간"] %>','<%= @data_hash["rush_플레이 시간"] %>','<%= @data_hash["defense_플레이 시간"] %>'];
+	<% time_ary = {} %>
+	<% HERO_ROLE.each do |role| %>
+		<% if @data_hash["#{role}_플레이 시간"].to_i > 59 %>
+			<% time_ary[role] = (@data_hash["#{role}_플레이 시간"].to_i/60).to_s + "H" %>
+		<% else %>
+			<% time_ary[role] = @data_hash["#{role}_플레이 시간"].to_i.to_s + "m" %>
+		<% end %>
+	<% end %>
+	var play_time = ['<%= time_ary["offense"] %>','<%= time_ary["support"] %>',
+						'<%= time_ary["rush"] %>','<%= time_ary["defense"] %>'];
 	var background_img =['offence_icon.png','support.png','tank_icon.png','defence_icon.png'];
 	<% tatal_played_time = @data_hash["플레이 시간"].to_f %>
 	var per = [<%= (@data_hash["offense_플레이 시간"].to_f / tatal_played_time) * 100 %>, <%= (@data_hash["support_플레이 시간"].to_f / tatal_played_time) * 100 %>,
@@ -461,7 +468,7 @@ if(circle_cnt) {
 		}
 	
 	var textclass = 'hero_circle';
-	<% for i in 0...4 %>
+	<% for i in 0...3 %>
 			var id_num = <%= i + 5 %>;
 			var child = document.getElementById('circles-' + id_num), percentage = "<%=@hero_circle[@hero_names[i]][:hero_per]%>";
 			circles.push(Circles.create({
@@ -477,6 +484,106 @@ if(circle_cnt) {
 			var hero_icon_url = "url(/images/hero_circle/"+ "<%= @hero_circle[@hero_names[i]][:img_name]%>" +"_circle.png)";
 			document.getElementById('circles-'+id_num).style.backgroundImage = hero_icon_url;
 	<% end %>
-	
 }
+	setTimeout(make_circle, 2000);
+	
+
+	function make_circle(){
+		var textclass = 'hero_circle';
+		<% for i in 3...21 %>
+			var id_num = <%= i + 5 %>;
+			var child = document.getElementById('circles-' + id_num), percentage = "<%=@hero_circle[@hero_names[i]][:hero_per]%>";
+			circles.push(Circles.create({
+				id:         child.id,
+				value:		percentage,
+				radius:     35,
+				width:      8,
+				colors:     <%= raw @hero_circle[@hero_names[i]][:color] %>,
+				text: 	    "<%= @hero_circle[@hero_names[i]][:play_time]%>",
+				textClass : textclass,
+				duration :0
+			}));
+			var hero_icon_url = "url(/images/hero_circle/"+ "<%= @hero_circle[@hero_names[i]][:img_name]%>" +"_circle.png)";
+			document.getElementById('circles-'+id_num).style.backgroundImage = hero_icon_url;
+		<% end %>
+	}
+	
+	function make_chart(){
+		var userPoints = [[1,4213],[10,4000],[20,3800],[30,3500],[40,3345],[50,3214],[60,2945],[70,2754],[80,2541],[90,2421],[100,2000]]; 	//임시 데이타
+
+		var jobPoints = [[18,3921]];
+				  //임시 데이타
+		//var userPoints = [];//실제 데이타는 아래와 같이 처리하세요.
+		//for (var i=0; i<2*Math.PI; i+=0.1){ 
+		//   cosPoints.push([i, Math.cos(i)]); 
+		//} 
+		var i=1;
+		 var n = $( '.trend_grh' ).length;
+		for (var i = 4; i < 22; i++) {
+		var chart_name ='chart_'+i;
+		var plot = $.jqplot(chart_name, [userPoints, jobPoints], {  
+				
+			legend:{show:false,}, 
+			highlighter:{show:false},
+			
+			series:[
+					{
+						label:'사용자',
+					  	color : '#cc9e45', //Line Color
+						lineWidth : 2,	//라인 두께
+						markerOptions: {size:9,shadow:false},	//점 두께 http://www.jqplot.com/docs/files/jqPlotOptions-txt.html
+						pointLabels: { show:true},
+						shadow:false,
+					},
+					{
+						label:'내 순위',
+					  	color : '#000',
+						lineWidth : 2,
+						markerOptions : {size:10},	
+						pointLabels:{ show:true, location:'s', ypadding:10 }
+					}
+			],
+			axes:{
+		      xaxis:{
+	
+				min:0, max:100, tickInterval:10, 
+				
+				tickOptions:{ 
+					formatString: 'Top%d%',
+					showGridline: false, 				//세로줄 없애기
+					angle: -50,
+					showTickMarks:false,
+					fontsize:'20pt',
+				},
+				
+				 rendererOptions: {
+					tickInset: 0.2,                
+	                
+	            },
+				drawMajorTickMarks: false,
+		        autoscale: false,
+		      },
+		      yaxis:{
+		         autoscale: true,
+				 rendererOptions: {drawBaseline: false},
+				 showTicks: false,  //세로축 정보
+		      }
+		    },
+			grid:{
+				drawGridlines :true, //그리드 그리기
+				background:'#f3f3f3',
+				shadow:false,
+				drawBorder:0,
+				
+			}
+		});
+		
+		}
+	}
+	
+	function show_hero_data(){
+		$(".hero_card.panel-white").show();
+		make_chart();
+	}
+	
 </script>

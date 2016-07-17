@@ -72,12 +72,12 @@
                 <div class="summary">
                 	<div class="summary_card">
                    			<div class="sumary_contents"><div class="sumary_contents_title">전체순위</div><div class="sumary_contents_contents"><%= @data_hash["플레이 시간_rank"] %>위</div></div>
-                            <div class="top_per_rank"><div class="sumary_contents_title">상위</div><div class="sumary_contents_contents">10%</div></div>
+                            <div class="top_per_rank"><div class="sumary_contents_title">상위</div><div class="sumary_contents_contents"><%= (@data_hash["플레이 시간_rank"].to_f / @total_count.to_f) * 100 %>%</div></div>
                     </div>
                     
                     <div class="summary_card">
                             <div class="sumary_contents"><div class="sumary_contents_title">지역순위<span class="top_rank_xs">(kr)</span></div><div class="sumary_contents_contents"><%= @data_hash["플레이 시간_local_rank"] %>위</div></div>
-                            <div class="top_per_rank"><div class="sumary_contents_title">상위</div><div class="sumary_contents_contents">10%</div></div>              
+                            <div class="top_per_rank"><div class="sumary_contents_title">상위</div><div class="sumary_contents_contents"><%= (@data_hash["플레이 시간_local_rank"].to_f / @total_local_count.to_f) * 100 %>%</div></div>              
                     </div>        
                     
                     <div class="summary_card">
@@ -91,12 +91,12 @@
                                  <div>
                                  	<div><img src="/images/kor_icon.png"></div>
                                     <div class="sumary_contents_contents top_rank_s">
-                                    	#<%= @data_hash["승률_local_rank"] %><span class="top_rank_xs">(Top 50%)</span>
+                                    	#<%= @data_hash["승률_local_rank"] %><span class="top_rank_xs">(Top <%= (@data_hash["승률_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span>
                                      </div>
                                  </div>
                                  <div>
                                  	<div><img src="/images/global_icon.png"></div>
-                                    <div class="sumary_contents_contents top_rank_s">#<%= @data_hash["승률_rank"] %><span class="top_rank_xs">(Top 50%)</span></div></div>
+                                    <div class="sumary_contents_contents top_rank_s">#<%= @data_hash["승률_rank"] %><span class="top_rank_xs">(Top <%= (@data_hash["승률_rank"].to_f / @total_count.to_f) * 100 %>%)</span></div></div>
                             </div>
                      </div>
                      
@@ -107,8 +107,8 @@
 	          					</div>
           					</div>
                             <div class="top_per">
-                                 <div><div><img src="/images/kor_icon.png"></div><div class="sumary_contents_contents top_rank_s">##<%= @data_hash["KD_local_rank"] %><span class="top_rank_xs">(Top 50%)</span></div></div>
-                                 <div><div><img src="/images/global_icon.png"></div><div class="sumary_contents_contents top_rank_s">##<%= @data_hash["KD_rank"] %><span class="top_rank_xs">(Top 50%)</span></div></div>
+                                 <div><div><img src="/images/kor_icon.png"></div><div class="sumary_contents_contents top_rank_s">##<%= @data_hash["KD_local_rank"] %><span class="top_rank_xs">(Top <%= (@data_hash["KD_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                                 <div><div><img src="/images/global_icon.png"></div><div class="sumary_contents_contents top_rank_s">##<%= @data_hash["KD_rank"] %><span class="top_rank_xs">(Top <%= (@data_hash["KD_rank"].to_f / @total_count.to_f) * 100 %>%)</span></div></div>
                             </div>
                      </div>
                      <div class="summary_card">
@@ -119,8 +119,8 @@
 	          						</div>
           						</div>
                             <div class="top_per">
-                                 <div><div><img src="/images/kor_icon.png"></div><div class="sumary_contents_contents top_rank_s">##<%=@data_hash["KDA_local_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
-                                 <div><div><img src="/images/global_icon.png"></div><div class="sumary_contents_contents top_rank_s">##<%=@data_hash["KDA_rank"]%><span class="top_rank_xs">(Top 50%)</span></div></div>
+                                 <div><div><img src="/images/kor_icon.png"></div><div class="sumary_contents_contents top_rank_s">##<%=@data_hash["KDA_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["KDA_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                                 <div><div><img src="/images/global_icon.png"></div><div class="sumary_contents_contents top_rank_s">##<%=@data_hash["KDA_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["KDA_rank"].to_f / @total_count.to_f) * 100 %>%)</span></div></div>
                             </div>
                      </div>
                      <div class="summary_last">

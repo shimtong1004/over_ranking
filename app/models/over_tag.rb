@@ -5,32 +5,6 @@ TIME_OUT = 60
 HEROES = ["Roadhog", "Reaper", "Soldier: 76", "Reinhardt", "Tracer", "Genji", "L&#xFA;cio", "McCree", "Pharah", "Junkrat", "Widowmaker", "Mei", "Zarya", "Zenyatta", "Hanzo", "Mercy", "Torbj&#xF6;rn", "Symmetra", "Winston", "Bastion", "D.Va"]
 
 class OverTag < ActiveRecord::Base
-  has_one :over_all_hero
-  has_one :over_profile
-  
-  has_one :over_hero_bastion
-  has_one :over_hero_dva
-  has_one :over_hero_genji
-  has_one :over_hero_hanzo
-  has_one :over_hero_junkrat
-  has_one :over_hero_lucio
-  has_one :over_hero_mc_cree
-  has_one :over_hero_mei
-  has_one :over_hero_mercy
-  has_one :over_hero_pharah
-  has_one :over_hero_reaper
-  has_one :over_hero_reinhardt
-  has_one :over_hero_roadhog
-  has_one :over_hero_soldier76
-  has_one :over_hero_symmetra
-  has_one :over_hero_torbjoern
-  has_one :over_hero_tracer
-  has_one :over_hero_widowmaker
-  has_one :over_hero_winston
-  has_one :over_hero_zarya
-  has_one :over_hero_zenyattum
-  
-  has_many :over_heros
   has_many :over_user_types
   has_many :update_logs
   
@@ -66,13 +40,8 @@ class OverTag < ActiveRecord::Base
     url = uri.normalize.to_s
     html = open(url).read
     ActiveRecord::Base.transaction do
-      over_hero_masters.destroy_all
-      # play_types = []
-      # if play_type == "1"
-        # play_types.push id: 1, value:"quick-play"
-      # else
-        # play_types.push id: 2, value:"competitive-play"
-      # end
+      # over_hero_masters.destroy_all
+
       doc = Nokogiri::HTML(html)
       play_types = []
       play_types.push id: 1, value:"quick-play"
@@ -85,11 +54,22 @@ class OverTag < ActiveRecord::Base
         #level
         level = doc.css(".u-vertical-center").text
         keyword = "level"
-        OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, keyword: keyword, value: level)
+        over_hero_master = OverHeroMaster.where(over_user_type_id: user_type_id, play_type: play_type_id, keyword: keyword).first
+        if over_hero_master
+          over_hero_master.update(value: level)
+        else
+          OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, keyword: keyword, value: level)
+        end
           
         if play_type_id == 2
           competitive_rank = doc.css(".competitive-rank").text
-          OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, keyword: "competitive_rank", value: competitive_rank)
+          
+          over_hero_master = OverHeroMaster.where(over_user_type_id: user_type_id, play_type: play_type_id, keyword: "competitive_rank").first
+          if over_hero_master
+            over_hero_master.update(value: competitive_rank)
+          else
+            OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, keyword: "competitive_rank", value: competitive_rank)
+          end
         end
           
         #quick-play 일반
@@ -100,7 +80,13 @@ class OverTag < ActiveRecord::Base
         for i in 0...8
           value = play_type_doc.css(".content-box.page-wrapper.highlights-section .card-heading")[i].text
           keyword = play_type_doc.css(".content-box.page-wrapper.highlights-section .card-copy")[i].text
-          OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, keyword: keyword, value: value, view_group: view_group)
+          
+          over_hero_master = OverHeroMaster.where(over_user_type_id: user_type_id, play_type: play_type_id, keyword: keyword, view_group: view_group).first
+          if over_hero_master
+            over_hero_master.update(value: value)
+          else
+            OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, keyword: keyword, value: value, view_group: view_group)
+          end
         end
           
         #상위영웅 start
@@ -115,7 +101,12 @@ class OverTag < ActiveRecord::Base
           for i in 0...21
             hero_name = hero_sort_data.css(".bar-text .title")[i].text
             value = hero_sort_data.css(".bar-text .description")[i].text
-            OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, hero_name: hero_name, keyword: sort_condition.text, value: value, view_group: view_group)
+            over_hero_master = OverHeroMaster.where(over_user_type_id: user_type_id, play_type: play_type_id, hero_name: hero_name, keyword: sort_condition.text, view_group: view_group).first
+            if over_hero_master
+              over_hero_master.update(value: value)
+            else
+              OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, hero_name: hero_name, keyword: sort_condition.text, value: value, view_group: view_group)
+            end
           end
         end
         #상위영웅 end
@@ -135,7 +126,12 @@ class OverTag < ActiveRecord::Base
               trs.each do |tr|
               keyword = tr.css("td")[0].text
               value = tr.css("td")[1].text
-              OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, hero_name: hero_name, keyword: keyword, value: value, view_group: view_group, view_group_detail: view_group_detail)
+              over_hero_master = OverHeroMaster.where(over_user_type_id: user_type_id, play_type: play_type_id, hero_name: hero_name, keyword: keyword, view_group: view_group, view_group_detail: view_group_detail).first
+              if over_hero_master
+                over_hero_master.update(value: value)
+              else
+                OverHeroMaster.create(over_user_type_id: user_type_id, play_type: play_type_id, hero_name: hero_name, keyword: keyword, value: value, view_group: view_group, view_group_detail: view_group_detail)
+              end
             end
           end
         end
