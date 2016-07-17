@@ -35,86 +35,86 @@ try{
 }
 	
 
-//그래프 스크립트
-
-	var userPoints = [[1,4213],[10,4000],[20,3800],[30,3500],[40,3345],[50,3214],[60,2945],[70,2754],[80,2541],[90,2421],[100,2000]]; 	//임시 데이타
-
-	var jobPoints = [[18,3921]];
-			  //임시 데이타
-	//var userPoints = [];//실제 데이타는 아래와 같이 처리하세요.
-	//for (var i=0; i<2*Math.PI; i+=0.1){ 
-	//   cosPoints.push([i, Math.cos(i)]); 
-	//} 
-	var i=1;
-	 var n = $( '.trend_grh' ).length;
-	for (var i = 1; i <= n; i++) {
-	var chart_name ='chart_'+i;
-try {
-	var plot = $.jqplot(chart_name, [userPoints, jobPoints], {  
-			
-		legend:{show:false,}, 
-		highlighter:{show:false},
-		
-		series:[
-				{
-					label:'사용자',
-				  	color : '#cc9e45', //Line Color
-					lineWidth : 2,	//라인 두께
-					markerOptions: {size:9,shadow:false},	//점 두께 http://www.jqplot.com/docs/files/jqPlotOptions-txt.html
-					pointLabels: { show:true},
-					shadow:false,
-				},
-				{
-					label:'내 순위',
-				  	color : '#000',
-					lineWidth : 2,
-					markerOptions : {size:10},	
-					pointLabels:{ show:true, location:'s', ypadding:10 }
-				}
-		],
-		axes:{
-	      xaxis:{
-
-			min:0, max:100, tickInterval:10, 
-			
-			tickOptions:{ 
-				formatString: 'Top%d%',
-				showGridline: false, 				//세로줄 없애기
-				angle: -50,
-				showTickMarks:false,
-				fontsize:'20pt',
-			},
-			
-			 rendererOptions: {
-				tickInset: 0.2,                
-                
-            },
-			drawMajorTickMarks: false,
-	        autoscale: false,
-			
-			
-            
-			 
-	      },
-	      yaxis:{
-	         autoscale: true,
-			 rendererOptions: {drawBaseline: false},
-			 showTicks: false,  //세로축 정보
-	      }
-	    },
-		grid:{
-			drawGridlines :true, //그리드 그리기
-			background:'#f3f3f3',
-			shadow:false,
-			drawBorder:0,
-			
-		}
-	});
-} catch(e) {
-    console.log("Error: "+e.message);
-}	
-	
-	}
+// //그래프 스크립트
+// 
+	// var userPoints = [[1,4213],[10,4000],[20,3800],[30,3500],[40,3345],[50,3214],[60,2945],[70,2754],[80,2541],[90,2421],[100,2000]]; 	//임시 데이타
+// 
+	// var jobPoints = [[18,3921]];
+			  // //임시 데이타
+	// //var userPoints = [];//실제 데이타는 아래와 같이 처리하세요.
+	// //for (var i=0; i<2*Math.PI; i+=0.1){ 
+	// //   cosPoints.push([i, Math.cos(i)]); 
+	// //} 
+	// var i=1;
+	 // var n = $( '.trend_grh' ).length;
+	// for (var i = 1; i <= n; i++) {
+	// var chart_name ='chart_'+i;
+// try {
+	// var plot = $.jqplot(chart_name, [userPoints, jobPoints], {  
+// 			
+		// legend:{show:false,}, 
+		// highlighter:{show:false},
+// 		
+		// series:[
+				// {
+					// label:'사용자',
+				  	// color : '#cc9e45', //Line Color
+					// lineWidth : 2,	//라인 두께
+					// markerOptions: {size:9,shadow:false},	//점 두께 http://www.jqplot.com/docs/files/jqPlotOptions-txt.html
+					// pointLabels: { show:true},
+					// shadow:false,
+				// },
+				// {
+					// label:'내 순위',
+				  	// color : '#000',
+					// lineWidth : 2,
+					// markerOptions : {size:10},	
+					// pointLabels:{ show:true, location:'s', ypadding:10 }
+				// }
+		// ],
+		// axes:{
+	      // xaxis:{
+// 
+			// min:0, max:100, tickInterval:10, 
+// 			
+			// tickOptions:{ 
+				// formatString: 'Top%d%',
+				// showGridline: false, 				//세로줄 없애기
+				// angle: -50,
+				// showTickMarks:false,
+				// fontsize:'20pt',
+			// },
+// 			
+			 // rendererOptions: {
+				// tickInset: 0.2,                
+//                 
+            // },
+			// drawMajorTickMarks: false,
+	        // autoscale: false,
+// 			
+// 			
+//             
+// 			 
+	      // },
+	      // yaxis:{
+	         // autoscale: true,
+			 // rendererOptions: {drawBaseline: false},
+			 // showTicks: false,  //세로축 정보
+	      // }
+	    // },
+		// grid:{
+			// drawGridlines :true, //그리드 그리기
+			// background:'#f3f3f3',
+			// shadow:false,
+			// drawBorder:0,
+// 			
+		// }
+	// });
+// } catch(e) {
+    // console.log("Error: "+e.message);
+// }	
+// 	
+	// }
 	
 
 

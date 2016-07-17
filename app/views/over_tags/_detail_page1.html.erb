@@ -408,12 +408,6 @@
 
 <script>
 	//도넛 그래프 스크립트
-
-
-var circle_cnt = $( '.circle' ).length;
-
-if(circle_cnt) {
-	
 	var colors = [
 					['#959595', '#cc4548'], ['#959595', '#cc9e45'], ['#959595', '#4473ae'], ['#959595', '#96ceb7']
 				  ], circles = [];
@@ -433,6 +427,11 @@ if(circle_cnt) {
 	var per = [<%= (@data_hash["offense_플레이 시간"].to_f / tatal_played_time) * 100 %>, <%= (@data_hash["support_플레이 시간"].to_f / tatal_played_time) * 100 %>,
 				<%= (@data_hash["rush_플레이 시간"].to_f / tatal_played_time) * 100 %>, <%= (@data_hash["defense_플레이 시간"].to_f / tatal_played_time) * 100 %>];
 
+	setTimeout(make_head_circle, 2000);
+	setTimeout(make_circle, 2000);
+	setTimeout(make_chart(0, 3), 2000);
+	
+	function make_head_circle(){
 		for (var i = 1; i <= 4; i++) {
 
 		var child = document.getElementById('circles-' + i), percentage = per[i-1];
@@ -466,31 +465,11 @@ if(circle_cnt) {
 			}));
 			}
 		}
-	
-	var textclass = 'hero_circle';
-	<% for i in 0...3 %>
-			var id_num = <%= i + 5 %>;
-			var child = document.getElementById('circles-' + id_num), percentage = "<%=@hero_circle[@hero_names[i]][:hero_per]%>";
-			circles.push(Circles.create({
-				id:         child.id,
-				value:		percentage,
-				radius:     35,
-				width:      8,
-				colors:     <%= raw @hero_circle[@hero_names[i]][:color] %>,
-				text: 	    "<%= @hero_circle[@hero_names[i]][:play_time]%>",
-				textClass : textclass,
-				duration :0
-			}));
-			var hero_icon_url = "url(/images/hero_circle/"+ "<%= @hero_circle[@hero_names[i]][:img_name]%>" +"_circle.png)";
-			document.getElementById('circles-'+id_num).style.backgroundImage = hero_icon_url;
-	<% end %>
-}
-	setTimeout(make_circle, 2000);
-	
+	}
 
 	function make_circle(){
 		var textclass = 'hero_circle';
-		<% for i in 3...21 %>
+		<% for i in 0...21 %>
 			var id_num = <%= i + 5 %>;
 			var child = document.getElementById('circles-' + id_num), percentage = "<%=@hero_circle[@hero_names[i]][:hero_per]%>";
 			circles.push(Circles.create({
@@ -508,7 +487,7 @@ if(circle_cnt) {
 		<% end %>
 	}
 	
-	function make_chart(){
+	function make_chart(s_count, e_count){
 		var userPoints = [[1,4213],[10,4000],[20,3800],[30,3500],[40,3345],[50,3214],[60,2945],[70,2754],[80,2541],[90,2421],[100,2000]]; 	//임시 데이타
 
 		var jobPoints = [[18,3921]];
@@ -517,9 +496,8 @@ if(circle_cnt) {
 		//for (var i=0; i<2*Math.PI; i+=0.1){ 
 		//   cosPoints.push([i, Math.cos(i)]); 
 		//} 
-		var i=1;
 		 var n = $( '.trend_grh' ).length;
-		for (var i = 4; i < 22; i++) {
+		for (var i = s_count+1; i < e_count+1; i++) {
 		var chart_name ='chart_'+i;
 		var plot = $.jqplot(chart_name, [userPoints, jobPoints], {  
 				
@@ -583,7 +561,7 @@ if(circle_cnt) {
 	
 	function show_hero_data(){
 		$(".hero_card.panel-white").show();
-		make_chart();
+		make_chart(3, 21);
 	}
 	
 </script>
