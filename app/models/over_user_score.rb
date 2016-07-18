@@ -17,6 +17,7 @@ class OverUserScore < ActiveRecord::Base
     ActiveRecord::Base.transaction do
       play_types.each do |play_type|
         self_healing = 0
+        won_per = 0
         total_hash = self.get_total_hash
         offense_hash = self.get_total_hash
         defense_hash = self.get_total_hash
@@ -46,17 +47,17 @@ class OverUserScore < ActiveRecord::Base
               end
             end
             
-            if data.keyword == "임무 기여 시간 - 평균" || data.keyword ==  "폭주 시간 - 평균"
-              tmp = value.split(":")
-              min = tmp[0].to_i
-              sec = tmp[1].to_i
-              value = min * 60 + sec
-            end
-            
             value = value.to_s
             
             if hero_name == "모든 영웅"
-             total_hash[data.keyword] = value.delete(",").to_f if data.keyword && total_hash[data.keyword] #total
+              if data.keyword == "임무 기여 시간 - 평균" || data.keyword ==  "폭주 시간 - 평균"
+                tmp = value.split(":")
+                min = tmp[0].to_i
+                sec = tmp[1].to_i
+                value = min * 60 + sec
+                value = value.to_s
+              end
+              total_hash[data.keyword] = value.delete(",").to_f if data.keyword && total_hash[data.keyword] #total
             else
               offense_hash[data.keyword] += value.delete(",").to_f if data.keyword && offense_hash[data.keyword] && OFFENSE_HERO.index(hero_name) #공격
               defense_hash[data.keyword] += value.delete(",").to_f if data.keyword && defense_hash[data.keyword] && DEFENSE_HERO.index(hero_name) #수비
@@ -67,6 +68,7 @@ class OverUserScore < ActiveRecord::Base
               eliminations = value.delete(",") if data.keyword == "처치"
               deaths = value.delete(",") if data.keyword == "죽음"
               final_blows = value.delete(",") if data.keyword == "결정타"
+              won_per += value.delete("%").to_f if data.keyword == "승률"
               self_healing += value.delete(",").to_i if data.keyword == "자가 치유"
               hero_self_healing = value.delete(",").to_i
             end
@@ -92,6 +94,7 @@ class OverUserScore < ActiveRecord::Base
           end
         end
         total_hash["자가 치유"] = self_healing
+        total_hash["승률"] = won_per
         self.insert_total_data(user_type, total_hash, play_type)
         self.insert_total_data(user_type, offense_hash, play_type, "offense")
         self.insert_total_data(user_type, defense_hash, play_type, "defense")
@@ -129,9 +132,11 @@ class OverUserScore < ActiveRecord::Base
       deaths += value if key == "죽음"
       final_blows += value if key == "결정타"
       value = value.to_f / hero_cnt.to_f if avr_key.index(key) && hero_type
+      value = value.to_f / hero_cnt.to_f if key == "승률" && hero_type == nil
       keyword_head = "#{hero_type}_" if hero_type
       
       over_user_score = OverUserScore.where(over_user_type_id: over_user_type_id, user_type: user_type.user_type, play_type: play_type, keyword: "#{keyword_head}#{key}").first
+      
       if over_user_score
         over_user_score.update(score: value)
       else

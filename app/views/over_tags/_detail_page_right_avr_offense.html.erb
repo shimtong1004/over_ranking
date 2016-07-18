@@ -1,0 +1,102 @@
+                     <div class="static_card_bottom panel-body">
+                     	<div class="static_box">
+                        	<div class="static_data"><div>평균처치</div><div class="static_value"><%= @data_hash["offense_처치 - 평균"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_처치 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_처치 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>평균결정타</div><div class="static_value"><%= @data_hash["offense_결정타 - 평균"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_결정타 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_결정타 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>평균치유</div><div class="static_value"><%= @data_hash["offense_치유 - 평균"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_치유 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_치유 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>평균딜량</div><div class="static_value"><%= @data_hash["offense_준 피해 - 평균"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_준 피해 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_준 피해 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>평균죽음</div><div class="static_value"><%= @data_hash["offense_죽음 - 평균"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_죽음 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_죽음 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>평균 단독처치</div><div class="static_value"><%= @data_hash["offense_단독 처치 - 평균"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_단독 처치 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_단독 처치 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>평균근접공격결정타</div><div class="static_value"><%= @data_hash["offense_근접 공격 결정타 - 평균"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_근접 공격 결정타 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_근접 공격 결정타 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>평균임무기여처치</div><div class="static_value"><%= @data_hash["offense_임무 기여 처치 - 평균"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_임무 기여 처치 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_임무 기여 처치 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data">
+                        		<div>평균폭주시간</div>
+                        		<div class="static_value">
+                        			<% tmp = @data_hash["offense_폭주 시간 - 평균"].to_i %>
+	                        		<% if tmp < 60 %>
+	                        		<% min = "00"%>
+	                        		<% elsif tmp < 600 %>
+	                        		<% min = "0" + (tmp / 60).to_s %>
+	                        		<% else %>
+	                        		<% min = (tmp / 60).to_s %>
+	                        		<% end %>
+	                        		
+	                        		<% tmp = tmp.to_i % 60 %>
+	                        		
+	                        		<% if tmp == 0  %>
+	                        		<% sec = "00" %>
+	                        		<% elsif tmp < 10  %>
+	                        		<% sec = "0" + tmp.to_s %>
+	                        		<% else %>
+	                        		<% sec = tmp.to_s %>
+	                        		<% end %>
+	                        		
+	                        		<%= min + ":" + sec %>
+                        		</div>
+                        	</div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_폭주 시간 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_폭주 시간 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        </div>
+                        <div class="static_box">
+                        	<div class="static_data"><div>평균임무기여시간</div>
+                        	<div class="static_value">
+                        		<% tmp = @data_hash["offense_임무 기여 시간 - 평균"].to_i %>
+                        		<% if tmp < 60 %>
+                        		<% min = "00"%>
+                        		<% elsif tmp < 600 %>
+                        		<% min = "0" + (tmp / 60).to_s %>
+                        		<% else %>
+                        		<% min = (tmp / 60).to_s %>
+                        		<% end %>
+                        		
+                        		<% tmp = tmp.to_i % 60 %>
+                        		
+                        		<% if tmp == 0  %>
+                        		<% sec = "00" %>
+                        		<% elsif tmp < 10  %>
+                        		<% sec = "0" + tmp.to_s %>
+                        		<% else %>
+                        		<% sec = tmp.to_s %>
+                        		<% end %>
+                        		
+                        		<%= min + ":" + sec %>
+                        	</div>
+                        </div>
+                        <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_임무 기여 시간 - 평균_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_임무 기여 시간 - 평균_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        </div>
+                        <% if @data_hash["점수"] %>
+                         <div class="static_box">
+                        	<div class="static_data"><div>1분당 평균점수 획득</div><div class="static_value"><%= @data_hash["offense_점수"] %></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_점수_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_점수_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        </div>
+                        <% else %>
+                        <div class="static_box">
+                        	<div class="static_data"><div>1분당 평균점수 획득</div><div class="static_value">-</div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">-<span class="top_rank_xs">(Top -)</span></div></div>
+                        </div>
+                        <% end %>
+                        
+                     </div>

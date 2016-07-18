@@ -6,13 +6,13 @@
 					<h2>영웅 선택</h2>
 					<div class="hero_nav_heros">
 						<% HERO_SQUARE_IMG.each do |key, value| %>
-							<div class="container_hero_square" style="cursor:pointer;" data-param="<%= HERO_NAME_TO_ENG[key] %>">
+							<div class="container_hero_square" onclick="javascript:click_square_img('<%=key%>', '<%=HERO_NAME_TO_ENG[key]%>');" style="cursor:pointer;">
 								<img src="/images/hero_square/<%=value%>">
                         	</div>
                     	<% end %>
                     </div>
                 </div>
-                <div class="hero_summary_warp" style='background-image:url(<%= "/images/hero_profile/#{HERO_NAME_TO_ENG[@ary_data[0]["hero_name"]]}.jpg" %>);'>
+                <div class="hero_summary_warp" style='background-image:url(<%= "/images/hero_profile/#{HERO_NAME_TO_ENG[@data_ary[0]["hero_name"]]}.jpg" %>);'>
                 	<div class="top_title"><div>WIDOWMAKER</div><h2>위도우 메이커</h2></div>
                 	<div class="hero_stat">
                 		<div><img src="/images/defence_icon.png">수비영웅</div><div><img src="/images/hp_icon.png">hp200</div><div><img src="/images/playtime_icon.png">플레이시간 2위</div>
@@ -73,37 +73,41 @@
                         </tr>
                         </thead>
                         <tbody>
-                        	<% @ary_data.each_with_index do |data, i| %>
-                        	<tr data-link="<%= detail_over_tag_path(@over_tags[i]) %>" data-param="<%= @over_tags[i].over_user_types[0].user_type %>" style="cursor:pointer;">
+                        	<% @data_ary.each do |data| %>
+                        	<tr data-link="<%= detail_over_tag_path(data["over_tag_id"]) %>" data-param="<%= data["user_type"] %>" style="cursor:pointer;">
                             	<td class="rank_table_rank"></td>
                                 <td class="rank_table_hero"><img src="/images/hero_square/<%=HERO_SQUARE_IMG[data["hero_name"]]%>"></td>
                                 <td class="rank_table_region">
-                                	<% @over_tags[i].over_user_types.each do |user_type| %>
-										<%= user_type.user_type %>
-									<% end %>
+										<%= data["user_type"] %>
                                 </td>
                                 <td class="text-left rank_table_player ">
                                 	<img src="/images/hero_square/<%=HERO_SQUARE_IMG[data["hero_name"]]%>"><%=data["hero_name"]%><br>
-                                	<span>lv.<%=data["main_hero_level"]%></span>
+                                	<span>lv.<%=data["level"]%></span>
                                 </td>
                                 <td class="rank_table_score"><%=data["competitive_rank"]%></td>
-                                <td class="rank_table_kda"><%= (data["처치"].delete(",").to_f / data["죽음"].delete(",").to_f).round(2) %>
+                                <td class="rank_table_kda"><%= (data["KDA"]) %>
                                 	 <span class="top_rank_xs">(<%= "#{data["처치"]}/#{data["죽음"]}"%>)</span>
                                	</td>
                                 <td class="rank_table_kill"><%= data["처치 - 평균"] %></td>
                                 <td class="rank_table_heal"><%= data["치유 - 평균"] %></td>
                                 <td class="rank_table_winrate"><div class="progress win-rate">
-                                	<% games_played = data["치른 게임"].delete(",").to_i %>
-                                	<% games_won = data["승리한 게임"].delete(",").to_i %>
+                                	<% games_played = data["치른 게임"].to_i %>
+                                	<% games_won = data["승리한 게임"].to_i %>
                                 	<% games_lost = games_played - games_won %>
-                                	<% games_won_per = ((games_won.to_f / games_played.to_f) * 100).round(2) %>
+                                	<% games_won_per = data["승률"] %>
 										<div class="progress-bar progress-bar-win" role="progressbar" style="width:<%=games_won_per%>%">W<%=games_won%></div>
 										<div class="progress-bar progress-bar-lose" role="progressbar" style="width:<%=100 - games_won_per%>%">L<%=games_lost%></div>
                                     </div> <span class="top_data">
                                     	<%= games_won_per %>%
                                     </span></td>
                                 
-                                <td class="rank_table_time"><%= data["플레이 시간"] %></td>
+                                <td class="rank_table_time">
+                                	<% if data["플레이 시간"] > 60 %>
+                                	<%= data["플레이 시간"].to_i/60 %>시간
+                                	<% else %>
+                                	<%= data["플레이 시간"].to_i %>분
+                                	<% end %>
+                                </td>
                                 
                             </tr>
                             <% end %>
@@ -117,64 +121,23 @@
         </div> 
     </div>
 
-
-
-
-<!-- <div style="padding: 10px;">
-
-
-<table>
-	<% @ary_data.each_with_index do |data, i| %>
-	<tr>
-		<td width="50px">지역</td>
-		<td width="130px" colspan="2">주영웅</td>
-		<td width="130px" colspan="2">플레이어</td>
-		<td width="100px">점수</td>
-		<td width="100px">킬/데스</td>
-		<td width="100px">승률</td>
-		<td width="100px">플레이시간 </td>
-	</tr>
-	
-	<tr data-link="<%= detail_over_tag_path(@over_tags[i]) %>" data-param="<%= @over_tags[i].over_user_types[0].user_type %>" style="cursor:pointer;">
-		<td>
-			<% @over_tags[i].over_user_types.each do |user_type| %>
-				<%= user_type.user_type %>
-			<% end %>
-		</td>
-		
-		<td><image src='<%= data["hero_avatar"] %>' style="width:50px; height:50px;"></td>
-		<td><%= data["hero_name"] %></td>
-		
-		<td><image src='<%= data["avatar"] %>' style="width:50px; height:50px;"></td>
-		<td><%= data["user_name"] %></td>
-		
-		<td><%= data["점수"] %></td>
-		<td>
-			<%= (data["처치"].delete(",").to_f / data["죽음"].delete(",").to_f).round(2) %></td>
-		<td><%= (data["승리한 게임"].delete(",").to_f / data["치른 게임"].delete(",").to_f).round(2) * 100 %>%</td>
-		<td><%= data["플레이 시간"] %></td>
-	</tr>
-	<% end %>
-</table>
-
-<% if @status==404 %>
-<div>
-	서버 터졌음.
-</div>
-<% end %>
-</div> -->
-
 <script>
+	$("div[data-link]").click(function() {
+	  var param = "?play_type=" + $(this).data("param")
+	  var link = $(this).data("link") + param;
+	  window.location = link;
+	})
+
 	$("tr[data-link]").click(function() {
 	  var param = "?user_type=" + $(this).data("param")
 	  var link = $(this).data("link") + param;
 	  window.location = link;
 	})
 	
-	$(".container_hero_square").click(function() {
-	  var hero_name = $(this).data("param")
+	function click_square_img(key, hero_name){
 	  $(".hero_summary_warp").css("background-image", 'url(/images/hero_profile/' + hero_name + '.jpg)');
-	  
-	})
+	  $(".top_title div").text(hero_name)
+	  $(".top_title h2").text(key)
+	}
 	
 </script>

@@ -35,37 +35,25 @@ class OverTagsController < ApplicationController
     else
       over_tags = OverTag.where(tag_name: tag_ary[0])
     end
-    @status = 200
-    @ary_data = []
-    hash_data = {}
-      
-    main_hero_keyword = "플레이 시간"
-    view_group = "상위 영웅"
+    
+    @data_ary = []
     over_tags.each do |over_tag|
-      competitive_rank = over_tag.over_user_types[0].over_hero_masters.where(play_type: 2, keyword: "competitive_rank").first.value
-      main_hero_name = over_tag.over_user_types[0].over_hero_masters.where(play_type: session[:play_type], keyword: main_hero_keyword, view_group: view_group).first.hero_name
-      main_hero_level = over_tag.over_user_types[0].over_hero_masters.where(play_type: session[:play_type], keyword: "level").first.value
-      hash_data["hero_name"] = main_hero_name
-      hash_data["main_hero_level"] = main_hero_level
-      hash_data["competitive_rank"] = competitive_rank
-          
-      hero_name = "모든 영웅"
-      keyword = ["점수", "폭주 시간 - 평균", "처치", "죽음", "메달", "칭찬 카드", "승리한 게임", "치른 게임", "플레이 시간", "치유 - 평균", "처치 - 평균"]
-      datas = over_tag.over_user_types[0].over_hero_masters.where(play_type: session[:play_type], hero_name: hero_name, keyword: keyword)
-          
-          
-      datas.each do |data|
-        hash_data[data.keyword] = data.value
+      over_tag.over_user_types.each do |user_type|
+        hash = {}
+        datas = user_type.over_user_scores.where(play_type: session[:play_type])
+        datas.each do |data|
+          hash[data.keyword] = data.score
+        end
+        hash["over_tag_id"] = over_tag.id
+        hash["user_type_id"] = user_type.id
+        hash["user_type"] = user_type.user_type
+        hash["competitive_rank"] = user_type.over_hero_masters.where(play_type: 2, keyword: "competitive_rank").first.value
+        hash["level"] = user_type.over_hero_masters.where(play_type: session[:play_type], keyword: "level").first.value
+        hash["hero_name"] = user_type.over_hero_masters.where(play_type: session[:play_type], keyword: "플레이 시간", view_group: "상위 영웅").first.hero_name
+        @data_ary.push hash
       end
-        
-      # hash_data["user_name"] = over_tag.over_profile.username
-      # hash_data["avatar"] = over_tag.over_profile.avatar
-#           
-      # keyword = "region"
-      # hash_data["region"] = over_tag.over_user_types[0].over_hero_masters.where(play_type: session[:play_type], keyword: keyword).pluck(:value)
-      @ary_data.push hash_data
     end
-    @over_tags = over_tags
+    
     render 'show'
   end
   
@@ -167,6 +155,8 @@ class OverTagsController < ApplicationController
   end
   
   def detail
+    session[:detail_page_right_avr] = params[:detail_page_right_avr] ? params[:detail_page_right_avr] : "total"
+     
     session[:user_type] = params[:user_type] if params[:user_type]
     
     if session[:play_type] == nil

@@ -26,7 +26,9 @@
           	<div class="main_chart_warp">
 
                 	<div class="main_chart">
-                    	<div class="main_chart_title offence"><span><img src="/images/offence_icon.png">공격</span><img src="/images/more.png"></div>
+                    	<div class="main_chart_title offence">
+                    		<span><img src="/images/offence_icon.png">공격</span>
+                    		<img onclick="javascript:go_role_rank();" src="/images/more.png"></div>
                         <div class="main_chart_content">
                         	<table>
                         		<% OFFENSE_HERO.each_with_index do |hero, no| %>
@@ -44,7 +46,7 @@
                     </div>
                     
                     <div class="main_chart">
-                    	<div class="main_chart_title defence"><span><img src="/images/defence_icon.png">수비</span><img src="/images/more.png"></div>
+                    	<div class="main_chart_title defence"><span><img src="/images/defence_icon.png">수비</span><img onclick="javascript:go_role_rank();" src="/images/more.png"></div>
                         <div class="main_chart_content">
                         	<table>
                         		<% DEFENSE_HERO.each_with_index do |hero, no| %>
@@ -61,7 +63,7 @@
                     </div>
                     
                     <div class="main_chart">
-                    	<div class="main_chart_title tank"><span><img src="/images/tank_icon.png">돌격</span><img src="/images/more.png"></div>
+                    	<div class="main_chart_title tank"><span><img src="/images/tank_icon.png">돌격</span><img onclick="javascript:go_role_rank();" src="/images/more.png"></div>
                         <div class="main_chart_content">
                         	<table>
                             	<% RUSH_HERO.each_with_index do |hero, no| %>
@@ -78,7 +80,7 @@
                     </div>
                     
                     <div class="main_chart">
-                    	<div class="main_chart_title support"><span><img src="/images/support.png">지원</span><img src="/images/more.png"></div>
+                    	<div class="main_chart_title support"><span><img src="/images/support.png">지원</span><img onclick="javascript:go_role_rank();" src="/images/more.png"></div>
                         <div class="main_chart_content">
                         	<table>
                             	<% SUPPORT_HERO.each_with_index do |hero, no| %>
@@ -454,6 +456,11 @@
 	$(".battle_tag_find").click(function() {
 	  window.location = $(this).data("link")
 	})
+	
+	function go_role_rank(){
+		window.location = "/over_tags/over_role_rank"
+	}
+	
 </script>
 	
 	<!-- 
