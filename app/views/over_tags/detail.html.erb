@@ -139,8 +139,8 @@
             <!--서브메뉴시작 -->
             <div class="sub_menu">
             	<div class="sub_left"> 
-              		<div style="cursor:pointer;" data-link="/over_tags/<%=@over_tag.id%>/detail" data-param="info_type=1" type="button" class="detail_info <%= 'active' if session[:info_type] == '1' %>">통합 정보</div>
-              		<div style="cursor:pointer;" data-link="/over_tags/<%=@over_tag.id%>/detail" data-param="info_type=2" type="button" class="detail_info <%= 'active' if session[:info_type] == '2' %>">영웅 정보</div>
+              		<div id="btn_total_info" style="cursor:pointer;" type="button" class="detail_info active">통합 정보</div>
+              		<div id="btn_hero_info" style="cursor:pointer;" type="button" class="detail_info">영웅 정보</div>
                  </div>
                  
                  <div class="sub_right">
@@ -157,11 +157,7 @@
             
                      
             </div>
-            <% if session[:info_type] == "1"%>
-            	<%= render 'detail_page1' %>
-            <% else %>
-            	<%= render 'detail_page2' %>
-            <% end %>
+            <%= render 'detail_page1' %>
          </div>
 
 <script>
@@ -177,4 +173,22 @@
 			}
 		});
 	}
+	
+	$("#btn_total_info").click(function() {
+	  	$(".static_warp").show();
+	  	$(".hero_warp").css('width', '60.2%');
+	  	for(i=0; i< 22; i++){
+		  	$("#chart_"+i).empty();
+		}
+	  	make_chart(0, 21);
+	})
+	
+	$("#btn_hero_info").click(function() {
+	  $(".static_warp").hide();
+	  $(".hero_warp").css('width', '100%');
+	  for(i=0; i< 22; i++){
+	  	$("#chart_"+i).empty();
+	  }
+	  make_chart(0, 21);
+	})
 </script>

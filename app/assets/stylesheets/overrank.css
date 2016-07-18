@@ -45,10 +45,10 @@ body{
 	  .profile_card .summary, .profile_card .summary .summary_card>div, .profile_card .summary .summary_card .top_per>div,
 	  .profile_card .summary .summary_last, .summary_last_card,
 	  .flex-box, .hero_stat,  .hero_chart_title, .hero_chart_title>.type_select,
-	  .hero_detail_warp .hero_card_top, .hero_warp .hero_card_top, .hero_warp .hero_card_top >div,
+	  .hero_card_top, .hero_warp .hero_card_top >div,
 	  .card_top_left, .card_top_left>div, .card_top_right,
-	  .hero_warp .hero_card_top .card_top_rank >div, 
-	  .hero_warp .hero_card_top .card_top_winrate, .hero_warp .hero_card_top  .card_top_reward,
+	  .hero_card_top .card_top_rank >div, 
+	  .hero_card_top .card_top_winrate, .hero_card_top  .card_top_reward,
 	  .hero_detail_warp .hero_card_top  .card_top_winrate, .hero_detail_warp .hero_card_top  .card_top_reward,
 	  .hero_card_bottom .panal-important, .hero_card_bottom .panal-important>div,
 	  .static_detail_warp .static_card,
@@ -461,6 +461,9 @@ padding-left:18px;
 	margin-right:9px;
 }
 
+.profile_contents .profile_hero_warp{
+	width:100%;
+}
 .profile_contents .static_warp{
 
 	width:39%;
@@ -1282,7 +1285,7 @@ width:350px;
 .hero_tor
 */
 .hero_widow{
-	background-image:url('/images/hero_profile/widowmaker.jpg');
+	background-image:url('../images/hero_profile/widowmaker.jpg');
 }
 /*
 .hero_dva
@@ -1846,3 +1849,4 @@ width:350px;
 		 
 	 }
   
+

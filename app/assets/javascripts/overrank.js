@@ -13,13 +13,6 @@ $(document).ready(function(){
 	  var link = $(this).data("link") + param;
 	  window.location = link;
 	})
-	
-	$(".detail_info[data-link]").click(function() {
-	  var param = "?" + $(this).data("param")
-	  var link = $(this).data("link") + param;
-	  window.location = link;
-	})
-	
 
 $('.btn').click(function(){
  
