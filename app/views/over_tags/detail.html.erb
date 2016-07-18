@@ -175,6 +175,8 @@
 	}
 	
 	$("#btn_total_info").click(function() {
+		$("#btn_total_info").addClass('active');
+      	$("#btn_hero_info").removeClass('active');
 	  	$(".static_warp").show();
 	  	$(".hero_warp").css('width', '60.2%');
 	  	for(i=0; i< 22; i++){
@@ -184,6 +186,9 @@
 	})
 	
 	$("#btn_hero_info").click(function() {
+	  $("#btn_total_info").removeClass('active');
+      $("#btn_hero_info").addClass('active');
+		
 	  $(".static_warp").hide();
 	  $(".hero_warp").css('width', '100%');
 	  for(i=1; i< 22; i++){

@@ -119,7 +119,7 @@
                 
                 </div>
                 <% end %>
-               	<div onclick="javascript: show_hero_data();">더보기</div>
+               	<div id="more_hero" onclick="javascript: show_hero_data();">더보기</div>
                 
                 
    
@@ -532,6 +532,7 @@
 	function show_hero_data(){
 		$(".hero_card.panel-white").show();
 		make_chart(3, 21);
+		$("#more_hero").hide();
 	}
 	
 </script>
