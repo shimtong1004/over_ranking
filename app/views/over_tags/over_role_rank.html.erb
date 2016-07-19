@@ -38,7 +38,9 @@
                                 <td class="rank_table_time">
                                 	<div class="progress">
 										<div class="progress-bar progress-bar-win" role="progressbar" style="width:40%">
+											<% if @support_hero_hash[hero].time_played %>
 											<%= @support_hero_hash[hero].time_played / 60 %>시간
+											<% end %>
 										</div>
 									</div>
 									<span class="<%= 'top_data' if @support_time_top == @support_hero_hash[hero].time_played %>">
@@ -94,7 +96,9 @@
 	                                <td class="rank_table_time">
 	                                	<div class="progress">
 											<div class="progress-bar progress-bar-win" role="progressbar" style="width:40%">
+												<% if @offense_hero_hash[hero].time_played %>
 												<%= @offense_hero_hash[hero].time_played / 60 %>시간
+												<% end %>
 											</div>
 										</div>
 										<span class="<%= 'top_data' if @offense_time_top == @offense_hero_hash[hero].time_played %>">
@@ -148,7 +152,9 @@
 	                                <td class="rank_table_time">
 	                                	<div class="progress">
 											<div class="progress-bar progress-bar-win" role="progressbar" style="width:40%">
+												<% if @defense_hero_hash[hero].time_played %>
 												<%= @defense_hero_hash[hero].time_played / 60 %>시간
+												<% end %>
 											</div>
 										</div>
 										<span class="<%= 'top_data' if @defense_time_top == @defense_hero_hash[hero].time_played %>">
@@ -202,7 +208,9 @@
 	                                <td class="rank_table_time">
 	                                	<div class="progress">
 											<div class="progress-bar progress-bar-win" role="progressbar" style="width:40%">
+												<% if @rush_hero_hash[hero].time_played %>
 												<%= @rush_hero_hash[hero].time_played / 60 %>시간
+												<% end %>
 											</div>
 										</div>
 										<span class="<%= 'top_data' if @rush_time_top == @rush_hero_hash[hero].time_played %>">

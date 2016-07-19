@@ -31,11 +31,14 @@
                     		<img onclick="javascript:go_role_rank();" src="/images/more.png"></div>
                         <div class="main_chart_content">
                         	<table>
-                        		<% OFFENSE_HERO.each_with_index do |hero, no| %>
+                        		<% no = 0 %>
+                        		<% @hero_offense.each do |key, value| %>
+                        		<%= no += 1 %>
                             	<tr>
-                                	<td><%= no + 1 %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[hero]%>"><%= hero %></td>
+                                	<td><%= no %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[key]%>"><%= key %></td>
                                     <td><div class="progress">
-										<div class="progress-bar progress-bar-win" role="progressbar" style="width:60%">50%</div></div>
+                                    	<% per = ((value / @offense_hero_sum) * 100).round(2) %>
+										<div class="progress-bar progress-bar-win" role="progressbar" style="width:<%= per %>%"><%= per %>%</div></div>
                                     </td>
                                 </tr>
                                 <% end %>
@@ -49,11 +52,14 @@
                     	<div class="main_chart_title defence"><span><img src="/images/defence_icon.png">수비</span><img onclick="javascript:go_role_rank();" src="/images/more.png"></div>
                         <div class="main_chart_content">
                         	<table>
-                        		<% DEFENSE_HERO.each_with_index do |hero, no| %>
+                        		<% no = 0 %>
+                        		<% @hero_defense.each do |key, value| %>
+                        		<%= no += 1 %>
                             	<tr>
-                                	<td><%= no + 1 %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[hero]%>"><%= hero %></td>
+                                	<td><%= no + 1 %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[key]%>"><%= key %></td>
                                     <td><div class="progress">
-										<div class="progress-bar progress-bar-win" role="progressbar" style="width:60%">50%</div></div>
+                                    	<% per = ((value / @defense_hero_sum) * 100).round(2) %>
+										<div class="progress-bar progress-bar-win" role="progressbar" style="width:<%= per %>%"><%= per %>%</div></div>
                                     </td>
                                 </tr>
                                 <% end %>
@@ -66,11 +72,14 @@
                     	<div class="main_chart_title tank"><span><img src="/images/tank_icon.png">돌격</span><img onclick="javascript:go_role_rank();" src="/images/more.png"></div>
                         <div class="main_chart_content">
                         	<table>
-                            	<% RUSH_HERO.each_with_index do |hero, no| %>
+                            	<% no = 0 %>
+                        		<% @hero_rush.each do |key, value| %>
+                        		<%= no += 1 %>
                             	<tr>
-                                	<td><%= no + 1 %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[hero]%>"><%= hero %></td>
+                                	<td><%= no + 1 %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[key]%>"><%= key %></td>
                                     <td><div class="progress">
-										<div class="progress-bar progress-bar-win" role="progressbar" style="width:60%">50%</div></div>
+                                    	<% per = ((value / @rush_hero_sum) * 100).round(2) %>
+										<div class="progress-bar progress-bar-win" role="progressbar" style="width:<%= per %>%"><%= per %>%</div></div>
                                     </td>
                                 </tr>
                                 <% end %>
@@ -83,11 +92,14 @@
                     	<div class="main_chart_title support"><span><img src="/images/support.png">지원</span><img onclick="javascript:go_role_rank();" src="/images/more.png"></div>
                         <div class="main_chart_content">
                         	<table>
-                            	<% SUPPORT_HERO.each_with_index do |hero, no| %>
+                            	<% no = 0 %>
+                        		<% @hero_support.each do |key, value| %>
+                        		<%= no += 1 %>
                             	<tr>
-                                	<td><%= no + 1 %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[hero]%>"><%= hero %></td>
+                                	<td><%= no + 1 %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[key]%>"><%= key %></td>
                                     <td><div class="progress">
-										<div class="progress-bar progress-bar-win" role="progressbar" style="width:60%">50%</div></div>
+                                    	<% per = ((value / @support_hero_sum) * 100).round(2) %>
+										<div class="progress-bar progress-bar-win" role="progressbar" style="width:<%= per %>%"><%= per %>%</div></div>
                                     </td>
                                 </tr>
                                 <% end %>

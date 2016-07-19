@@ -7,6 +7,44 @@ class OverTagsController < ApplicationController
   # GET /over_tags.json
   def index
     # @over_tags = OverTag.all
+    @hero_offense = {}
+    @hero_defense = {}
+    @hero_rush = {}
+    @hero_support = {}
+    
+    offense_hero_sum_key = []
+    OFFENSE_HERO.each do |hero|
+      offense_hero_sum_key.push "#{hero}_플레이 시간"
+      @hero_offense[hero] = OverUserScore.where(user_type: "PC - KR", keyword:"#{hero}_플레이 시간").sum(:score)
+    end
+    @offense_hero_sum = OverUserScore.where(user_type: "PC - KR", keyword: offense_hero_sum_key).sum(:score).to_f
+    
+    defense_hero_sum_key = []
+    DEFENSE_HERO.each do |hero|
+      defense_hero_sum_key.push "#{hero}_플레이 시간"
+      @hero_defense[hero] = OverUserScore.where(user_type: "PC - KR", keyword:"#{hero}_플레이 시간").sum(:score)
+    end
+    @defense_hero_sum = OverUserScore.where(user_type: "PC - KR", keyword: defense_hero_sum_key).sum(:score).to_f
+    
+    rush_hero_sum_key = []
+    RUSH_HERO.each do |hero|
+      rush_hero_sum_key.push "#{hero}_플레이 시간"
+      @hero_rush[hero] = OverUserScore.where(user_type: "PC - KR", keyword:"#{hero}_플레이 시간").sum(:score)
+    end
+    @rush_hero_sum = OverUserScore.where(user_type: "PC - KR", keyword: rush_hero_sum_key).sum(:score).to_f
+    
+    support_hero_sum_key = []
+    SUPPORT_HERO.each do |hero|
+      support_hero_sum_key.push "#{hero}_플레이 시간"
+      @hero_support[hero] = OverUserScore.where(user_type: "PC - KR", keyword:"#{hero}_플레이 시간").sum(:score)
+    end
+    @support_hero_sum = OverUserScore.where(user_type: "PC - KR", keyword: support_hero_sum_key).sum(:score).to_f
+    
+    @hero_offense = Hash[@hero_offense.sort.reverse]
+    @hero_defense = Hash[@hero_defense.sort.reverse]
+    @hero_rush = Hash[@hero_rush.sort.reverse]
+    @hero_support = Hash[@hero_support.sort.reverse]
+    
   end
 
   # GET /over_tags/1
