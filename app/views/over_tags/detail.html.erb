@@ -178,7 +178,11 @@
 		$("#btn_total_info").addClass('active');
       	$("#btn_hero_info").removeClass('active');
 	  	$(".static_warp").show();
-	  	$(".hero_warp").css('width', '60.2%');
+	  	if ( $(window).width() < 1200 ){
+	  		$(".hero_warp").css('width', '100%');
+	  	} else {
+	  		$(".hero_warp").css('width', '60.2%');
+	  	}
 	  	for(i=0; i< 22; i++){
 		  	$("#chart_"+i).empty();
 		}
