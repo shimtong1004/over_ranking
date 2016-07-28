@@ -1,12 +1,22 @@
 <div class="static_card_bottom panel-body">
                      	<div class="static_box">
-                        	<div class="static_data"><div>죽음</div><div class="static_value"><%= @data_hash["rush_죽음"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["rush_죽음_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["rush_죽음_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        	<div class="static_data"><div>죽음</div><div class="static_value"><%= @rush_data[KEY["죽음"]] %></div></div>
+                            <div class="static_data"><div><img src="/images/kor_icon.png"></div><div class="top_rank_s">
+                        		<span id="r_deaths_local_rank"></span>위
+                        		<span class="top_rank_xs">(Top <span id="r_deaths_local_rank_per"></span>%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">
+                            	<span id="r_deaths_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="r_deaths_rank_per"></span>%)</span></div></div>
                         
                         </div>
                         <div class="static_box">
-                        	<div class="static_data"><div>환경요소로 죽음</div><div class="static_value"><%= @data_hash["rush_환경 요소로 죽음"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["rush_환경 요소로 죽음_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["rush_환경 요소로 죽음_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        	<div class="static_data"><div>환경요소로 죽음</div><div class="static_value"><%= @rush_data[KEY["환경 요소로 죽음"]] %></div></div>
+                            <div class="static_data"><div><img src="/images/kor_icon.png"></div><div class="top_rank_s">
+                        		<span id="r_environmental_deaths_local_rank"></span>위
+                        		<span class="top_rank_xs">(Top <span id="r_environmental_deaths_local_rank_per"></span>%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">
+                            	<span id="r_environmental_deaths_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="r_environmental_deaths_rank_per"></span>%)</span></div></div>
                         </div>
                         
                      </div>

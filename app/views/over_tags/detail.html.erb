@@ -6,10 +6,10 @@
                	  	<div class="profile_card_top_left">
                     
                     <div class="level text-center">
-          	        	<%= @level %>
+          	        	<%= @main_hero_data.level %>
 	                </div>
                     <div class="competitive_level">
-                    	<img src="/images/compe_rank/rank-10.png"><%= @competitive_rank %>
+                    	<img src="/images/compe_rank/rank-10.png"><%= @main_hero_data.competitive_rank %>
                     </div>
                 	
                     <div class="profile_card_content">
@@ -23,7 +23,7 @@
                                 <div class="update_button_warp">
                                 	<button onclick="javascript:update_data();" type="button" class="btn btn-default btn-sm" data-loading-text="<i class='fa fa-spinner fa-spin'></i> 전적 업데이트 중...">전적 업데이트</button>
                                 </div>
-                                <div class="update_summary_warp"><span> 최근 업데이트 : <%=@update_time%> </span><br><span class="update_summary">정보를 갱신해야 마지막 접속 기록이 반영됩니다</span></div>
+                                <div class="update_summary_warp"><span> 최근 업데이트 : <%=time_ago_in_words(@over_tag.data_updated_at)%>전 </span><br><span class="update_summary">정보를 갱신해야 마지막 접속 기록이 반영됩니다</span></div>
                             
                             
                             </li>
@@ -53,17 +53,17 @@
                         </tr>
                         <tr>
                         	<td class="circle_col_title">KD</td>
-	                        <td><%= @data_hash["offense_KD"] %></td>
-                        	<td><%= @data_hash["support_KD"] %></td>
-                            <td><%= @data_hash["rush_KD"]%></td>
-                            <td class="circle_last_td"><%= @data_hash["defense_KD"]%></td>
+	                        <td><%= @offense_data["KD"] %></td>
+                        	<td><%= @support_data["KD"] %></td>
+                            <td><%= @rush_data["KD"]%></td>
+                            <td class="circle_last_td"><%= @defense_data["KD"]%></td>
                         </tr>
                         <tr >
                         	<td class="circle_col_title">승률</td>
-	                        <td  class="win-rate"><span><%= @data_hash["offense_승률"].round(2)%>%</td>
-                        	<td class="win-rate"><span ><%= @data_hash["support_승률"].round(2)%>%</td>
-                            <td class="win-rate"><span ><%= @data_hash["rush_승률"].round(2)%>%</td>
-                            <td class="circle_last_td"><%= @data_hash["defense_승률"].round(2)%>%</td>
+	                        <td  class="win-rate"><span><%= @offense_data[KEY["승률"]].round(2)%>%</td>
+                        	<td class="win-rate"><span ><%= @support_data[KEY["승률"]].round(2)%>%</td>
+                            <td class="win-rate"><span ><%= @rush_data[KEY["승률"]].round(2)%>%</td>
+                            <td class="circle_last_td"><%= @defense_data[KEY["승률"]].round(2)%>%</td>
                         </tr>                        
                         </tbody>
                         </table>
@@ -71,64 +71,94 @@
                 </div>
                 <div class="summary">
                 	<div class="summary_card">
-                   			<div class="sumary_contents"><div class="sumary_contents_title">전체순위</div><div class="sumary_contents_contents"><%= @data_hash["플레이 시간_rank"] %>위</div></div>
-                            <div class="top_per_rank"><div class="sumary_contents_title">상위</div><div class="sumary_contents_contents"><%= (@data_hash["플레이 시간_rank"].to_f / @total_count.to_f) * 100 %>%</div></div>
+                   			<div class="sumary_contents"><div class="sumary_contents_title">전체순위</div><div class="sumary_contents_contents">
+                   				<span id="total_rank"></span>위
+                   				</div></div>
+                            <div class="top_per_rank"><div class="sumary_contents_title">상위</div><div class="sumary_contents_contents"><span id="total_rank_per"></span>%</div></div>
                     </div>
                     
                     <div class="summary_card">
-                            <div class="sumary_contents"><div class="sumary_contents_title">지역순위<span class="top_rank_xs">(kr)</span></div><div class="sumary_contents_contents"><%= @data_hash["플레이 시간_local_rank"] %>위</div></div>
-                            <div class="top_per_rank"><div class="sumary_contents_title">상위</div><div class="sumary_contents_contents"><%= (@data_hash["플레이 시간_local_rank"].to_f / @total_local_count.to_f) * 100 %>%</div></div>              
+                            <div class="sumary_contents"><div class="sumary_contents_title">지역순위<span class="top_rank_xs">(kr)</span></div><div class="sumary_contents_contents">
+                            	<span id="total_local_rank"></span>위
+                            	
+                            </div>
+                            </div>
+                            <div class="top_per_rank"><div class="sumary_contents_title">상위</div><div class="sumary_contents_contents"><span id="total_local_rank_per"></span>%</div></div>              
                     </div>        
                     
                     <div class="summary_card">
           					<div class="sumary_contents">
           						<div class="sumary_contents_title">승률</div>
-          						<div class="sumary_contents_contents"><%= @data_hash["승률"].round(2) %>
-          							<span class="">(<%= @data_hash["승리한 게임"] %>승 <%= @data_hash["치른 게임"] - @data_hash["승리한 게임"] %>패)</span>
+          						<div class="sumary_contents_contents"><%= @main_hero_data[KEY["승률"]].round(2) %>
+          							<span class="">(<%= @main_hero_data[KEY["승리한 게임"]] %>승 <%= @main_hero_data[KEY["치른 게임"]] - @main_hero_data[KEY["승리한 게임"]] %>패)</span>
           						</div>
           					</div>
                             <div class="top_per">
                                  <div>
                                  	<div><img src="/images/kor_icon.png"></div>
                                     <div class="sumary_contents_contents top_rank_s">
-                                    	#<%= @data_hash["승률_local_rank"] %><span class="top_rank_xs">(Top <%= (@data_hash["승률_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span>
+                                    	<span id="win_per_rank"></span>위
+                                    	<span class="top_rank_xs">
+                                    		(Top <span id="win_per_rank_per"></span>%)
+                                    	</span>
                                      </div>
                                  </div>
                                  <div>
                                  	<div><img src="/images/global_icon.png"></div>
-                                    <div class="sumary_contents_contents top_rank_s">#<%= @data_hash["승률_rank"] %><span class="top_rank_xs">(Top <%= (@data_hash["승률_rank"].to_f / @total_count.to_f) * 100 %>%)</span></div></div>
+                                    <div class="sumary_contents_contents top_rank_s">
+                                    	<span id="win_per_local_rank"></span>위
+                                    	<span class="top_rank_xs">
+                                    		(Top <span id="win_per_local_rank_per"></span>%)
+                                    		
+                                    	</span></div></div>
                             </div>
                      </div>
                      
                      <div class="summary_card">
           					<div class="sumary_contents"><div class="sumary_contents_title">K/D</div>
-	          					<div class="sumary_contents_contents"><%=@data_hash["KD"].round(2)%>
-	          						<span class="">(<%= @data_hash["결정타"] %>/<%= @data_hash["죽음"] %>)</span>
+	          					<div class="sumary_contents_contents"><%= @main_hero_data["KD"].round(2) %>
+	          						<span class="">(<%= @main_hero_data[KEY["결정타"]] %>/<%= @main_hero_data[KEY["죽음"]] %>)</span>
 	          					</div>
           					</div>
                             <div class="top_per">
-                                 <div><div><img src="/images/kor_icon.png"></div><div class="sumary_contents_contents top_rank_s">##<%= @data_hash["KD_local_rank"] %><span class="top_rank_xs">(Top <%= (@data_hash["KD_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
-                                 <div><div><img src="/images/global_icon.png"></div><div class="sumary_contents_contents top_rank_s">##<%= @data_hash["KD_rank"] %><span class="top_rank_xs">(Top <%= (@data_hash["KD_rank"].to_f / @total_count.to_f) * 100 %>%)</span></div></div>
+                                 <div><div><img src="/images/kor_icon.png"></div><div class="sumary_contents_contents top_rank_s">
+                                 	<span id="kd_rank"></span>위
+                                 	<span class="top_rank_xs">
+                                 		(Top <span id="kd_rank_per"></span>%)
+                                 	</span></div></div>
+                                 <div><div><img src="/images/global_icon.png"></div><div class="sumary_contents_contents top_rank_s">
+                                 	<span id="kd_local_rank"></span>위
+                                 	<span class="top_rank_xs">
+                                 		(Top <span id="kd_local_rank_per"></span>%)
+                                 	</span></div></div>
                             </div>
                      </div>
                      <div class="summary_card">
           					<div class="sumary_contents">
           						<div class="sumary_contents_title">KDA</div>
-	          						<div class="sumary_contents_contents"><%= @data_hash["KDA"].round(2) %>
-	          							<span class="">(<%= @data_hash["처치"] %>/<%= @data_hash["죽음"] %>)</span>
+	          						<div class="sumary_contents_contents"><%= @main_hero_data["KDA"].round(2) %>
+	          							<span class="">(<%= @main_hero_data[KEY["처치"]] %>/<%= @main_hero_data[KEY["죽음"]] %>)</span>
 	          						</div>
           						</div>
                             <div class="top_per">
-                                 <div><div><img src="/images/kor_icon.png"></div><div class="sumary_contents_contents top_rank_s">##<%=@data_hash["KDA_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["KDA_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
-                                 <div><div><img src="/images/global_icon.png"></div><div class="sumary_contents_contents top_rank_s">##<%=@data_hash["KDA_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["KDA_rank"].to_f / @total_count.to_f) * 100 %>%)</span></div></div>
+                                 <div><div><img src="/images/kor_icon.png"></div><div class="sumary_contents_contents top_rank_s">
+                                 	<span id="kda_rank"></span>위
+                                 	<span class="top_rank_xs">
+                                 		(Top <span id="kda_rank_per"></span>%)
+                                 	</span></div></div>
+                                 <div><div><img src="/images/global_icon.png"></div><div class="sumary_contents_contents top_rank_s">
+                                 	<span id="kda_local_rank"></span>위
+                                 	<span class="top_rank_xs">
+                                 		(Top <span id="kda_local_rank_per"></span>%)
+                                 	</span></div></div>
                             </div>
                      </div>
                      <div class="summary_last">
           					<div class="summary_last_card">
-                           <div class="sumary_contents_title">플레이시간</div><div class="sumary_contents_contents"><%= @data_hash["플레이 시간"].to_i/60 %>시간</div>
+                           <div class="sumary_contents_title">플레이시간</div><div class="sumary_contents_contents"><%= @main_hero_data[KEY["플레이 시간"]].to_i/60 %>시간</div>
                             </div>
                             <div class="summary_last_card">
-                            <div class="sumary_contents_title">선호영웅</div><div class="sumary_contents_contents"><%= @hero_names[0] %></div>
+                            <div class="sumary_contents_title">선호영웅</div><div class="sumary_contents_contents"><%= HERO_ENG_TO_KOR[@main_hero_data.main_hero_name] %></div>
                             </div>
                      </div>
                      
@@ -157,10 +187,1201 @@
             
                      
             </div>
+            <% unless @hero_name %>
             <%= render 'detail_page1' %>
+            <% else %>
+            <%= render 'detail_page2' %>
+            <% end %>
          </div>
 
 <script>
+	$(document).ready(function(){
+		$.ajax({
+			url: "/over_tags/<%=@over_tag.id%>/get_ranks",
+			dataType:'json',
+			type:'GET',
+			success: function(data){
+				var rank_main = data["main"]
+				var rank_hero = data["hero"]
+				
+				// make_top_rank(data);
+				$("#total_rank").text(rank_main["<%=KEY["플레이 시간"]%>_rank"]+1);
+				$("#total_local_rank").text(rank_main["<%=KEY["플레이 시간"]%>_local_rank"]+1);
+				
+				rank_per = (((rank_main["<%=KEY["플레이 시간"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#total_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["플레이 시간"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#total_local_rank_per").text(rank_per);
+				
+				$("#win_per_rank").text(rank_main["<%=KEY["승률"]%>_rank"]+1);
+				$("#win_per_local_rank").text(rank_main["<%=KEY["승률"]%>_local_rank"]+1);
+				
+				rank_per = (((rank_main["<%=KEY["승률"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#win_per_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["승률"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#win_per_local_rank_per").text(rank_per);
+				
+				
+				$("#kd_rank").text(rank_main["KD_rank"]+1);
+				$("#kd_local_rank").text(rank_main["KD_local_rank"]+1);
+				
+				rank_per = (((rank_main["KD_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#kd_rank_per").text(rank_per);
+				rank_per = (((rank_main["KD_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#kd_local_rank_per").text(rank_per);
+				
+				
+				$("#kda_rank").text(rank_main["KDA_rank"]+1);
+				$("#kda_local_rank").text(rank_main["KDA_local_rank"]+1);
+				rank_per = (((rank_main["KDA_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#kda_rank_per").text(rank_per);
+				rank_per = (((rank_main["KDA_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#kda_local_rank_per").text(rank_per);
+				
+				
+				
+				/********************************************************************
+				 ******************************* 토탈 ********************************
+				 ********************************************************************/				
+				
+				//평균 통계 - t
+				$("#avg_elimination_local_rank").text(rank_main["<%=KEY["처치 - 평균"]%>_local_rank"]+1);
+				$("#avg_elimination_rank").text(rank_main["<%=KEY["처치 - 평균"]%>_rank"]+1);
+				
+				rank_per = (((rank_main["<%=KEY["처치 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#avg_elimination_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["처치 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#avg_elimination_rank_per").text(rank_per);
+				
+				
+				$("#avg_final_blows_local_rank").text(rank_main["<%=KEY["결정타 - 평균"]%>_local_rank"]+1);
+				$("#avg_final_blows_rank").text(rank_main["<%=KEY["결정타 - 평균"]%>_rank"]+1);
+				
+				rank_per = (((rank_main["<%=KEY["결정타 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#avg_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["결정타 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#avg_final_blows_rank_per").text(rank_per);
+				
+				
+				$("#avg_healing_done_local_rank").text(rank_main["<%=KEY["치유 - 평균"]%>_local_rank"]+1);
+				$("#avg_healing_done_rank").text(rank_main["<%=KEY["치유 - 평균"]%>_rank"]+1);
+				
+				rank_per = (((rank_main["<%=KEY["치유 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#avg_healing_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["치유 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#avg_healing_done_rank_per").text(rank_per);
+				
+				
+				
+				$("#avg_damage_done_local_rank").text(rank_main["<%=KEY["준 피해 - 평균"]%>_local_rank"]+1);
+				$("#avg_damage_done_rank").text(rank_main["<%=KEY["준 피해 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["준 피해 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#avg_damage_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["준 피해 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#avg_damage_done_rank_per").text(rank_per);
+				
+				
+				$("#avg_deaths_local_rank").text(rank_main["<%=KEY["죽음 - 평균"]%>_local_rank"]+1);
+				$("#avg_deaths_rank").text(rank_main["<%=KEY["죽음 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["죽음 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#avg_deaths_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["죽음 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#avg_deaths_rank_per").text(rank_per);
+				
+				$("#avg_solo_kills_local_rank").text(rank_main["<%=KEY["단독 처치 - 평균"]%>_local_rank"]+1);
+				$("#avg_solo_kills_rank").text(rank_main["<%=KEY["단독 처치 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["단독 처치 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#avg_solo_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["단독 처치 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#avg_solo_kills_rank_per").text(rank_per);
+				
+				$("#avg_melee_final_blows_local_rank").text(rank_main["<%=KEY["근접 공격 결정타 - 평균"]%>_local_rank"]+1);
+				$("#avg_melee_final_blows_rank").text(rank_main["<%=KEY["근접 공격 결정타 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["근접 공격 결정타 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#avg_melee_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["근접 공격 결정타 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#avg_melee_final_blows_rank_per").text(rank_per);
+				
+				$("#avg_objective_kills_local_rank").text(rank_main["<%=KEY["임무 기여 처치 - 평균"]%>_local_rank"]+1);
+				$("#avg_objective_kills_rank").text(rank_main["<%=KEY["임무 기여 처치 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["임무 기여 처치 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#avg_objective_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["임무 기여 처치 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#avg_objective_kills_rank_per").text(rank_per);
+				
+				$("#avg_time_spent_on_fire_local_rank").text(rank_main["<%=KEY["폭주 시간 - 평균"]%>_local_rank"]+1);
+				$("#avg_time_spent_on_fire_rank").text(rank_main["<%=KEY["폭주 시간 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["폭주 시간 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#avg_time_spent_on_fire_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["폭주 시간 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#avg_time_spent_on_fire_rank_per").text(rank_per);
+				
+				$("#avg_objective_time_local_rank").text(rank_main["<%=KEY["임무 기여 시간 - 평균"]%>_local_rank"]+1);
+				$("#avg_objective_time_rank").text(rank_main["<%=KEY["임무 기여 시간 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["임무 기여 시간 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#avg_objective_time_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["임무 기여 시간 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#avg_objective_time_rank_per").text(rank_per);
+				
+				//전투통계
+				$("#elimination_local_rank").text(rank_main["<%=KEY["처치"]%>_local_rank"]+1);
+				$("#elimination_rank").text(rank_main["<%=KEY["처치"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#elimination_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#elimination_rank_per").text(rank_per);
+				
+				
+				$("#final_blows_local_rank").text(rank_main["<%=KEY["결정타"]%>_local_rank"]+1);
+				$("#final_blows_rank").text(rank_main["<%=KEY["결정타"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["결정타"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["결정타"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#final_blows_rank_per").text(rank_per);
+				
+				$("#solo_kills_local_rank").text(rank_main["<%=KEY["단독 처치"]%>_local_rank"]+1);
+				$("#solo_kills_rank").text(rank_main["<%=KEY["단독 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["단독 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#solo_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["단독 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#solo_kills_rank_per").text(rank_per);
+				
+				
+				$("#objective_kills_local_rank").text(rank_main["<%=KEY["임무 기여 처치"]%>_local_rank"]+1);
+				$("#objective_kills_rank").text(rank_main["<%=KEY["임무 기여 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["임무 기여 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#objective_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["임무 기여 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#objective_kills_rank_per").text(rank_per);
+				
+				
+				$("#damage_done_local_rank").text(rank_main["<%=KEY["준 피해"]%>_local_rank"]+1);
+				$("#damage_done_rank").text(rank_main["<%=KEY["준 피해"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["준 피해"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#damage_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["준 피해"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#damage_done_rank_per").text(rank_per);
+				
+				
+				$("#multikills_local_rank").text(rank_main["<%=KEY["동시 처치"]%>_local_rank"]+1);
+				$("#multikills_rank").text(rank_main["<%=KEY["동시 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["동시 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#multikills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["동시 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#multikills_rank_per").text(rank_per);
+				
+				
+				$("#melee_final_blows_local_rank").text(rank_main["<%=KEY["근접 공격 결정타"]%>_local_rank"]+1);
+				$("#melee_final_blows_rank").text(rank_main["<%=KEY["근접 공격 결정타"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["근접 공격 결정타"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#melee_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["근접 공격 결정타"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#melee_final_blows_rank_per").text(rank_per);
+				
+				
+				$("#objective_time_local_rank").text(rank_main["<%=KEY["임무 기여 시간"]%>_local_rank"]+1);
+				$("#objective_time_rank").text(rank_main["<%=KEY["임무 기여 시간"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["임무 기여 시간"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#objective_time_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["임무 기여 시간"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#objective_time_rank_per").text(rank_per);
+				
+				
+				$("#time_spent_on_fire_local_rank").text(rank_main["<%=KEY["폭주 시간"]%>_local_rank"]+1);
+				$("#time_spent_on_fire_rank").text(rank_main["<%=KEY["폭주 시간"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["폭주 시간"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#time_spent_on_fire_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["폭주 시간"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#time_spent_on_fire_rank_per").text(rank_per);
+				
+				
+				$("#environmental_kills_local_rank").text(rank_main["<%=KEY["환경 요소로 처치"]%>_local_rank"]+1);
+				$("#environmental_kills_rank").text(rank_main["<%=KEY["환경 요소로 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["환경 요소로 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#environmental_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["환경 요소로 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#environmental_kills_rank_per").text(rank_per);
+				
+				
+				//치유지원
+				$("#healing_done_local_rank").text(rank_main["<%=KEY["치유"]%>_local_rank"]+1);
+				$("#healing_done_rank").text(rank_main["<%=KEY["치유"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["치유"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#healing_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["치유"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#healing_done_rank_per").text(rank_per);
+				
+				$("#self_healing_local_rank").text(rank_main["<%=KEY["자가 치유"]%>_local_rank"]+1);
+				$("#self_healing_rank").text(rank_main["<%=KEY["자가 치유"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["자가 치유"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#self_healing_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["자가 치유"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#self_healing_rank_per").text(rank_per);
+				
+				
+				$("#recon_assists_local_rank").text(rank_main["<%=KEY["처치 시야 지원"]%>_local_rank"]+1);
+				$("#recon_assists_rank").text(rank_main["<%=KEY["처치 시야 지원"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["처치 시야 지원"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#recon_assists_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["처치 시야 지원"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#recon_assists_rank_per").text(rank_per);
+				
+				
+				$("#teleporter_pads_destroyed_local_rank").text(rank_main["<%=KEY["순간이동기 파괴"]%>_local_rank"]+1);
+				$("#teleporter_pads_destroyed_rank").text(rank_main["<%=KEY["순간이동기 파괴"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["순간이동기 파괴"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#teleporter_pads_destroyed_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["순간이동기 파괴"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#teleporter_pads_destroyed_rank_per").text(rank_per);
+				
+				//죽음
+				$("#deaths_local_rank").text(rank_main["<%=KEY["죽음"]%>_local_rank"]+1);
+				$("#deaths_rank").text(rank_main["<%=KEY["죽음"]%>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["죽음"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#deaths_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["죽음"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#deaths_rank_per").text(rank_per);
+				
+				
+				$("#environmental_deaths_local_rank").text(rank_main["<%= KEY["환경 요소로 죽음"] %>_local_rank"]+1);
+				$("#environmental_deaths_rank").text(rank_main["<%= KEY["환경 요소로 죽음"] %>_rank"]+1);
+				rank_per = (((rank_main["<%=KEY["환경 요소로 죽음"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#environmental_deaths_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["<%=KEY["환경 요소로 죽음"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#environmental_deaths_rank_per").text(rank_per);
+				
+				
+				
+				/********************************************************************
+				 ******************************* 토탈 ********************************
+				 ********************************************************************/
+				
+				
+				/********************************************************************
+				 ****************************** 공격 시작 *****************************
+				 ********************************************************************/				
+				
+				//평균 통계 - t
+				$("#o_avg_elimination_local_rank").text(rank_main["offense_<%=KEY["처치 - 평균"]%>_local_rank"]+1);
+				$("#o_avg_elimination_rank").text(rank_main["offense_<%=KEY["처치 - 평균"]%>_rank"]+1);
+				
+				rank_per = (((rank_main["offense_<%=KEY["처치 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_avg_elimination_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["처치 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_avg_elimination_rank_per").text(rank_per);
+				
+				
+				$("#o_avg_final_blows_local_rank").text(rank_main["offense_<%=KEY["결정타 - 평균"]%>_local_rank"]+1);
+				$("#o_avg_final_blows_rank").text(rank_main["offense_<%=KEY["결정타 - 평균"]%>_rank"]+1);
+				
+				rank_per = (((rank_main["offense_<%=KEY["결정타 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_avg_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["결정타 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_avg_final_blows_rank_per").text(rank_per);
+				
+				
+				$("#o_avg_healing_done_local_rank").text(rank_main["offense_<%=KEY["치유 - 평균"]%>_local_rank"]+1);
+				$("#o_avg_healing_done_rank").text(rank_main["offense_<%=KEY["치유 - 평균"]%>_rank"]+1);
+				
+				rank_per = (((rank_main["offense_<%=KEY["치유 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_avg_healing_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["치유 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_avg_healing_done_rank_per").text(rank_per);
+				
+				
+				
+				$("#o_avg_damage_done_local_rank").text(rank_main["offense_<%=KEY["준 피해 - 평균"]%>_local_rank"]+1);
+				$("#o_avg_damage_done_rank").text(rank_main["offense_<%=KEY["준 피해 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["준 피해 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_avg_damage_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["준 피해 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_avg_damage_done_rank_per").text(rank_per);
+				
+				
+				$("#o_avg_deaths_local_rank").text(rank_main["offense_<%=KEY["죽음 - 평균"]%>_local_rank"]+1);
+				$("#o_avg_deaths_rank").text(rank_main["offense_<%=KEY["죽음 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["죽음 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_avg_deaths_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["죽음 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_avg_deaths_rank_per").text(rank_per);
+				
+				$("#o_avg_solo_kills_local_rank").text(rank_main["offense_<%=KEY["단독 처치 - 평균"]%>_local_rank"]+1);
+				$("#o_avg_solo_kills_rank").text(rank_main["offense_<%=KEY["단독 처치 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["단독 처치 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_avg_solo_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["단독 처치 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_avg_solo_kills_rank_per").text(rank_per);
+				
+				$("#o_avg_melee_final_blows_local_rank").text(rank_main["offense_<%=KEY["근접 공격 결정타 - 평균"]%>_local_rank"]+1);
+				$("#o_avg_melee_final_blows_rank").text(rank_main["offense_<%=KEY["근접 공격 결정타 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["근접 공격 결정타 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_avg_melee_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["근접 공격 결정타 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_avg_melee_final_blows_rank_per").text(rank_per);
+				
+				$("#o_avg_objective_kills_local_rank").text(rank_main["offense_<%=KEY["임무 기여 처치 - 평균"]%>_local_rank"]+1);
+				$("#o_avg_objective_kills_rank").text(rank_main["offense_<%=KEY["임무 기여 처치 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["임무 기여 처치 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_avg_objective_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["임무 기여 처치 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_avg_objective_kills_rank_per").text(rank_per);
+				
+				$("#o_avg_time_spent_on_fire_local_rank").text(rank_main["offense_<%=KEY["폭주 시간 - 평균"]%>_local_rank"]+1);
+				$("#o_avg_time_spent_on_fire_rank").text(rank_main["offense_<%=KEY["폭주 시간 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["폭주 시간 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_avg_time_spent_on_fire_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["폭주 시간 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_avg_time_spent_on_fire_rank_per").text(rank_per);
+				
+				$("#o_avg_objective_time_local_rank").text(rank_main["offense_<%=KEY["임무 기여 시간 - 평균"]%>_local_rank"]+1);
+				$("#o_avg_objective_time_rank").text(rank_main["offense_<%=KEY["임무 기여 시간 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["임무 기여 시간 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_avg_objective_time_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["임무 기여 시간 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_avg_objective_time_rank_per").text(rank_per);
+				
+				//전투통계
+				$("#o_elimination_local_rank").text(rank_main["offense_<%=KEY["처치"]%>_local_rank"]+1);
+				$("#o_elimination_rank").text(rank_main["offense_<%=KEY["처치"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_elimination_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_elimination_rank_per").text(rank_per);
+				
+				
+				$("#o_final_blows_local_rank").text(rank_main["offense_<%=KEY["결정타"]%>_local_rank"]+1);
+				$("#o_final_blows_rank").text(rank_main["offense_<%=KEY["결정타"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["결정타"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["결정타"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_final_blows_rank_per").text(rank_per);
+				
+				$("#o_solo_kills_local_rank").text(rank_main["offense_<%=KEY["단독 처치"]%>_local_rank"]+1);
+				$("#o_solo_kills_rank").text(rank_main["offense_<%=KEY["단독 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["단독 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_solo_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["단독 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_solo_kills_rank_per").text(rank_per);
+				
+				
+				$("#o_objective_kills_local_rank").text(rank_main["offense_<%=KEY["임무 기여 처치"]%>_local_rank"]+1);
+				$("#o_objective_kills_rank").text(rank_main["offense_<%=KEY["임무 기여 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["임무 기여 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_objective_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["임무 기여 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_objective_kills_rank_per").text(rank_per);
+				
+				
+				$("#o_damage_done_local_rank").text(rank_main["offense_<%=KEY["준 피해"]%>_local_rank"]+1);
+				$("#o_damage_done_rank").text(rank_main["offense_<%=KEY["준 피해"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["준 피해"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_damage_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["준 피해"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_damage_done_rank_per").text(rank_per);
+				
+				
+				$("#o_multikills_local_rank").text(rank_main["offense_<%=KEY["동시 처치"]%>_local_rank"]+1);
+				$("#o_multikills_rank").text(rank_main["offense_<%=KEY["동시 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["동시 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_multikills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["동시 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_multikills_rank_per").text(rank_per);
+				
+				
+				$("#o_melee_final_blows_local_rank").text(rank_main["offense_<%=KEY["근접 공격 결정타"]%>_local_rank"]+1);
+				$("#o_melee_final_blows_rank").text(rank_main["offense_<%=KEY["근접 공격 결정타"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["근접 공격 결정타"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_melee_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["근접 공격 결정타"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_melee_final_blows_rank_per").text(rank_per);
+				
+				
+				$("#o_objective_time_local_rank").text(rank_main["offense_<%=KEY["임무 기여 시간"]%>_local_rank"]+1);
+				$("#o_objective_time_rank").text(rank_main["offense_<%=KEY["임무 기여 시간"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["임무 기여 시간"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_objective_time_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["임무 기여 시간"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_objective_time_rank_per").text(rank_per);
+				
+				
+				$("#o_time_spent_on_fire_local_rank").text(rank_main["offense_<%=KEY["폭주 시간"]%>_local_rank"]+1);
+				$("#o_time_spent_on_fire_rank").text(rank_main["offense_<%=KEY["폭주 시간"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["폭주 시간"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_time_spent_on_fire_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["폭주 시간"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_time_spent_on_fire_rank_per").text(rank_per);
+				
+				
+				$("#o_environmental_kills_local_rank").text(rank_main["offense_<%=KEY["환경 요소로 처치"]%>_local_rank"]+1);
+				$("#o_environmental_kills_rank").text(rank_main["offense_<%=KEY["환경 요소로 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["환경 요소로 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_environmental_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["환경 요소로 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_environmental_kills_rank_per").text(rank_per);
+				
+				
+				//치유지원
+				$("#o_healing_done_local_rank").text(rank_main["offense_<%=KEY["치유"]%>_local_rank"]+1);
+				$("#o_healing_done_rank").text(rank_main["offense_<%=KEY["치유"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["치유"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_healing_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["치유"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_healing_done_rank_per").text(rank_per);
+				
+				$("#o_self_healing_local_rank").text(rank_main["offense_<%=KEY["자가 치유"]%>_local_rank"]+1);
+				$("#o_self_healing_rank").text(rank_main["offense_<%=KEY["자가 치유"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["자가 치유"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_self_healing_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["자가 치유"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_self_healing_rank_per").text(rank_per);
+				
+				
+				$("#o_recon_assists_local_rank").text(rank_main["offense_<%=KEY["처치 시야 지원"]%>_local_rank"]+1);
+				$("#o_recon_assists_rank").text(rank_main["offense_<%=KEY["처치 시야 지원"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["처치 시야 지원"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_recon_assists_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["처치 시야 지원"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_recon_assists_rank_per").text(rank_per);
+				
+				
+				$("#o_teleporter_pads_destroyed_local_rank").text(rank_main["offense_<%=KEY["순간이동기 파괴"]%>_local_rank"]+1);
+				$("#o_teleporter_pads_destroyed_rank").text(rank_main["offense_<%=KEY["순간이동기 파괴"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["순간이동기 파괴"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_teleporter_pads_destroyed_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["순간이동기 파괴"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_teleporter_pads_destroyed_rank_per").text(rank_per);
+				
+				//죽음
+				$("#o_deaths_local_rank").text(rank_main["offense_<%=KEY["죽음"]%>_local_rank"]+1);
+				$("#o_deaths_rank").text(rank_main["offense_<%=KEY["죽음"]%>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["죽음"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_deaths_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["죽음"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_deaths_rank_per").text(rank_per);
+				
+				
+				$("#o_environmental_deaths_local_rank").text(rank_main["<%= KEY["환경 요소로 죽음"] %>_local_rank"]+1);
+				$("#o_environmental_deaths_rank").text(rank_main["<%= KEY["환경 요소로 죽음"] %>_rank"]+1);
+				rank_per = (((rank_main["offense_<%=KEY["환경 요소로 죽음"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#o_environmental_deaths_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["offense_<%=KEY["환경 요소로 죽음"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#o_environmental_deaths_rank_per").text(rank_per);
+				
+				
+				
+				/********************************************************************
+				 ******************************* 공격 끝 ******************************
+				 ********************************************************************/
+				
+				
+				
+				/********************************************************************
+				 ****************************** 방어 시작 *****************************
+				 ********************************************************************/				
+				
+				//평균 통계 - t
+				$("#d_avg_elimination_local_rank").text(rank_main["defense_<%=KEY["처치 - 평균"]%>_local_rank"]+1);
+				$("#d_avg_elimination_rank").text(rank_main["defense_<%=KEY["처치 - 평균"]%>_rank"]+1);
+				
+				rank_per = (((rank_main["defense_<%=KEY["처치 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_avg_elimination_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["처치 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_avg_elimination_rank_per").text(rank_per);
+				
+				
+				$("#d_avg_final_blows_local_rank").text(rank_main["defense_<%=KEY["결정타 - 평균"]%>_local_rank"]+1);
+				$("#d_avg_final_blows_rank").text(rank_main["defense_<%=KEY["결정타 - 평균"]%>_rank"]+1);
+				
+				rank_per = (((rank_main["defense_<%=KEY["결정타 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_avg_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["결정타 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_avg_final_blows_rank_per").text(rank_per);
+				
+				
+				$("#d_avg_healing_done_local_rank").text(rank_main["defense_<%=KEY["치유 - 평균"]%>_local_rank"]+1);
+				$("#d_avg_healing_done_rank").text(rank_main["defense_<%=KEY["치유 - 평균"]%>_rank"]+1);
+				
+				rank_per = (((rank_main["defense_<%=KEY["치유 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_avg_healing_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["치유 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_avg_healing_done_rank_per").text(rank_per);
+				
+				
+				
+				$("#d_avg_damage_done_local_rank").text(rank_main["defense_<%=KEY["준 피해 - 평균"]%>_local_rank"]+1);
+				$("#d_avg_damage_done_rank").text(rank_main["defense_<%=KEY["준 피해 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["준 피해 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_avg_damage_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["준 피해 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_avg_damage_done_rank_per").text(rank_per);
+				
+				
+				$("#d_avg_deaths_local_rank").text(rank_main["defense_<%=KEY["죽음 - 평균"]%>_local_rank"]+1);
+				$("#d_avg_deaths_rank").text(rank_main["defense_<%=KEY["죽음 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["죽음 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_avg_deaths_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["죽음 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_avg_deaths_rank_per").text(rank_per);
+				
+				$("#d_avg_solo_kills_local_rank").text(rank_main["defense_<%=KEY["단독 처치 - 평균"]%>_local_rank"]+1);
+				$("#d_avg_solo_kills_rank").text(rank_main["defense_<%=KEY["단독 처치 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["단독 처치 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_avg_solo_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["단독 처치 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_avg_solo_kills_rank_per").text(rank_per);
+				
+				$("#d_avg_melee_final_blows_local_rank").text(rank_main["defense_<%=KEY["근접 공격 결정타 - 평균"]%>_local_rank"]+1);
+				$("#d_avg_melee_final_blows_rank").text(rank_main["defense_<%=KEY["근접 공격 결정타 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["근접 공격 결정타 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_avg_melee_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["근접 공격 결정타 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_avg_melee_final_blows_rank_per").text(rank_per);
+				
+				$("#d_avg_objective_kills_local_rank").text(rank_main["defense_<%=KEY["임무 기여 처치 - 평균"]%>_local_rank"]+1);
+				$("#d_avg_objective_kills_rank").text(rank_main["defense_<%=KEY["임무 기여 처치 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["임무 기여 처치 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_avg_objective_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["임무 기여 처치 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_avg_objective_kills_rank_per").text(rank_per);
+				
+				$("#d_avg_time_spent_on_fire_local_rank").text(rank_main["defense_<%=KEY["폭주 시간 - 평균"]%>_local_rank"]+1);
+				$("#d_avg_time_spent_on_fire_rank").text(rank_main["defense_<%=KEY["폭주 시간 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["폭주 시간 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_avg_time_spent_on_fire_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["폭주 시간 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_avg_time_spent_on_fire_rank_per").text(rank_per);
+				
+				$("#d_avg_objective_time_local_rank").text(rank_main["defense_<%=KEY["임무 기여 시간 - 평균"]%>_local_rank"]+1);
+				$("#d_avg_objective_time_rank").text(rank_main["defense_<%=KEY["임무 기여 시간 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["임무 기여 시간 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_avg_objective_time_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["임무 기여 시간 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_avg_objective_time_rank_per").text(rank_per);
+				
+				//전투통계
+				$("#d_elimination_local_rank").text(rank_main["defense_<%=KEY["처치"]%>_local_rank"]+1);
+				$("#d_elimination_rank").text(rank_main["defense_<%=KEY["처치"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_elimination_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_elimination_rank_per").text(rank_per);
+				
+				
+				$("#d_final_blows_local_rank").text(rank_main["defense_<%=KEY["결정타"]%>_local_rank"]+1);
+				$("#d_final_blows_rank").text(rank_main["defense_<%=KEY["결정타"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["결정타"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["결정타"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_final_blows_rank_per").text(rank_per);
+				
+				$("#d_solo_kills_local_rank").text(rank_main["defense_<%=KEY["단독 처치"]%>_local_rank"]+1);
+				$("#d_solo_kills_rank").text(rank_main["defense_<%=KEY["단독 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["단독 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_solo_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["단독 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_solo_kills_rank_per").text(rank_per);
+				
+				
+				$("#d_objective_kills_local_rank").text(rank_main["defense_<%=KEY["임무 기여 처치"]%>_local_rank"]+1);
+				$("#d_objective_kills_rank").text(rank_main["defense_<%=KEY["임무 기여 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["임무 기여 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_objective_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["임무 기여 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_objective_kills_rank_per").text(rank_per);
+				
+				
+				$("#d_damage_done_local_rank").text(rank_main["defense_<%=KEY["준 피해"]%>_local_rank"]+1);
+				$("#d_damage_done_rank").text(rank_main["defense_<%=KEY["준 피해"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["준 피해"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_damage_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["준 피해"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_damage_done_rank_per").text(rank_per);
+				
+				
+				$("#d_multikills_local_rank").text(rank_main["defense_<%=KEY["동시 처치"]%>_local_rank"]+1);
+				$("#d_multikills_rank").text(rank_main["defense_<%=KEY["동시 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["동시 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_multikills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["동시 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_multikills_rank_per").text(rank_per);
+				
+				
+				$("#d_melee_final_blows_local_rank").text(rank_main["defense_<%=KEY["근접 공격 결정타"]%>_local_rank"]+1);
+				$("#d_melee_final_blows_rank").text(rank_main["defense_<%=KEY["근접 공격 결정타"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["근접 공격 결정타"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_melee_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["근접 공격 결정타"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_melee_final_blows_rank_per").text(rank_per);
+				
+				
+				$("#d_objective_time_local_rank").text(rank_main["defense_<%=KEY["임무 기여 시간"]%>_local_rank"]+1);
+				$("#d_objective_time_rank").text(rank_main["defense_<%=KEY["임무 기여 시간"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["임무 기여 시간"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_objective_time_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["임무 기여 시간"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_objective_time_rank_per").text(rank_per);
+				
+				
+				$("#d_time_spent_on_fire_local_rank").text(rank_main["defense_<%=KEY["폭주 시간"]%>_local_rank"]+1);
+				$("#d_time_spent_on_fire_rank").text(rank_main["defense_<%=KEY["폭주 시간"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["폭주 시간"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_time_spent_on_fire_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["폭주 시간"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_time_spent_on_fire_rank_per").text(rank_per);
+				
+				
+				$("#d_environmental_kills_local_rank").text(rank_main["defense_<%=KEY["환경 요소로 처치"]%>_local_rank"]+1);
+				$("#d_environmental_kills_rank").text(rank_main["defense_<%=KEY["환경 요소로 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["환경 요소로 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_environmental_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["환경 요소로 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_environmental_kills_rank_per").text(rank_per);
+				
+				
+				//치유지원
+				$("#d_healing_done_local_rank").text(rank_main["defense_<%=KEY["치유"]%>_local_rank"]+1);
+				$("#d_healing_done_rank").text(rank_main["defense_<%=KEY["치유"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["치유"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_healing_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["치유"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_healing_done_rank_per").text(rank_per);
+				
+				$("#d_self_healing_local_rank").text(rank_main["defense_<%=KEY["자가 치유"]%>_local_rank"]+1);
+				$("#d_self_healing_rank").text(rank_main["defense_<%=KEY["자가 치유"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["자가 치유"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_self_healing_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["자가 치유"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_self_healing_rank_per").text(rank_per);
+				
+				
+				$("#d_recon_assists_local_rank").text(rank_main["defense_<%=KEY["처치 시야 지원"]%>_local_rank"]+1);
+				$("#d_recon_assists_rank").text(rank_main["defense_<%=KEY["처치 시야 지원"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["처치 시야 지원"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_recon_assists_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["처치 시야 지원"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_recon_assists_rank_per").text(rank_per);
+				
+				
+				$("#d_teleporter_pads_destroyed_local_rank").text(rank_main["defense_<%=KEY["순간이동기 파괴"]%>_local_rank"]+1);
+				$("#d_teleporter_pads_destroyed_rank").text(rank_main["defense_<%=KEY["순간이동기 파괴"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["순간이동기 파괴"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_teleporter_pads_destroyed_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["순간이동기 파괴"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_teleporter_pads_destroyed_rank_per").text(rank_per);
+				
+				//죽음
+				$("#d_deaths_local_rank").text(rank_main["defense_<%=KEY["죽음"]%>_local_rank"]+1);
+				$("#d_deaths_rank").text(rank_main["defense_<%=KEY["죽음"]%>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["죽음"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_deaths_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["죽음"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_deaths_rank_per").text(rank_per);
+				
+				
+				$("#d_environmental_deaths_local_rank").text(rank_main["<%= KEY["환경 요소로 죽음"] %>_local_rank"]+1);
+				$("#d_environmental_deaths_rank").text(rank_main["<%= KEY["환경 요소로 죽음"] %>_rank"]+1);
+				rank_per = (((rank_main["defense_<%=KEY["환경 요소로 죽음"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#d_environmental_deaths_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["defense_<%=KEY["환경 요소로 죽음"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#d_environmental_deaths_rank_per").text(rank_per);
+				
+				
+				
+				/********************************************************************
+				 ******************************* 방어 끝 ******************************
+				 ********************************************************************/
+				
+				
+				/********************************************************************
+				 ****************************** 돌격 시작 *****************************
+				 ********************************************************************/				
+				
+				//평균 통계 - t
+				$("#r_avg_elimination_local_rank").text(rank_main["rush_<%=KEY["처치 - 평균"]%>_local_rank"]+1);
+				$("#r_avg_elimination_rank").text(rank_main["rush_<%=KEY["처치 - 평균"]%>_rank"]+1);
+				
+				rank_per = (((rank_main["rush_<%=KEY["처치 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_avg_elimination_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["처치 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_avg_elimination_rank_per").text(rank_per);
+				
+				
+				$("#r_avg_final_blows_local_rank").text(rank_main["rush_<%=KEY["결정타 - 평균"]%>_local_rank"]+1);
+				$("#r_avg_final_blows_rank").text(rank_main["rush_<%=KEY["결정타 - 평균"]%>_rank"]+1);
+				
+				rank_per = (((rank_main["rush_<%=KEY["결정타 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_avg_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["결정타 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_avg_final_blows_rank_per").text(rank_per);
+				
+				
+				$("#r_avg_healing_done_local_rank").text(rank_main["rush_<%=KEY["치유 - 평균"]%>_local_rank"]+1);
+				$("#r_avg_healing_done_rank").text(rank_main["rush_<%=KEY["치유 - 평균"]%>_rank"]+1);
+				
+				rank_per = (((rank_main["rush_<%=KEY["치유 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_avg_healing_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["치유 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_avg_healing_done_rank_per").text(rank_per);
+				
+				
+				
+				$("#r_avg_damage_done_local_rank").text(rank_main["rush_<%=KEY["준 피해 - 평균"]%>_local_rank"]+1);
+				$("#r_avg_damage_done_rank").text(rank_main["rush_<%=KEY["준 피해 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["준 피해 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_avg_damage_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["준 피해 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_avg_damage_done_rank_per").text(rank_per);
+				
+				
+				$("#r_avg_deaths_local_rank").text(rank_main["rush_<%=KEY["죽음 - 평균"]%>_local_rank"]+1);
+				$("#r_avg_deaths_rank").text(rank_main["rush_<%=KEY["죽음 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["죽음 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_avg_deaths_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["죽음 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_avg_deaths_rank_per").text(rank_per);
+				
+				$("#r_avg_solo_kills_local_rank").text(rank_main["rush_<%=KEY["단독 처치 - 평균"]%>_local_rank"]+1);
+				$("#r_avg_solo_kills_rank").text(rank_main["rush_<%=KEY["단독 처치 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["단독 처치 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_avg_solo_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["단독 처치 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_avg_solo_kills_rank_per").text(rank_per);
+				
+				$("#r_avg_melee_final_blows_local_rank").text(rank_main["rush_<%=KEY["근접 공격 결정타 - 평균"]%>_local_rank"]+1);
+				$("#r_avg_melee_final_blows_rank").text(rank_main["rush_<%=KEY["근접 공격 결정타 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["근접 공격 결정타 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_avg_melee_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["근접 공격 결정타 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_avg_melee_final_blows_rank_per").text(rank_per);
+				
+				$("#r_avg_objective_kills_local_rank").text(rank_main["rush_<%=KEY["임무 기여 처치 - 평균"]%>_local_rank"]+1);
+				$("#r_avg_objective_kills_rank").text(rank_main["rush_<%=KEY["임무 기여 처치 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["임무 기여 처치 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_avg_objective_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["임무 기여 처치 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_avg_objective_kills_rank_per").text(rank_per);
+				
+				$("#r_avg_time_spent_on_fire_local_rank").text(rank_main["rush_<%=KEY["폭주 시간 - 평균"]%>_local_rank"]+1);
+				$("#r_avg_time_spent_on_fire_rank").text(rank_main["rush_<%=KEY["폭주 시간 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["폭주 시간 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_avg_time_spent_on_fire_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["폭주 시간 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_avg_time_spent_on_fire_rank_per").text(rank_per);
+				
+				$("#r_avg_objective_time_local_rank").text(rank_main["rush_<%=KEY["임무 기여 시간 - 평균"]%>_local_rank"]+1);
+				$("#r_avg_objective_time_rank").text(rank_main["rush_<%=KEY["임무 기여 시간 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["임무 기여 시간 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_avg_objective_time_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["임무 기여 시간 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_avg_objective_time_rank_per").text(rank_per);
+				
+				//전투통계
+				$("#r_elimination_local_rank").text(rank_main["rush_<%=KEY["처치"]%>_local_rank"]+1);
+				$("#r_elimination_rank").text(rank_main["rush_<%=KEY["처치"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_elimination_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_elimination_rank_per").text(rank_per);
+				
+				
+				$("#r_final_blows_local_rank").text(rank_main["rush_<%=KEY["결정타"]%>_local_rank"]+1);
+				$("#r_final_blows_rank").text(rank_main["rush_<%=KEY["결정타"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["결정타"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["결정타"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_final_blows_rank_per").text(rank_per);
+				
+				$("#r_solo_kills_local_rank").text(rank_main["rush_<%=KEY["단독 처치"]%>_local_rank"]+1);
+				$("#r_solo_kills_rank").text(rank_main["rush_<%=KEY["단독 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["단독 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_solo_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["단독 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_solo_kills_rank_per").text(rank_per);
+				
+				
+				$("#r_objective_kills_local_rank").text(rank_main["rush_<%=KEY["임무 기여 처치"]%>_local_rank"]+1);
+				$("#r_objective_kills_rank").text(rank_main["rush_<%=KEY["임무 기여 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["임무 기여 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_objective_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["임무 기여 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_objective_kills_rank_per").text(rank_per);
+				
+				
+				$("#r_damage_done_local_rank").text(rank_main["rush_<%=KEY["준 피해"]%>_local_rank"]+1);
+				$("#r_damage_done_rank").text(rank_main["rush_<%=KEY["준 피해"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["준 피해"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_damage_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["준 피해"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_damage_done_rank_per").text(rank_per);
+				
+				
+				$("#r_multikills_local_rank").text(rank_main["rush_<%=KEY["동시 처치"]%>_local_rank"]+1);
+				$("#r_multikills_rank").text(rank_main["rush_<%=KEY["동시 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["동시 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_multikills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["동시 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_multikills_rank_per").text(rank_per);
+				
+				
+				$("#r_melee_final_blows_local_rank").text(rank_main["rush_<%=KEY["근접 공격 결정타"]%>_local_rank"]+1);
+				$("#r_melee_final_blows_rank").text(rank_main["rush_<%=KEY["근접 공격 결정타"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["근접 공격 결정타"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_melee_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["근접 공격 결정타"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_melee_final_blows_rank_per").text(rank_per);
+				
+				
+				$("#r_objective_time_local_rank").text(rank_main["rush_<%=KEY["임무 기여 시간"]%>_local_rank"]+1);
+				$("#r_objective_time_rank").text(rank_main["rush_<%=KEY["임무 기여 시간"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["임무 기여 시간"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_objective_time_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["임무 기여 시간"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_objective_time_rank_per").text(rank_per);
+				
+				
+				$("#r_time_spent_on_fire_local_rank").text(rank_main["rush_<%=KEY["폭주 시간"]%>_local_rank"]+1);
+				$("#r_time_spent_on_fire_rank").text(rank_main["rush_<%=KEY["폭주 시간"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["폭주 시간"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_time_spent_on_fire_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["폭주 시간"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_time_spent_on_fire_rank_per").text(rank_per);
+				
+				
+				$("#r_environmental_kills_local_rank").text(rank_main["rush_<%=KEY["환경 요소로 처치"]%>_local_rank"]+1);
+				$("#r_environmental_kills_rank").text(rank_main["rush_<%=KEY["환경 요소로 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["환경 요소로 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_environmental_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["환경 요소로 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_environmental_kills_rank_per").text(rank_per);
+				
+				
+				//치유지원
+				$("#r_healing_done_local_rank").text(rank_main["rush_<%=KEY["치유"]%>_local_rank"]+1);
+				$("#r_healing_done_rank").text(rank_main["rush_<%=KEY["치유"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["치유"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_healing_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["치유"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_healing_done_rank_per").text(rank_per);
+				
+				$("#r_self_healing_local_rank").text(rank_main["rush_<%=KEY["자가 치유"]%>_local_rank"]+1);
+				$("#r_self_healing_rank").text(rank_main["rush_<%=KEY["자가 치유"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["자가 치유"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_self_healing_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["자가 치유"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_self_healing_rank_per").text(rank_per);
+				
+				
+				$("#r_recon_assists_local_rank").text(rank_main["rush_<%=KEY["처치 시야 지원"]%>_local_rank"]+1);
+				$("#r_recon_assists_rank").text(rank_main["rush_<%=KEY["처치 시야 지원"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["처치 시야 지원"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_recon_assists_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["처치 시야 지원"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_recon_assists_rank_per").text(rank_per);
+				
+				
+				$("#r_teleporter_pads_destroyed_local_rank").text(rank_main["rush_<%=KEY["순간이동기 파괴"]%>_local_rank"]+1);
+				$("#r_teleporter_pads_destroyed_rank").text(rank_main["rush_<%=KEY["순간이동기 파괴"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["순간이동기 파괴"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_teleporter_pads_destroyed_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["순간이동기 파괴"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_teleporter_pads_destroyed_rank_per").text(rank_per);
+				
+				//죽음
+				$("#r_deaths_local_rank").text(rank_main["rush_<%=KEY["죽음"]%>_local_rank"]+1);
+				$("#r_deaths_rank").text(rank_main["rush_<%=KEY["죽음"]%>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["죽음"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_deaths_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["죽음"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_deaths_rank_per").text(rank_per);
+				
+				
+				$("#r_environmental_deaths_local_rank").text(rank_main["<%= KEY["환경 요소로 죽음"] %>_local_rank"]+1);
+				$("#r_environmental_deaths_rank").text(rank_main["<%= KEY["환경 요소로 죽음"] %>_rank"]+1);
+				rank_per = (((rank_main["rush_<%=KEY["환경 요소로 죽음"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#r_environmental_deaths_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["rush_<%=KEY["환경 요소로 죽음"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#r_environmental_deaths_rank_per").text(rank_per);
+				
+				
+				
+				/********************************************************************
+				 ******************************* 돌격 끝 ******************************
+				 ********************************************************************/
+				
+				
+				
+				/********************************************************************
+				 ****************************** 지원 시작 *****************************
+				 ********************************************************************/				
+				
+				//평균 통계 - t
+				$("#s_avg_elimination_local_rank").text(rank_main["support_<%=KEY["처치 - 평균"]%>_local_rank"]+1);
+				$("#s_avg_elimination_rank").text(rank_main["support_<%=KEY["처치 - 평균"]%>_rank"]+1);
+				
+				rank_per = (((rank_main["support_<%=KEY["처치 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_avg_elimination_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["처치 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_avg_elimination_rank_per").text(rank_per);
+				
+				
+				$("#s_avg_final_blows_local_rank").text(rank_main["support_<%=KEY["결정타 - 평균"]%>_local_rank"]+1);
+				$("#s_avg_final_blows_rank").text(rank_main["support_<%=KEY["결정타 - 평균"]%>_rank"]+1);
+				
+				rank_per = (((rank_main["support_<%=KEY["결정타 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_avg_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["결정타 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_avg_final_blows_rank_per").text(rank_per);
+				
+				
+				$("#s_avg_healing_done_local_rank").text(rank_main["support_<%=KEY["치유 - 평균"]%>_local_rank"]+1);
+				$("#s_avg_healing_done_rank").text(rank_main["support_<%=KEY["치유 - 평균"]%>_rank"]+1);
+				
+				rank_per = (((rank_main["support_<%=KEY["치유 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_avg_healing_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["치유 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_avg_healing_done_rank_per").text(rank_per);
+				
+				
+				
+				$("#s_avg_damage_done_local_rank").text(rank_main["support_<%=KEY["준 피해 - 평균"]%>_local_rank"]+1);
+				$("#s_avg_damage_done_rank").text(rank_main["support_<%=KEY["준 피해 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["준 피해 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_avg_damage_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["준 피해 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_avg_damage_done_rank_per").text(rank_per);
+				
+				
+				$("#s_avg_deaths_local_rank").text(rank_main["support_<%=KEY["죽음 - 평균"]%>_local_rank"]+1);
+				$("#s_avg_deaths_rank").text(rank_main["support_<%=KEY["죽음 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["죽음 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_avg_deaths_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["죽음 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_avg_deaths_rank_per").text(rank_per);
+				
+				$("#s_avg_solo_kills_local_rank").text(rank_main["support_<%=KEY["단독 처치 - 평균"]%>_local_rank"]+1);
+				$("#s_avg_solo_kills_rank").text(rank_main["support_<%=KEY["단독 처치 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["단독 처치 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_avg_solo_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["단독 처치 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_avg_solo_kills_rank_per").text(rank_per);
+				
+				$("#s_avg_melee_final_blows_local_rank").text(rank_main["support_<%=KEY["근접 공격 결정타 - 평균"]%>_local_rank"]+1);
+				$("#s_avg_melee_final_blows_rank").text(rank_main["support_<%=KEY["근접 공격 결정타 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["근접 공격 결정타 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_avg_melee_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["근접 공격 결정타 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_avg_melee_final_blows_rank_per").text(rank_per);
+				
+				$("#s_avg_objective_kills_local_rank").text(rank_main["support_<%=KEY["임무 기여 처치 - 평균"]%>_local_rank"]+1);
+				$("#s_avg_objective_kills_rank").text(rank_main["support_<%=KEY["임무 기여 처치 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["임무 기여 처치 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_avg_objective_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["임무 기여 처치 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_avg_objective_kills_rank_per").text(rank_per);
+				
+				$("#s_avg_time_spent_on_fire_local_rank").text(rank_main["support_<%=KEY["폭주 시간 - 평균"]%>_local_rank"]+1);
+				$("#s_avg_time_spent_on_fire_rank").text(rank_main["support_<%=KEY["폭주 시간 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["폭주 시간 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_avg_time_spent_on_fire_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["폭주 시간 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_avg_time_spent_on_fire_rank_per").text(rank_per);
+				
+				$("#s_avg_objective_time_local_rank").text(rank_main["support_<%=KEY["임무 기여 시간 - 평균"]%>_local_rank"]+1);
+				$("#s_avg_objective_time_rank").text(rank_main["support_<%=KEY["임무 기여 시간 - 평균"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["임무 기여 시간 - 평균"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_avg_objective_time_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["임무 기여 시간 - 평균"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_avg_objective_time_rank_per").text(rank_per);
+				
+				//전투통계
+				$("#s_elimination_local_rank").text(rank_main["support_<%=KEY["처치"]%>_local_rank"]+1);
+				$("#s_elimination_rank").text(rank_main["support_<%=KEY["처치"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_elimination_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_elimination_rank_per").text(rank_per);
+				
+				
+				$("#s_final_blows_local_rank").text(rank_main["support_<%=KEY["결정타"]%>_local_rank"]+1);
+				$("#s_final_blows_rank").text(rank_main["support_<%=KEY["결정타"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["결정타"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["결정타"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_final_blows_rank_per").text(rank_per);
+				
+				$("#s_solo_kills_local_rank").text(rank_main["support_<%=KEY["단독 처치"]%>_local_rank"]+1);
+				$("#s_solo_kills_rank").text(rank_main["support_<%=KEY["단독 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["단독 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_solo_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["단독 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_solo_kills_rank_per").text(rank_per);
+				
+				
+				$("#s_objective_kills_local_rank").text(rank_main["support_<%=KEY["임무 기여 처치"]%>_local_rank"]+1);
+				$("#s_objective_kills_rank").text(rank_main["support_<%=KEY["임무 기여 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["임무 기여 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_objective_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["임무 기여 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_objective_kills_rank_per").text(rank_per);
+				
+				
+				$("#s_damage_done_local_rank").text(rank_main["support_<%=KEY["준 피해"]%>_local_rank"]+1);
+				$("#s_damage_done_rank").text(rank_main["support_<%=KEY["준 피해"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["준 피해"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_damage_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["준 피해"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_damage_done_rank_per").text(rank_per);
+				
+				
+				$("#s_multikills_local_rank").text(rank_main["support_<%=KEY["동시 처치"]%>_local_rank"]+1);
+				$("#s_multikills_rank").text(rank_main["support_<%=KEY["동시 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["동시 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_multikills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["동시 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_multikills_rank_per").text(rank_per);
+				
+				
+				$("#s_melee_final_blows_local_rank").text(rank_main["support_<%=KEY["근접 공격 결정타"]%>_local_rank"]+1);
+				$("#s_melee_final_blows_rank").text(rank_main["support_<%=KEY["근접 공격 결정타"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["근접 공격 결정타"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_melee_final_blows_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["근접 공격 결정타"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_melee_final_blows_rank_per").text(rank_per);
+				
+				
+				$("#s_objective_time_local_rank").text(rank_main["support_<%=KEY["임무 기여 시간"]%>_local_rank"]+1);
+				$("#s_objective_time_rank").text(rank_main["support_<%=KEY["임무 기여 시간"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["임무 기여 시간"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_objective_time_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["임무 기여 시간"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_objective_time_rank_per").text(rank_per);
+				
+				
+				$("#s_time_spent_on_fire_local_rank").text(rank_main["support_<%=KEY["폭주 시간"]%>_local_rank"]+1);
+				$("#s_time_spent_on_fire_rank").text(rank_main["support_<%=KEY["폭주 시간"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["폭주 시간"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_time_spent_on_fire_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["폭주 시간"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_time_spent_on_fire_rank_per").text(rank_per);
+				
+				
+				$("#s_environmental_kills_local_rank").text(rank_main["support_<%=KEY["환경 요소로 처치"]%>_local_rank"]+1);
+				$("#s_environmental_kills_rank").text(rank_main["support_<%=KEY["환경 요소로 처치"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["환경 요소로 처치"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_environmental_kills_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["환경 요소로 처치"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_environmental_kills_rank_per").text(rank_per);
+				
+				
+				//치유지원
+				$("#s_healing_done_local_rank").text(rank_main["support_<%=KEY["치유"]%>_local_rank"]+1);
+				$("#s_healing_done_rank").text(rank_main["support_<%=KEY["치유"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["치유"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_healing_done_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["치유"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_healing_done_rank_per").text(rank_per);
+				
+				$("#s_self_healing_local_rank").text(rank_main["support_<%=KEY["자가 치유"]%>_local_rank"]+1);
+				$("#s_self_healing_rank").text(rank_main["support_<%=KEY["자가 치유"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["자가 치유"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_self_healing_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["자가 치유"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_self_healing_rank_per").text(rank_per);
+				
+				
+				$("#s_recon_assists_local_rank").text(rank_main["support_<%=KEY["처치 시야 지원"]%>_local_rank"]+1);
+				$("#s_recon_assists_rank").text(rank_main["support_<%=KEY["처치 시야 지원"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["처치 시야 지원"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_recon_assists_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["처치 시야 지원"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_recon_assists_rank_per").text(rank_per);
+				
+				
+				$("#s_teleporter_pads_destroyed_local_rank").text(rank_main["support_<%=KEY["순간이동기 파괴"]%>_local_rank"]+1);
+				$("#s_teleporter_pads_destroyed_rank").text(rank_main["support_<%=KEY["순간이동기 파괴"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["순간이동기 파괴"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_teleporter_pads_destroyed_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["순간이동기 파괴"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_teleporter_pads_destroyed_rank_per").text(rank_per);
+				
+				//죽음
+				$("#s_deaths_local_rank").text(rank_main["support_<%=KEY["죽음"]%>_local_rank"]+1);
+				$("#s_deaths_rank").text(rank_main["support_<%=KEY["죽음"]%>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["죽음"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_deaths_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["죽음"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_deaths_rank_per").text(rank_per);
+				
+				
+				$("#s_environmental_deaths_local_rank").text(rank_main["<%= KEY["환경 요소로 죽음"] %>_local_rank"]+1);
+				$("#s_environmental_deaths_rank").text(rank_main["<%= KEY["환경 요소로 죽음"] %>_rank"]+1);
+				rank_per = (((rank_main["support_<%=KEY["환경 요소로 죽음"]%>_local_rank"]+1) / (rank_main["total_local_rank"])) * 100).toFixed(2)
+				$("#s_environmental_deaths_local_rank_per").text(rank_per);
+				rank_per = (((rank_main["support_<%=KEY["환경 요소로 죽음"]%>_rank"]+1) / (rank_main["total_rank"])) * 100).toFixed(2)
+				$("#s_environmental_deaths_rank_per").text(rank_per);
+				
+				
+				
+				/********************************************************************
+				 ******************************* 지원 끝 ******************************
+				 ********************************************************************/
+				
+				for(i=0; i<3; i++){
+					id = $("#hero_time_played_local_rank_"+i).data("param");
+					
+					$("#hero_time_played_local_rank_" + i).text(rank_hero[id + "_<%= KEY["플레이 시간"] %>_local_rank"]+1)
+					$("#hero_time_played_rank_" + i).text(rank_hero[id + "_<%= KEY["플레이 시간"] %>_rank"]+1);
+					rank_per = (((rank_hero[id + "_<%= KEY["플레이 시간"] %>_local_rank"] + 1) / (rank_hero["total_" + id + "_local_rank"])) * 100).toFixed(2)
+					$("#hero_time_played_local_rank_" + i + "_per").text(rank_per);
+					rank_per = (((rank_hero[id + "_<%= KEY["플레이 시간"] %>_rank"]+1) / (rank_hero["total_" + id + "_rank"])) * 100).toFixed(2)
+					$("#hero_time_played_rank_" + i + "_per").text(rank_per);
+					
+					$("#hero_avg_elimination_local_rank_"+i).text(rank_hero[id + "_<%= KEY["처치 - 평균"] %>_local_rank"]+1);
+					$("#hero_avg_elimination_rank_"+i).text(rank_hero[id + "_<%= KEY["처치 - 평균"] %>_rank"]+1);
+					rank_per = (((rank_hero[id + "_<%= KEY["처치 - 평균"] %>_local_rank"]+1) / (rank_hero["total_" + id + "_local_rank"])) * 100).toFixed(2)
+					$("#hero_avg_elimination_local_rank_" + i + "_per").text(rank_per);
+					rank_per = (((rank_hero[id + "_<%= KEY["처치 - 평균"] %>_rank"]+1) / (rank_hero["total_" + id + "_rank"])) * 100).toFixed(2)
+					$("#hero_avg_elimination_rank_" + i + "_per").text(rank_per);
+					
+					
+					$("#hero_avg_damage_local_rank_"+i).text(rank_hero[id + "_<%= KEY["준 피해 - 평균"] %>_local_rank"]+1);
+					$("#hero_avg_damage_rank_"+i).text(rank_hero[id + "_<%= KEY["준 피해 - 평균"] %>_rank"]+1);
+					rank_per = (((rank_hero[id + "_<%= KEY["준 피해 - 평균"] %>_local_rank"]+1) / (rank_hero["total_" + id + "_local_rank"])) * 100).toFixed(2)
+					$("#hero_avg_damage_local_rank_" + i + "_per").text(rank_per);
+					rank_per = (((rank_hero[id + "_<%= KEY["준 피해 - 평균"] %>_rank"]+1) / (rank_hero["total_" + id + "_rank"])) * 100).toFixed(2)
+					$("#hero_avg_damage_rank_" + i + "_per").text(rank_per);
+					
+					
+					$("#hero_accuracy_local_rank_"+i).text(rank_hero[id + "_<%= KEY["명중률"] %>_local_rank"]+1);
+					$("#hero_accuracy_rank_"+i).text(rank_hero[id + "_<%= KEY["명중률"] %>_rank"]+1);
+					rank_per = (((rank_hero[id + "_<%= KEY["명중률"] %>_local_rank"]+1) / (rank_hero["total_" + id + "_local_rank"])) * 100).toFixed(2)
+					$("#hero_accuracy_local_rank_" + i + "_per").text(rank_per);
+					rank_per = (((rank_hero[id + "_<%= KEY["명중률"] %>_rank"]+1) / (rank_hero["total_" + id + "_rank"])) * 100).toFixed(2)
+					$("#hero_accuracy_rank_" + i + "_per").text(rank_per);
+					
+					$("#hero_kda_local_rank_"+i).text(rank_hero[id + "_KDA_local_rank"]+1);
+					$("#hero_kda_rank_"+i).text(rank_hero[id + "_KDA_rank"]+1);
+					rank_per = (((rank_hero[id + "_KDA_local_rank"]+1) / (rank_hero["total_" + id + "_local_rank"])) * 100).toFixed(2)
+					$("#hero_kda_local_rank_" + i + "_per").text(rank_per);
+					rank_per = (((rank_hero[id + "_KDA_rank"]+1) / (rank_hero["total_" + id + "_rank"])) * 100).toFixed(2)
+					$("#hero_kda_rank_" + i + "_per").text(rank_per);
+					
+					
+					
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			}
+		});
+	});
+
 	function update_data(){
 		$(".btn.btn-default.btn-sm").text("업데이트 중...")
 		$(".btn.btn-default.btn-sm").attr("disabled","disabled")
@@ -201,4 +1422,207 @@
 	  }
 	  make_chart(0, 21);
 	})
+	
+	function make_chart(s_count, e_count){
+		var userPoints = [[1,4213],[10,4000],[20,3800],[30,3500],[40,3345],[50,3214],[60,2945],[70,2754],[80,2541],[90,2421],[100,2000]]; 	//임시 데이타
+
+		var jobPoints = [[18,3921]];
+				  //임시 데이타
+		//var userPoints = [];//실제 데이타는 아래와 같이 처리하세요.
+		//for (var i=0; i<2*Math.PI; i+=0.1){ 
+		//   cosPoints.push([i, Math.cos(i)]); 
+		//} 
+		 var n = $( '.trend_grh' ).length;
+		for (var i = s_count+1; i < e_count+1; i++) {
+		var chart_name ='chart_'+i;
+		var plot = $.jqplot(chart_name, [userPoints, jobPoints], {  
+				
+			legend:{show:false,}, 
+			highlighter:{show:false},
+			
+			series:[
+					{
+						label:'사용자',
+					  	color : '#cc9e45', //Line Color
+						lineWidth : 2,	//라인 두께
+						markerOptions: {size:9,shadow:false},	//점 두께 http://www.jqplot.com/docs/files/jqPlotOptions-txt.html
+						pointLabels: { show:true},
+						shadow:false,
+					},
+					{
+						label:'내 순위',
+					  	color : '#000',
+						lineWidth : 2,
+						markerOptions : {size:10},	
+						pointLabels:{ show:true, location:'s', ypadding:10 }
+					}
+			],
+			axes:{
+		      xaxis:{
+	
+				min:0, max:100, tickInterval:10, 
+				
+				tickOptions:{ 
+					formatString: 'Top%d%',
+					showGridline: false, 				//세로줄 없애기
+					angle: -50,
+					showTickMarks:false,
+					fontsize:'20pt',
+				},
+				
+				 rendererOptions: {
+					tickInset: 0.2,                
+	                
+	            },
+				drawMajorTickMarks: false,
+		        autoscale: false,
+		      },
+		      yaxis:{
+		         autoscale: true,
+				 rendererOptions: {drawBaseline: false},
+				 showTicks: false,  //세로축 정보
+		      }
+		    },
+			grid:{
+				drawGridlines :true, //그리드 그리기
+				background:'#f3f3f3',
+				shadow:false,
+				drawBorder:0,
+				
+			}
+		});
+		
+		}
+	}
+	
+	setTimeout(make_head_circle, 2000);
+	var colors = [
+					['#959595', '#cc4548'], ['#959595', '#cc9e45'], ['#959595', '#4473ae'], ['#959595', '#96ceb7']
+				  ], circles = [];
+	// var play_time = ['18H','7H','2H','2m'];
+	<% time_ary = {} %>
+	
+	<% if @defense_data[KEY["플레이 시간"]].to_i > 59 %>
+		<% time_ary["defense"] = (@defense_data[KEY["플레이 시간"]].to_i/60).to_s + "H" %>
+	<% else %>
+		<% time_ary["defense"] = @defense_data[KEY["플레이 시간"]].to_i.to_s + "m" %>
+	<% end %>
+	
+	<% if @offense_data[KEY["플레이 시간"]].to_i > 59 %>
+		<% time_ary["offense"] = (@offense_data[KEY["플레이 시간"]].to_i/60).to_s + "H" %>
+	<% else %>
+		<% time_ary["offense"] = @offense_data[KEY["플레이 시간"]].to_i.to_s + "m" %>
+	<% end %>
+	
+	<% if @rush_data[KEY["플레이 시간"]].to_i > 59 %>
+		<% time_ary["rush"] = (@rush_data[KEY["플레이 시간"]].to_i/60).to_s + "H" %>
+	<% else %>
+		<% time_ary["rush"] = @rush_data[KEY["플레이 시간"]].to_i.to_s + "m" %>
+	<% end %>
+	
+	<% if @support_data[KEY["플레이 시간"]].to_i > 59 %>
+		<% time_ary["support"] = (@support_data[KEY["플레이 시간"]].to_i/60).to_s + "H" %>
+	<% else %>
+		<% time_ary["support"] = @support_data[KEY["플레이 시간"]].to_i.to_s + "m" %>
+	<% end %>
+	var play_time = ['<%= time_ary["offense"] %>','<%= time_ary["support"] %>',
+						'<%= time_ary["rush"] %>','<%= time_ary["defense"] %>'];
+	var background_img =['offence_icon.png','support.png','tank_icon.png','defence_icon.png'];
+	<% tatal_played_time = @main_hero_data[KEY["플레이 시간"]].to_f %>
+	var per = [<%= (@offense_data[KEY["플레이 시간"]].to_f / tatal_played_time) * 100 %>, <%= (@support_data[KEY["플레이 시간"]].to_f / tatal_played_time) * 100 %>,
+				<%= (@rush_data[KEY["플레이 시간"]].to_f / tatal_played_time) * 100 %>, <%= (@defense_data[KEY["플레이 시간"]].to_f / tatal_played_time) * 100 %>];
+	function make_head_circle(){
+		for (var i = 1; i <= 4; i++) {
+
+		var child = document.getElementById('circles-' + i), percentage = per[i-1];
+			
+			if(i==1){
+				circles.push(Circles.create({
+				id:         child.id,
+				value:		percentage,
+				radius:     35,
+				width:      8,
+				colors:     colors[i - 1],
+				text:play_time[i-1],
+				background_img : background_img[i-1],
+				duration :0
+
+			}));					
+				
+			}
+			else{
+			
+			circles.push(Circles.create({
+				id:         child.id,
+				value:		percentage,
+				radius:     28,
+				width:      5,
+				colors:     colors[i - 1],
+				text:play_time[i-1],
+				background_img : background_img[i-1],
+				duration :0
+
+			}));
+			}
+		}
+	}
+	
+	function show_hero_data(){
+		$("#more_hero").hide();
+		$.ajax({
+			url: "/over_tags/<%=@over_tag.id%>/more_hero_get_ranks",
+			dataType:'json',
+			type:'GET',
+			success: function(data){
+				var rank_hero = data["hero"]
+				for(i=3; i<22; i++){
+					id = $("#hero_time_played_local_rank_"+i).data("param");
+					
+					$("#hero_time_played_local_rank_" + i).text(rank_hero[id + "_<%= KEY["플레이 시간"] %>_local_rank"]+1)
+					$("#hero_time_played_rank_" + i).text(rank_hero[id + "_<%= KEY["플레이 시간"] %>_rank"]+1);
+					rank_per = (((rank_hero[id + "_<%= KEY["플레이 시간"] %>_local_rank"] + 1) / (rank_hero["total_" + id + "_local_rank"])) * 100).toFixed(2)
+					$("#hero_time_played_local_rank_" + i + "_per").text(rank_per);
+					rank_per = (((rank_hero[id + "_<%= KEY["플레이 시간"] %>_rank"]+1) / (rank_hero["total_" + id + "_rank"])) * 100).toFixed(2)
+					$("#hero_time_played_rank_" + i + "_per").text(rank_per);
+					
+					$("#hero_avg_elimination_local_rank_"+i).text(rank_hero[id + "_<%= KEY["처치 - 평균"] %>_local_rank"]+1);
+					$("#hero_avg_elimination_rank_"+i).text(rank_hero[id + "_<%= KEY["처치 - 평균"] %>_rank"]+1);
+					rank_per = (((rank_hero[id + "_<%= KEY["처치 - 평균"] %>_local_rank"]+1) / (rank_hero["total_" + id + "_local_rank"])) * 100).toFixed(2)
+					$("#hero_avg_elimination_local_rank_" + i + "_per").text(rank_per);
+					rank_per = (((rank_hero[id + "_<%= KEY["처치 - 평균"] %>_rank"]+1) / (rank_hero["total_" + id + "_rank"])) * 100).toFixed(2)
+					$("#hero_avg_elimination_rank_" + i + "_per").text(rank_per);
+					
+					
+					$("#hero_avg_damage_local_rank_"+i).text(rank_hero[id + "_<%= KEY["준 피해 - 평균"] %>_local_rank"]+1);
+					$("#hero_avg_damage_rank_"+i).text(rank_hero[id + "_<%= KEY["준 피해 - 평균"] %>_rank"]+1);
+					rank_per = (((rank_hero[id + "_<%= KEY["준 피해 - 평균"] %>_local_rank"]+1) / (rank_hero["total_" + id + "_local_rank"])) * 100).toFixed(2)
+					$("#hero_avg_damage_local_rank_" + i + "_per").text(rank_per);
+					rank_per = (((rank_hero[id + "_<%= KEY["준 피해 - 평균"] %>_rank"]+1) / (rank_hero["total_" + id + "_rank"])) * 100).toFixed(2)
+					$("#hero_avg_damage_rank_" + i + "_per").text(rank_per);
+					
+					
+					$("#hero_accuracy_local_rank_"+i).text(rank_hero[id + "_<%= KEY["명중률"] %>_local_rank"]+1);
+					$("#hero_accuracy_rank_"+i).text(rank_hero[id + "_<%= KEY["명중률"] %>_rank"]+1);
+					rank_per = (((rank_hero[id + "_<%= KEY["명중률"] %>_local_rank"]+1) / (rank_hero["total_" + id + "_local_rank"])) * 100).toFixed(2)
+					$("#hero_accuracy_local_rank_" + i + "_per").text(rank_per);
+					rank_per = (((rank_hero[id + "_<%= KEY["명중률"] %>_rank"]+1) / (rank_hero["total_" + id + "_rank"])) * 100).toFixed(2)
+					$("#hero_accuracy_rank_" + i + "_per").text(rank_per);
+					
+					$("#hero_kda_local_rank_"+i).text(rank_hero[id + "_KDA_local_rank"]+1);
+					$("#hero_kda_rank_"+i).text(rank_hero[id + "_KDA_rank"]+1);
+					rank_per = (((rank_hero[id + "_KDA_local_rank"]+1) / (rank_hero["total_" + id + "_local_rank"])) * 100).toFixed(2)
+					$("#hero_kda_local_rank_" + i + "_per").text(rank_per);
+					rank_per = (((rank_hero[id + "_KDA_rank"]+1) / (rank_hero["total_" + id + "_rank"])) * 100).toFixed(2)
+					$("#hero_kda_rank_" + i + "_per").text(rank_per);
+				}
+				
+				
+			}
+		});
+		$(".hero_card.panel-white").show();
+		make_chart(3, 21);
+		
+		
+	}
+	
 </script>

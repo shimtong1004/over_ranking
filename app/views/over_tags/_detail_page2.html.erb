@@ -6,37 +6,41 @@
                 	<div class="hero_card_top panel-hedding">
                           <div class="card_top_left">
                           <div class="card_top_hero">
-                          		<div class="hero_icon"><img src="/images/hero_square/roadhog_square.png"></div>
-                          		<h2 class="panel-title">로드호그</h2>
+                          		<div class="hero_icon"><img src="/images/hero_square/<%= HERO_SQUARE_IMG[@hero.name] %>"></div>
+                          		<h2 class="panel-title"><%= HERO_ENG_TO_KOR[@hero.name] %></h2>
                           </div>      
                           <div class="card_top_rank">
                           		<span class="card_top_title">랭킹</span>
                           		<div class="kor_rank">
-                                	<img src="/images/kor_icon.png"><span class="top_rank_s">#1,293</span><span class="top_rank_xs">(Top 50%)</span>
+                                	<img src="/images/kor_icon.png"><span class="top_rank_s"><%=@hero_local_rank%></span><span class="top_rank_xs">(Top 50%)</span>
                                 </div>
                                 <div class="global_rank">
-                                	<img src="/images/global_icon.png"><span class="top_rank_s">#1,293</span><span class="top_rank_xs">(Top 50%)</span>
+                                	<img src="/images/global_icon.png"><span class="top_rank_s"><%=@hero_rank%></span><span class="top_rank_xs">(Top 50%)</span>
                                 </div>
                            </div>     
                            <div class="card_top_winrate">
 	                           <div class="card_top_title">승률</div>                                            
                            		<div class="progress win-rate">
-										<div class="progress-bar progress-bar-win" role="progressbar" style="width:40%">W192</div>
-                                        <div class="progress-bar progress-bar-lose" role="progressbar" style="width:60%">L 160</div>
+										<div class="progress-bar progress-bar-win" role="progressbar" style="width:<%= @hero[KEY["승률"]] %>%">
+											W <%= @hero[KEY["승리한 게임"]] %>
+										</div>
+                                        <div class="progress-bar progress-bar-lose" role="progressbar" style="width:<%= 100.0 - @hero[KEY["승률"]] %>%">
+                                        	L <%= @hero[KEY["치른 게임"]] - @hero[KEY["승리한 게임"]] %>
+                                        </div>
                                 </div> 
-                                <div class="top_rank_s">80%</div>
+                                <div class="top_rank_s"><%= @hero[KEY["승률"]] %>%</div>
                            </div>
                            <div class="card_top_playtime">
                            		<span class="card_top_title">플레이타임</span>
-                                <span>415시간</span>
+                                <span><%= distance_of_time_in_words(Time.at(0), Time.at(@hero[KEY["플레이 시간"]].to_i * 60)) %></span>
                            </div>
                            </div>
                            <div class="card_top_right">
                            <div  class="card_top_reward">
-                           		<div><span class="gold">금메달</span><span>2,000</span></div>
-                                <div><span class="silver">은메달</span><span>500</span></div>
-                                <div><span class="bronze">동메달</span><span>80</span></div>
-                                <div><span class="goodcard">칭찬카드</span><span>21,540</span></div>
+                           		<div><span class="gold">금메달</span><span><%=@hero[KEY["메달 - 금"]].to_i%></span></div>
+                                <div><span class="silver">은메달</span><span><%=@hero[KEY["메달 - 은"]].to_i%></span></div>
+                                <div><span class="bronze">동메달</span><span><%=@hero[KEY["메달 - 동"]].to_i%></span></div>
+                                <div><span class="goodcard">칭찬카드</span><span><%=@hero[KEY["칭찬 카드"]].to_i%></span></div>
                            </div>
                            </div>         
                                 
@@ -47,22 +51,22 @@
                           
                                	 <div class="important-data"> 
 	                                <dl class="data"><dt class="legion_icon top_rank_s">갈고리 명중률</dt><dd class="rank_dd">5,235</dd></dl> 
-                                 	<dl class="rank"><dt class="legion_icon"><img src="/images/kor_icon.png"></dt><dd class="rank_dd top_rank_xs">#1,293<span class="top_rank_xxs">(Top 50%)</span></dd></dl> 
+                                 	 
                                 	<dl class="rank"><dt class="legion_icon"><img src="/images/global_icon.png"></dt><dd class="rank_dd top_rank_xs">#154,293<span class="top_rank_xxs">(Top 50%)</span></dd></dl>
                                  </div>
                                  <div class="important-data"> 
 	                                <dl class="data"><dt class="legion_icon top_rank_s">평균 딜량</dt><dd class="rank_dd">5,235</dd></dl> 
-                                 	<dl class="rank"><dt class="legion_icon"><img src="/images/kor_icon.png"></dt><dd class="rank_dd top_rank_xs">#1,293<span class="top_rank_xxs">(Top 50%)</span></dd></dl> 
+                                 	 
                                 	<dl class="rank"><dt class="legion_icon"><img src="/images/global_icon.png"></dt><dd class="rank_dd top_rank_xs">#154,293<span class="top_rank_xxs">(Top 50%)</span></dd></dl>			
                                  </div>
                                  <div class="important-data"> 
                                  	<dl class="data"><dt class="legion_icon top_rank_s">평균 임무기여처치</dt><dd class="rank_dd">5,235</dd></dl> 
-                                 	<dl class="rank"><dt class="legion_icon"><img src="/images/kor_icon.png"></dt><dd class="rank_dd top_rank_xs">#1,293<span class="top_rank_xxs">(Top 50%)</span></dd></dl> 
+                                 	 
                                 	<dl class="rank"><dt class="legion_icon"><img src="/images/global_icon.png"></dt><dd class="rank_dd top_rank_xs">#154,293<span class="top_rank_xxs">(Top 50%)</span></dd></dl>
                                 </div>
                                 <div class="important-data">                                 
 	                                <dl class="data"><dt class="legion_icon top_rank_s">KDA</dt><dd class="rank_dd">5,235</dd></dl> 
-                                	<dl class="rank"><dt class="legion_icon"><img src="/images/kor_icon.png"></dt><dd class="rank_dd top_rank_xs">#1,293<span class="top_rank_xxs">(Top 50%)</span></dd></dl> 
+                                	 
                                 	<dl class="rank"><dt class="legion_icon"><img src="/images/global_icon.png"></dt><dd class="rank_dd top_rank_xs">#154,293<span class="top_rank_xxs">(Top 50%)</span></dd></dl>
                                 </div>
                                 
@@ -104,107 +108,1226 @@
                        
                      </div>
                      
-                     <div class="static_card_bottom_skill panel-body">
-                     	<div class="static_box">
-	                        <div class="static_title">기술 통계:<br>갈고리 사슬</div>
-                            <div class="static_data_warp">
-                        	<div class="detail_static_data">
-                            	<div>갈고리 명중률</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
-                            </div>
-                            <div class="detail_static_data">
-                            	<div>최고 갈고리 명중률</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
-                            </div>
-                            <div class="detail_static_data">
-                            	<div>갈고리 누적 시도</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
-                            </div>
-                            <div class="detail_static_data">
-                            	<div>평균 끌고온적</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
-                            </div>
-                            <div class="detail_static_data">
-                            	<div>최고 끌고온적</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
-                            </div>
-                            <div class="detail_static_data">
-                            	<div>누적 끌고온적</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
-                            </div>
-                            </div>
-                        
-                        </div>
-                      </div>
-                      
-                      <div class="static_card_bottom_skill panel-body">
-                     	<div class="static_box">
-	                        <div class="static_title">기술 통계 : 돼재앙</div>
-                            <div class="static_data_warp">
-                        	<div class="detail_static_data">
-                            	<div>평균 처치</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
-                            </div>
-                            <div class="detail_static_data">
-                            	<div>최고 처치</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
-                            </div>
-                            <div class="detail_static_data">
-                            	<div>누적 처치</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
-                            </div>
-                            </div>
-                                                    
-                        </div>
-                      </div>
-                      
+                     <% if @hero_name == "Genji" %>
+                     	<div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>용검</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>용검으로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["용검으로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>용검으로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["용검으로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>용검으로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["용검으로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>튕겨낸 피해 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["튕겨낸 피해 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>튕겨낸 피해 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["튕겨낸 피해 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% elsif @hero_name == "Reaper" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>죽음의 꽃</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>죽음의 꽃으로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["죽음의 꽃으로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>죽음의 꽃으로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["죽음의 꽃으로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>죽음의 꽃으로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["죽음의 꽃으로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     	<div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>거둔 영혼</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>거둔 영혼 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["거둔 영혼 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>거둔 영혼 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["거둔 영혼 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% elsif @hero_name == "McCree" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>황야의 무법자</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>황야의 무법자로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["황야의 무법자로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>황야의 무법자로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["황야의 무법자로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>황야의 무법자로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["황야의 무법자로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>피스키퍼 난사</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>피스키퍼 난사로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["피스키퍼 난사로 처치"]]%></div>
+		                        
+		                      </div>
+	                          <div class="detail_static_data">
+		                        <div>피스키퍼 난사로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["피스키퍼 난사로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% elsif @hero_name == "Soldier: 76" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>나선 로켓</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>나선 로켓으로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["나선 로켓으로 처치"]]%></div>
+		                        
+		                      </div>
+	                          <div class="detail_static_data">
+		                        <div>나선 로켓으로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["나선 로켓으로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+	                          <div class="detail_static_data">
+		                        <div>나선 로켓으로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["나선 로켓으로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>전술 조준경</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>전술 조준경으로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["전술 조준경으로 처치"]]%></div>
+		                        
+		                      </div>
+	                          <div class="detail_static_data">
+		                        <div>전술 조준경으로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["전술 조준경으로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+	                          <div class="detail_static_data">
+		                        <div>전술 조준경으로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["전술 조준경으로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>생체장</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>생체장 생성</div>
+		                        <div class="static_value"><%=@hero[KEY["생체장 생성"]]%></div>
+		                        
+		                      </div>
+	                          <div class="detail_static_data">
+		                        <div>생체장으로 치유</div>
+		                        <div class="static_value"><%=@hero[KEY["생체장으로 치유"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% elsif @hero_name == "Tracer" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>펄스 폭탄</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>펄스 폭탄으로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["펄스 폭탄으로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>펄스 폭탄으로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["펄스 폭탄으로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>펄스 폭탄으로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["펄스 폭탄으로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>펄스 폭탄 부착</div>
+		                        <div class="static_value"><%=@hero[KEY["펄스 폭탄 부착"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>펄스 폭탄 부착 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["펄스 폭탄 부착 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>펄스 폭탄 부착 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["펄스 폭탄 부착 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% elsif @hero_name == "Pharah" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>로켓</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>로켓 명중</div>
+		                        <div class="static_value"><%=@hero[KEY["로켓 명중"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>로켓 명중 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["로켓 명중 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>로켓 명중 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["로켓 명중 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>포화</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>포화로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["포화로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>포화로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["포화로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>포화로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["포화로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    
+                     <% elsif @hero_name == "Mei" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>얼린</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>얼린 적</div>
+		                        <div class="static_value"><%=@hero[KEY["얼린 적"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>얼린 적 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["얼린 적 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>얼린 적 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["얼린 적 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>눈보라</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>눈보라로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["눈보라로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>눈보라로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["눈보라로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>눈보라로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["눈보라로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    
+                     <% elsif @hero_name == "Bastion" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>수색 모드</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>수색 모드로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["수색 모드로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>수색 모드로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["수색 모드로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>수색 모드로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["수색 모드로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>경계 모드</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>경계 모드로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["경계 모드로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>경계 모드로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["경계 모드로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>경계 모드로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["경계 모드로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>전차 모드</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>전차 모드로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["전차 모드로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>전차 모드로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["전차 모드로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>전차 모드로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["전차 모드로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% elsif @hero_name == "Widowmaker" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>맹독 지뢰</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>맹독 지뢰로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["맹독 지뢰로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>맹독 지뢰로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["맹독 지뢰로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>맹독 지뢰로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["맹독 지뢰로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>저격</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>저격 치명타</div>
+		                        <div class="static_value"><%=@hero[KEY["저격 치명타"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>저격 치명타 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["저격 치명타 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>저격 치명타 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["저격 치명타 - 평균"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>저격 명중률</div>
+		                        <div class="static_value"><%=@hero[KEY["저격 명중률"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>저격 명중률 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["저격 명중률 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% elsif @hero_name == "Junkrat" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>덫</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>덫에 걸린 적</div>
+		                        <div class="static_value"><%=@hero[KEY["덫에 걸린 적"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>덫에 걸린 적 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["덫에 걸린 적 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>분당 덫에 걸린 적</div>
+		                        <div class="static_value"><%=@hero[KEY["분당 덫에 걸린 적"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>죽이는 타이어</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>죽이는 타이어로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["죽이는 타이어로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>죽이는 타이어로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["죽이는 타이어로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% elsif @hero_name == "Torbjörn" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>토르비욘</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>토르비욘이 직접 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["토르비욘이 직접 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>토르비욘이 직접 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["토르비욘이 직접 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>토르비욘이 직접 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["토르비욘이 직접 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>포탑</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>포탑으로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["포탑으로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>포탑으로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["포탑으로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>초고열 용광로</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>초고열 용광로로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["초고열 용광로로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>초고열 용광로로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["초고열 용광로로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>초고열 용광로로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["초고열 용광로로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>방어구</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>생성한 방어구 팩</div>
+		                        <div class="static_value"><%=@hero[KEY["생성한 방어구 팩"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>방어구 팩 생성 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["방어구 팩 생성 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% elsif @hero_name == "Hanzo" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>용의 일격</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>용의 일격으로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["용의 일격으로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>용의 일격으로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["용의 일격으로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>용의 일격으로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["용의 일격으로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>갈래 화살</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>갈래 화살로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["갈래 화살로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>갈래 화살로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["갈래 화살로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>갈래 화살로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["갈래 화살로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% elsif @hero_name == "D.Va" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>호출한 로봇</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>호출한 로봇</div>
+		                        <div class="static_value"><%=@hero[KEY["호출한 로봇"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>호출한 로봇 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["호출한 로봇 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>호출한 로봇 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["호출한 로봇 - 평균"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>파괴된 로봇</div>
+		                        <div class="static_value"><%=@hero[KEY["파괴된 로봇"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>막은 피해</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>막은 피해</div>
+		                        <div class="static_value"><%=@hero[KEY["막은 피해"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>막은 피해 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["막은 피해 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>막은 피해 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["막은 피해 - 평균"]]%></div>
+		                        
+		                      </div>
+		                      
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% elsif @hero_name == "Reinhardt" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>돌진</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>돌진으로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["돌진으로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>돌진으로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["돌진으로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>돌진으로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["돌진으로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>화염 강타</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>화염 강타로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["화염 강타로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>화염 강타로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["화염 강타로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>화염 강타로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["화염 강타로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>대지분쇄</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>대지분쇄로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["대지분쇄로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>대지분쇄로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["대지분쇄로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>대지분쇄로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["대지분쇄로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>막은 피해</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>막은 피해</div>
+		                        <div class="static_value"><%=@hero[KEY["막은 피해"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>막은 피해 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["막은 피해 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>막은 피해 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["막은 피해 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% elsif @hero_name == "Roadhog" %>
+	                     <div class="static_card_bottom_skill panel-body">
+	                     	<div class="static_box">
+		                        <div class="static_title">기술 통계:<br>갈고리 사슬</div>
+	                            <div class="static_data_warp">
+	                        	<div class="detail_static_data">
+	                            	<div>갈고리 명중률</div>
+	                                <div class="static_value"><%=@hero[KEY["갈고리 명중률"]]%></div>
+	                                
+	                            </div>
+	                            <div class="detail_static_data">
+	                            	<div>최고 갈고리 명중률</div>
+	                                <div class="static_value"><%=@hero[KEY["갈고리 명중률 - 한 게임 최고기록"]]%></div>
+	                                
+	                            </div>
+	                            <div class="detail_static_data">
+	                            	<div>갈고리 누적 시도</div>
+	                                <div class="static_value"><%=@hero[KEY["갈고리 시도"]]%></div>
+	                                
+	                            </div>
+	                            <div class="detail_static_data">
+	                            	<div>평균 끌고온적</div>
+	                                <div class="static_value"><%=%></div>
+	                                
+	                            </div>
+	                            <div class="detail_static_data">
+	                            	<div>최고 끌고온적</div>
+	                                <div class="static_value"><%=@hero[KEY["갈고리로 끌어오기 - 한 게임 최고기록"]]%></div>
+	                                
+	                            </div>
+	                            <div class="detail_static_data">
+	                            	<div>누적 끌고온적</div>
+	                                <div class="static_value"><%=@hero[KEY["갈고리로 끌어오기"]]%></div>
+	                                
+	                            </div>
+	                            </div>
+	                        
+	                        </div>
+	                      </div>
+	                      
+	                      <div class="static_card_bottom_skill panel-body">
+	                     	<div class="static_box">
+		                        <div class="static_title">기술 통계 : 돼재앙</div>
+	                            <div class="static_data_warp">
+	                        	<div class="detail_static_data">
+	                            	<div>평균 처치</div>
+	                                <div class="static_value"><%=@hero[KEY["돼재앙으로 처치 - 평균"]]%></div>
+	                                
+	                            </div>
+	                            <div class="detail_static_data">
+	                            	<div>최고 처치</div>
+	                                <div class="static_value"><%=@hero[KEY["돼재앙으로 처치 - 한 게임 최고기록"]]%></div>
+	                                
+	                            </div>
+	                            <div class="detail_static_data">
+	                            	<div>누적 처치</div>
+	                                <div class="static_value"><%=@hero[KEY["돼재앙으로 처치"]]%></div>
+	                                
+	                            </div>
+	                            </div>
+	                        </div>
+	                      </div>
+                     <% elsif @hero_name == "Winston" %>
+                     	<div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>점프 팩</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>점프 팩으로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["점프 팩으로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>점프 팩으로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["점프 팩으로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>점프 팩으로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["점프 팩으로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>점프 팩</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>점프 팩으로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["점프 팩으로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>점프 팩으로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["점프 팩으로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>점프 팩으로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["점프 팩으로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>밀쳐낸 플레이어</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>밀쳐낸 플레이어</div>
+		                        <div class="static_value"><%=@hero[KEY["밀쳐낸 플레이어"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>밀쳐낸 플레이어 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["밀쳐낸 플레이어 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>밀쳐낸 플레이어 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["밀쳐낸 플레이어 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>막은 피해</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>막은 피해</div>
+		                        <div class="static_value"><%=@hero[KEY["막은 피해"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>막은 피해 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["막은 피해 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>막은 피해 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["막은 피해 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>근접 공격</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>근접 공격으로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["근접 공격으로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>근접 공격으로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["근접 공격으로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>근접 공격으로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["근접 공격으로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>근접 공격 결정타 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["근접 공격 결정타 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% elsif @hero_name == "Zarya" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>중력탄</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>중력탄으로 처치 누적기록</div>
+		                        <div class="static_value"><%=@hero[KEY["중력탄으로 처치 누적기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>중력탄으로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["중력탄으로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>중력탄으로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["중력탄으로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>고에너지</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>고에너지로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["고에너지로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>고에너지로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["고에너지로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>고에너지로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["고에너지로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>방벽</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>방벽 씌우기</div>
+		                        <div class="static_value"><%=@hero[KEY["방벽 씌우기"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>방벽 씌우기 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["방벽 씌우기 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>막은 피해</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>막은 피해</div>
+		                        <div class="static_value"><%=@hero[KEY["막은 피해"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>막은 피해 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["막은 피해 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>막은 피해 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["막은 피해 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% elsif @hero_name == "Lúcio" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>소리 방벽</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>소리 방벽 제공</div>
+		                        <div class="static_value"><%=@hero[KEY["소리 방벽 제공"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>소리 방벽 제공 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["소리 방벽 제공 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>소리 방벽 제공 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["소리 방벽 제공 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% elsif @hero_name == "Mercy" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>부활</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>부활한 플레이어</div>
+		                        <div class="static_value"><%=@hero[KEY["부활한 플레이어"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>부활한 플레이어 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["부활한 플레이어 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>부활한 플레이어 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["부활한 플레이어 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% elsif @hero_name == "Symmetra" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>감시 포탑</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>감시 포탑으로 처치</div>
+		                        <div class="static_value"><%=@hero[KEY["감시 포탑으로 처치"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>감시 포탑으로 처치 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["감시 포탑으로 처치 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>감시 포탑으로 처치 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["감시 포탑으로 처치 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>순간이동</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>순간이동한 플레이어</div>
+		                        <div class="static_value"><%=@hero[KEY["순간이동한 플레이어"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>순간이동한 플레이어 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["순간이동한 플레이어 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>순간이동한 플레이어 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["순간이동한 플레이어 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>순간이동기</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>순간이동기 가동 시간</div>
+		                        <div class="static_value"><%=@hero[KEY["순간이동기 가동 시간"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>순간이동기 가동 시간 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["순간이동기 가동 시간 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>순간이동기 가동 시간 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["순간이동기 가동 시간 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+	                    <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>보호막</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>보호막 제공</div>
+		                        <div class="static_value"><%=@hero[KEY["보호막 제공"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>보호막 제공 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["보호막 제공 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>보호막 제공 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["보호막 제공 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% elsif @hero_name == "Zenyatta" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>초월</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>초월로 치유</div>
+		                        <div class="static_value"><%=@hero[KEY["초월로 치유"]]%></div>
+		                        
+		                      </div>
+	                          <div class="detail_static_data">
+		                        <div>초월로 치유 - 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["초월로 치유 - 최고기록"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% elsif @hero_name == "Ana" %>
+                       <div class="static_card_bottom_skill panel-body">
+                     	  <div class="static_box">
+		                    <div class="static_title">기술 통계:<br>나노 강화제</div>
+	                        <div class="static_data_warp">
+	                          <div class="detail_static_data">
+		                        <div>나노 강화제 주입</div>
+		                        <div class="static_value"><%=@hero[KEY["나노 강화제 주입"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>나노 강화제 주입 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["나노 강화제 주입 - 평균"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>나노 강화제 도움</div>
+		                        <div class="static_value"><%=@hero[KEY["나노 강화제 도움"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>나노 강화제 도움 - 한 게임 최고기록</div>
+		                        <div class="static_value"><%=@hero[KEY["나노 강화제 도움 - 한 게임 최고기록"]]%></div>
+		                        
+		                      </div>
+		                      <div class="detail_static_data">
+		                        <div>나노 강화제 도움 - 평균</div>
+		                        <div class="static_value"><%=@hero[KEY["나노 강화제 도움 - 평균"]]%></div>
+		                        
+		                      </div>
+	                        </div>
+	                      </div>
+	                    </div>
+                     <% end %>
                        <div class="static_card_bottom_skill panel-body">
                      	<div class="static_box">
 	                        <div class="static_title">처치</div>
                             <div class="static_data_warp">
                         	<div class="detail_static_data">
                             	<div>평균 처치</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["처치 - 평균"]]%><%=@hero[KEY[""]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>최고 처치</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["처치 - 한 게임 최고기록"]]%></div>
+                                
                             </div>
                              <div class="detail_static_data">
                             	<div>한목숨 최고 처치</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["처치 - 한 목숨 최고기록"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>누적 처치</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["처치"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>연속 처치</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["동시 처치"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>포탑파괴 처치</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY[""]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>순간이동기 파괴</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["순간이동기 파괴"]]%></div>
+                                
                             </div>
                             </div>
                                                     
@@ -217,33 +1340,33 @@
                             <div class="static_data_warp">
                         	<div class="detail_static_data">
                             	<div>평균 동시처치</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>최고 동시처치</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["동시 처치 - 최고기록"]]%></div>
+                                
                             </div>
                              <div class="detail_static_data">
                             	<div>누적 동시처치</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["동시 처치"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>평균 단독처치</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["단독 처치 - 평균"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>최고 단독처치</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["단독 처치 - 한 게임 최고기록"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>누적 단독처치</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["단독 처치"]]%></div>
+                                
                             </div>
                             
                             </div>
@@ -257,23 +1380,23 @@
                             <div class="static_data_warp">
                         	<div class="detail_static_data">
                             	<div>평균 딜량</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["준 피해 - 평균"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>최고 딜량</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["준 피해 - 한 게임 최고기록"]]%></div>
+                                
                             </div>
                              <div class="detail_static_data">
                             	<div>누적 딜량</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["준 피해"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>한목숨 최고딜량</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["준 피해 - 한 목숨 최고기록"]]%></div>
+                                
                             </div>
                            
                             
@@ -288,18 +1411,18 @@
                             <div class="static_data_warp">
                         	<div class="detail_static_data">
                             	<div>평균 결정타</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["결정타 - 평균"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>최고 결정타</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["결정타 - 한 게임 최고기록"]]%></div>
+                                
                             </div>
                              <div class="detail_static_data">
                             	<div>누적 결정타</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["결정타"]]%></div>
+                                
                             </div>                                                     
                             
                             </div>
@@ -314,18 +1437,18 @@
                             <div class="static_data_warp">
                         	<div class="detail_static_data">
                             	<div>평균 근접 결정타</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["근접 공격 결정타 - 평균"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>최고 근접 결정타</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["근접 공격 결정타 - 한 게임 최고기록"]]%></div>
+                                
                             </div>
                              <div class="detail_static_data">
                             	<div>누적 근접 결정타</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["근접 공격 결정타"]]%></div>
+                                
                             </div>
                                                         
                             </div>
@@ -339,18 +1462,18 @@
                             <div class="static_data_warp">
                         	<div class="detail_static_data">
                             	<div>평균 치명타</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>최고 치명타</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["치명타 - 한 게임 최고기록"]]%></div>
+                                
                             </div>
                              <div class="detail_static_data">
                             	<div>누적 치명타</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["치명타"]]%></div>
+                                
                             </div>
                                                         
                             </div>
@@ -364,18 +1487,18 @@
                             <div class="static_data_warp">
                         	<div class="detail_static_data">
                             	<div>평균 임무기여시간</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["임무 기여 시간 - 평균"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>최고 임무기여시간</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["임무 기여 시간 - 한 게임 최고기록"]]%></div>
+                                
                             </div>
                              <div class="detail_static_data">
                             	<div>누적 임무기여시간</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["임무 기여 시간"]]%></div>
+                                
                             </div>
                                                         
                             </div>
@@ -389,18 +1512,18 @@
                             <div class="static_data_warp">
                         	<div class="detail_static_data">
                             	<div>평균 임무기여처치</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["임무 기여 처치 - 평균"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>최고 임무기여처치</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["임무 기여 처치 - 한 게임 최고기록"]]%></div>
+                                
                             </div>
                              <div class="detail_static_data">
                             	<div>누적 임무기여처치</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["임무 기여 처치"]]%></div>
+                                
                             </div>
                                                         
                             </div>
@@ -414,18 +1537,18 @@
                             <div class="static_data_warp">
                         	<div class="detail_static_data">
                             	<div>평균 폭주시간</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["폭주 시간 - 평균"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>1분당 폭주시간</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=%></div>
+                                
                             </div>
                              <div class="detail_static_data">
                             	<div>누적 폭주시간</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["폭주 시간"]]%></div>
+                                
                             </div>
                                                         
                             </div>
@@ -439,23 +1562,23 @@
                             <div class="static_data_warp">
                         	<div class="detail_static_data">
                             	<div>평균 명중률</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>최고 명중률</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=%></div>
+                                
                             </div>
                              <div class="detail_static_data">
                             	<div>누적 발사</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>누적 명중</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["명중률"]]%></div>
+                                
                             </div>
                             </div>
                                                     
@@ -468,33 +1591,33 @@
                             <div class="static_data_warp">
                         	<div class="detail_static_data">
                             	<div>평균 공격지원</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["방어형 도움 - 평균"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>최고 공격지원</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["공격형 도움 - 한 게임 최고기록"]]%></div>
+                                
                             </div>
                              <div class="detail_static_data">
                             	<div>누적 공격지원</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["공격형 도움"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>평균 방어지원</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["방어형 도움 - 평균"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>최고 방어지원</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["방어형 도움 - 한 게임 최고기록"]]%></div>
+                                
                             </div>
                              <div class="detail_static_data">
                             	<div>누적 방어지원</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["방어형 도움"]]%></div>
+                                
                             </div>                            
                             </div>
                                                     
@@ -508,38 +1631,38 @@
                             <div class="static_data_warp">
                         	<div class="detail_static_data">
                             	<div>평균 치유</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["치유 - 평균"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>최고 치유</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["치유 - 한 게임 최고기록"]]%></div>
+                                
                             </div>
                              <div class="detail_static_data">
                             	<div>한목숨 최고 치유</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["치유 - 한 목숨 최고기록"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>누적 치유</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["치유"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>평균 자가치유</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>최고 자가치유</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["자가 치유 - 한 게임 최고기록"]]%></div>
+                                
                             </div>
                              <div class="detail_static_data">
                             	<div>누적 자가치유</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["자가 치유"]]%></div>
+                                
                             </div>             
                             </div>
                                                     
@@ -552,18 +1675,18 @@
                             <div class="static_data_warp">
                         	<div class="detail_static_data">
                             	<div>평균 죽음</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["죽음 - 평균"]]%></div>
+                                
                             </div>
                             <div class="detail_static_data">
                             	<div>환경요소 죽음</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["환경 요소로 죽음"]]%></div>
+                                
                             </div>
                              <div class="detail_static_data">
                             	<div>누적 죽음</div>
-                                <div class="static_value">20.12</div>
-                                <div class="top_rank_s"><img src="/images/global_icon.png">#154,293<span class="top_rank_xs">(Top 50%)</span></div>
+                                <div class="static_value"><%=@hero[KEY["죽음"]]%></div>
+                                
                             </div>
                             </div>
                                                     
@@ -584,3 +1707,86 @@
             </div>
            
          </div>
+         
+<script>
+	// //그래프 스크립트
+// 
+	var userPoints = [[1,4213],[10,4000],[20,3800],[30,3500],[40,3345],[50,3214],[60,2945],[70,2754],[80,2541],[90,2421],[100,2000]]; 	//임시 데이타
+
+	var jobPoints = [[18,3921]];
+			  //임시 데이타
+	//var userPoints = [];//실제 데이타는 아래와 같이 처리하세요.
+	//for (var i=0; i<2*Math.PI; i+=0.1){ 
+	//   cosPoints.push([i, Math.cos(i)]); 
+	//} 
+	var i=1;
+	 var n = $( '.trend_grh' ).length;
+	for (var i = 1; i <= n; i++) {
+	var chart_name ='chart_'+i;
+try {
+	var plot = $.jqplot(chart_name, [userPoints, jobPoints], {  
+			
+		legend:{show:false,}, 
+		highlighter:{show:false},
+		
+		series:[
+				{
+					label:'사용자',
+				  	color : '#cc9e45', //Line Color
+					lineWidth : 2,	//라인 두께
+					markerOptions: {size:9,shadow:false},	//점 두께 http://www.jqplot.com/docs/files/jqPlotOptions-txt.html
+					pointLabels: { show:true},
+					shadow:false,
+				},
+				{
+					label:'내 순위',
+				  	color : '#000',
+					lineWidth : 2,
+					markerOptions : {size:10},	
+					pointLabels:{ show:true, location:'s', ypadding:10 }
+				}
+		],
+		axes:{
+	      xaxis:{
+
+			min:0, max:100, tickInterval:10, 
+			
+			tickOptions:{ 
+				formatString: 'Top%d%',
+				showGridline: false, 				//세로줄 없애기
+				angle: -50,
+				showTickMarks:false,
+				fontsize:'20pt',
+			},
+			
+			 rendererOptions: {
+				tickInset: 0.2,                
+                
+            },
+			drawMajorTickMarks: false,
+	        autoscale: false,
+			
+			
+            
+			 
+	      },
+	      yaxis:{
+	         autoscale: true,
+			 rendererOptions: {drawBaseline: false},
+			 showTicks: false,  //세로축 정보
+	      }
+	    },
+		grid:{
+			drawGridlines :true, //그리드 그리기
+			background:'#f3f3f3',
+			shadow:false,
+			drawBorder:0,
+			
+		}
+	});
+} catch(e) {
+    console.log("Error: "+e.message);
+}	
+	
+	}
+</script>

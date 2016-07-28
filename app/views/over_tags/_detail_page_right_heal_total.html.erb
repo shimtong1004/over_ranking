@@ -1,21 +1,39 @@
 <div class="static_card_bottom panel-body">
                      	<div class="static_box">
-                        	<div class="static_data"><div>치유</div><div class="static_value"><%= @data_hash["치유"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["치유_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["치유_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
-                        
+                        	<div class="static_data"><div>치유</div><div class="static_value"><%= @main_hero_data[KEY["치유"]] %></div></div>
+                            <div class="static_data"><div><img src="/images/kor_icon.png"></div><div class="top_rank_s">
+                        		<span id="healing_done_local_rank"></span>위
+                        		<span class="top_rank_xs">(Top <span id="healing_done_local_rank_per"></span>%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">
+                            	<span id="healing_done_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="healing_done_rank_per"></span>%)</span></div></div>
                         </div>
                         <div class="static_box">
-                        	<div class="static_data"><div>자가치유</div><div class="static_value"><%= @data_hash["자가 치유"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["자가 치유_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["자가 치유_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        	<div class="static_data"><div>자가치유</div><div class="static_value"><%= @main_hero_data[KEY["자가 치유"]] %></div></div>
+                            <div class="static_data"><div><img src="/images/kor_icon.png"></div><div class="top_rank_s">
+                        		<span id="self_healing_local_rank"></span>위
+                        		<span class="top_rank_xs">(Top <span id="self_healing_local_rank_per"></span>%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">
+                            	<span id="self_healing_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="self_healing_rank_per"></span>%)</span></div></div>
                         </div>
                         <div class="static_box">
-                        	
-                        	<div class="static_data"><div>처치 시야지원</div><div class="static_value"><%= @data_hash["처치 시야 지원"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["처치 시야 지원_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["처치 시야 지원_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        	<div class="static_data"><div>처치 시야지원</div><div class="static_value"><%= @main_hero_data[KEY["처치 시야 지원"]] %></div></div>
+                            <div class="static_data"><div><img src="/images/kor_icon.png"></div><div class="top_rank_s">
+                        		<span id="recon_assists_local_rank"></span>위
+                        		<span class="top_rank_xs">(Top <span id="recon_assists_local_rank_per"></span>%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">
+                            	<span id="recon_assists_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="recon_assists_rank_per"></span>%)</span></div></div>
                         </div>
                         <div class="static_box">
-                        	<div class="static_data"><div>순간이동기 파괴</div><div class="static_value"><%= @data_hash["순간이동기 파괴"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["순간이동기 파괴_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["순간이동기 파괴_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        	<div class="static_data"><div>순간이동기 파괴</div><div class="static_value"><%= @main_hero_data[KEY["순간이동기 파괴"]] %></div></div>
+                            <div class="static_data"><div><img src="/images/kor_icon.png"></div><div class="top_rank_s">
+                        		<span id="teleporter_pads_destroyed_local_rank"></span>위
+                        		<span class="top_rank_xs">(Top <span id="teleporter_pads_destroyed_local_rank_per"></span>%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">
+                            	<span id="teleporter_pads_destroyed_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="teleporter_pads_destroyed_rank_per"></span>%)</span></div></div>
                         </div>
                         
                      </div>

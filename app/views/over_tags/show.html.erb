@@ -6,13 +6,13 @@
 					<h2>영웅 선택</h2>
 					<div class="hero_nav_heros">
 						<% HERO_SQUARE_IMG.each do |key, value| %>
-							<div class="container_hero_square" onclick="javascript:click_square_img('<%=key%>', '<%=HERO_NAME_TO_ENG[key]%>');" style="cursor:pointer;">
+							<div class="container_hero_square" onclick="javascript:click_square_img('<%=key%>', '<%=HERO_PROFILE_IMG[key]%>');" style="cursor:pointer;">
 								<img src="/images/hero_square/<%=value%>">
                         	</div>
                     	<% end %>
                     </div>
                 </div>
-                <div class="hero_summary_warp" style='background-image:url(<%= "/images/hero_profile/#{HERO_NAME_TO_ENG[@data_ary[0]["hero_name"]]}.jpg" %>);'>
+                <div class="hero_summary_warp" style='background-image:url("/images/hero_profile/<%= HERO_PROFILE_IMG[@heros[0].main_hero_name] %>.jpg");'>
                 	<div class="top_title"><div>WIDOWMAKER</div><h2>위도우 메이커</h2></div>
                 	<div class="hero_stat">
                 		<div><img src="/images/defence_icon.png">수비영웅</div><div><img src="/images/hp_icon.png">hp200</div><div><img src="/images/playtime_icon.png">플레이시간 2위</div>
@@ -73,28 +73,28 @@
                         </tr>
                         </thead>
                         <tbody>
-                        	<% @data_ary.each do |data| %>
-                        	<tr data-link="<%= detail_over_tag_path(data["over_tag_id"]) %>" data-param="<%= data["user_type"] %>" style="cursor:pointer;">
-                            	<td class="rank_table_rank"></td>
-                                <td class="rank_table_hero"><img src="/images/hero_square/<%=HERO_SQUARE_IMG[data["hero_name"]]%>"></td>
+                        	<% @heros.each_with_index do |hero, no| %>
+                        	<tr data-link="<%= detail_over_tag_path(hero.over_user_type.over_tag.id) %>" data-param="<%= hero.over_user_type.user_type %>" style="cursor:pointer;">
+                            	<td class="rank_table_rank"><%= @hero_ranks[hero.id] %></td>
+                                <td class="rank_table_hero"><img src="/images/hero_square/<%=HERO_SQUARE_IMG[hero.main_hero_name]%>"></td>
                                 <td class="rank_table_region">
-										<%= data["user_type"] %>
+										<%= hero.over_user_type.user_type %>
                                 </td>
                                 <td class="text-left rank_table_player ">
-                                	<img src="/images/hero_square/<%=HERO_SQUARE_IMG[data["hero_name"]]%>"><%=data["hero_name"]%><br>
-                                	<span>lv.<%=data["level"]%></span>
+                                	<img src="/images/hero_square/<%=HERO_SQUARE_IMG[hero.main_hero_name]%>"><%=hero.main_hero_name%><br>
+                                	<span>lv.<%= hero.level %></span>
                                 </td>
-                                <td class="rank_table_score"><%=data["competitive_rank"]%></td>
-                                <td class="rank_table_kda"><%= (data["KDA"]) %>
-                                	 <span class="top_rank_xs">(<%= "#{data["처치"]}/#{data["죽음"]}"%>)</span>
+                                <td class="rank_table_score"><%= hero.competitive_rank %></td>
+                                <td class="rank_table_kda"><%= hero.KDA %>
+                                	 <span class="top_rank_xs">(<%= "#{hero.Eliminations}/#{hero.Deaths}"%>)</span>
                                	</td>
-                                <td class="rank_table_kill"><%= data["처치 - 평균"] %></td>
-                                <td class="rank_table_heal"><%= data["치유 - 평균"] %></td>
+                                <td class="rank_table_kill"><%= hero[KEY["처치 - 평균"]] %></td>
+                                <td class="rank_table_heal"><%= hero[KEY["치유 - 평균"]] %></td>
                                 <td class="rank_table_winrate"><div class="progress win-rate">
-                                	<% games_played = data["치른 게임"].to_i %>
-                                	<% games_won = data["승리한 게임"].to_i %>
+                                	<% games_played = hero[KEY["치른 게임"]].to_i %>
+                                	<% games_won = hero[KEY["승리한 게임"]].to_i %>
                                 	<% games_lost = games_played - games_won %>
-                                	<% games_won_per = data["승률"] %>
+                                	<% games_won_per = hero[KEY["승률"]] %>
 										<div class="progress-bar progress-bar-win" role="progressbar" style="width:<%=games_won_per%>%">W<%=games_won%></div>
 										<div class="progress-bar progress-bar-lose" role="progressbar" style="width:<%=100 - games_won_per%>%">L<%=games_lost%></div>
                                     </div> <span class="top_data">
@@ -102,10 +102,10 @@
                                     </span></td>
                                 
                                 <td class="rank_table_time">
-                                	<% if data["플레이 시간"] > 60 %>
-                                	<%= data["플레이 시간"].to_i/60 %>시간
+                                	<% if hero[KEY["플레이 시간"]] > 60 %>
+                                	<%= hero[KEY["플레이 시간"]].to_i/60 %>시간
                                 	<% else %>
-                                	<%= data["플레이 시간"].to_i %>분
+                                	<%= hero[KEY["플레이 시간"]].to_i %>분
                                 	<% end %>
                                 </td>
                                 

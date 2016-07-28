@@ -1,44 +1,97 @@
 <div class="static_card_bottom panel-body">
                      	<div class="static_box">
-                        	<div class="static_data"><div>처치</div><div class="static_value"><%= @data_hash["offense_처치"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_처치_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_처치_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
-                        
+                        	<div class="static_data"><div>처치</div><div class="static_value"><%= @offense_data[KEY["처치"]] %></div></div>
+                            <div class="static_data"><div><img src="/images/kor_icon.png"></div><div class="top_rank_s">
+                        		<span id="o_elimination_local_rank"></span>위
+                        		<span class="top_rank_xs">(Top <span id="o_elimination_local_rank_per"></span>%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">
+                            	<span id="o_elimination_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="o_elimination_rank_per"></span>%)</span></div></div>
                         </div>
                         <div class="static_box">
-                        	<div class="static_data"><div>결정타</div><div class="static_value"><%= @data_hash["offense_결정타"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_결정타_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_결정타_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        	<div class="static_data"><div>결정타</div><div class="static_value"><%= @offense_data[KEY["결정타"]] %></div></div>
+                            <div class="static_data"><div><img src="/images/kor_icon.png"></div><div class="top_rank_s">
+                            	<span id="o_final_blows_local_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="o_final_blows_local_rank_per"></span>%)</span></div></div>
+                            	
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">
+                            	<span id="o_final_blows_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="o_final_blows_rank_per"></span>%)</span></div></div>
                         </div>
                         <div class="static_box">
-                        	<div class="static_data"><div>단독처치</div><div class="static_value"><%= @data_hash["offense_단독 처치"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_단독 처치_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_단독 처치_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        	<div class="static_data"><div>단독처치</div><div class="static_value"><%= @offense_data[KEY["단독 처치"]] %></div></div>
+                            <div class="static_data"><div><img src="/images/kor_icon.png"></div><div class="top_rank_s">
+                            	<span id="o_solo_kills_local_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="o_solo_kills_local_rank_per"></span>%)</span></div></div>
+                            	
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">
+                            	<span id="o_solo_kills_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="o_solo_kills_rank_per"></span>%)</span></div></div>
                         </div>
                         <div class="static_box">
-                        	<div class="static_data"><div>임무기여처치</div><div class="static_value"><%= @data_hash["offense_임무 기여 처치"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_임무 기여 처치_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_임무 기여 처치_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        	<div class="static_data"><div>임무기여처치</div><div class="static_value"><%= @offense_data[KEY["임무 기여 처치"]] %></div></div>
+                            <div class="static_data"><div><img src="/images/kor_icon.png"></div><div class="top_rank_s">
+                            	<span id="o_objective_kills_local_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="o_objective_kills_local_rank_per"></span>%)</span></div></div>
+                            	
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">
+                            	<span id="o_objective_kills_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="o_objective_kills_rank_per"></span>%)</span></div></div>
                         </div>
                         <div class="static_box">
-                        	<div class="static_data"><div>딜량</div><div class="static_value"><%= @data_hash["offense_준 피해"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_준 피해_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_준 피해_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        	<div class="static_data"><div>딜량</div><div class="static_value"><%= @offense_data[KEY["준 피해"]] %></div></div>
+                            <div class="static_data"><div><img src="/images/kor_icon.png"></div><div class="top_rank_s">
+                            	<span id="o_damage_done_local_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="o_damage_done_local_rank_per"></span>%)</span></div></div>
+                            	
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">
+                            	<span id="o_damage_done_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="o_damage_done_rank_per"></span>%)</span></div></div>
                         </div>
                         <div class="static_box">
-                        	<div class="static_data"><div>동시처치</div><div class="static_value"><%= @data_hash["offense_동시 처치"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_동시 처치_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_동시 처치_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        	<div class="static_data"><div>동시처치</div><div class="static_value"><%= @offense_data[KEY["동시 처치"]] %></div></div>
+                            <div class="static_data"><div><img src="/images/kor_icon.png"></div><div class="top_rank_s">
+                        		<span id="o_multikills_local_rank"></span>위
+                        		<span class="top_rank_xs">(Top <span id="o_multikills_local_rank_per"></span>%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">
+                            	<span id="o_multikills_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="o_multikills_rank_per"></span>%)</span></div></div>
                         </div>
                         <div class="static_box">
-                        	<div class="static_data"><div>근접공격결정타</div><div class="static_value"><%= @data_hash["offense_근접 공격 결정타"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_근접 공격 결정타_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_근접 공격 결정타_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        	<div class="static_data"><div>근접공격결정타</div><div class="static_value"><%= @offense_data[KEY["근접 공격 결정타"]] %></div></div>
+                            <div class="static_data"><div><img src="/images/kor_icon.png"></div><div class="top_rank_s">
+                            	<span id="o_melee_final_blows_local_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="o_melee_final_blows_local_rank_per"></span>%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">
+                            	<span id="o_melee_final_blows_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="o_melee_final_blows_rank_per"></span>%)</span></div></div>
                         </div>
                         <div class="static_box">
-                        	<div class="static_data"><div>임무기여시간</div><div class="static_value"><%= @data_hash["offense_임무 기여 시간"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_임무 기여 시간_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_임무 기여 시간_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        	<div class="static_data"><div>임무기여시간</div><div class="static_value"><%= @offense_data[KEY["임무 기여 시간"]] %></div></div>
+                            <div class="static_data"><div><img src="/images/kor_icon.png"></div><div class="top_rank_s">
+                            	<span id="o_objective_time_local_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="o_objective_time_local_rank_per"></span>%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">
+                            	<span id="o_objective_time_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="o_objective_time_rank_per"></span>%)</span></div></div>
                         </div>
                         <div class="static_box">
-                        	<div class="static_data"><div>폭주시간</div><div class="static_value"><%= @data_hash["offense_폭주 시간"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_폭주 시간_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_폭주 시간_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        	<div class="static_data"><div>폭주시간</div><div class="static_value"><%= @offense_data[KEY["폭주 시간"]] %></div></div>
+                            <div class="static_data"><div><img src="/images/kor_icon.png"></div><div class="top_rank_s">
+                            	<span id="o_time_spent_on_fire_local_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="o_time_spent_on_fire_local_rank_per"></span>%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">
+                            	<span id="o_time_spent_on_fire_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="o_time_spent_on_fire_rank_per"></span>%)</span></div></div>
                         </div>
                         <div class="static_box">
-                        	<div class="static_data"><div>환경요소로처치</div><div class="static_value"><%= @data_hash["offense_환경 요소로 처치"] %></div></div>
-                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">#<%=@data_hash["offense_환경 요소로 처치_local_rank"]%><span class="top_rank_xs">(Top <%= (@data_hash["offense_환경 요소로 처치_local_rank"].to_f / @total_local_count.to_f) * 100 %>%)</span></div></div>
+                        	<div class="static_data"><div>환경요소로처치</div><div class="static_value"><%= @offense_data[KEY["환경 요소로 처치"]] %></div></div>
+                            <div class="static_data"><div><img src="/images/kor_icon.png"></div><div class="top_rank_s">
+                        		<span id="o_environmental_kills_local_rank"></span>위
+                        		<span class="top_rank_xs">(Top <span id="o_environmental_kills_local_rank_per"></span>%)</span></div></div>
+                            <div class="static_data"><div><img src="/images/global_icon.png"></div><div class="top_rank_s">
+                            	<span id="o_environmental_kills_rank"></span>위
+                            	<span class="top_rank_xs">(Top <span id="o_environmental_kills_rank_per"></span>%)</span></div></div>
                         </div>
                         
                      </div>

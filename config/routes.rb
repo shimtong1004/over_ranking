@@ -40,6 +40,8 @@ Rails.application.routes.draw do
     member do
       get 'detail'
       put 'update_data'
+      get 'get_ranks'
+      get 'more_hero_get_ranks'
     end
     collection do
       get 'over_role_rank'

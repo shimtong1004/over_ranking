@@ -32,12 +32,12 @@
                         <div class="main_chart_content">
                         	<table>
                         		<% no = 0 %>
-                        		<% @hero_offense.each do |key, value| %>
+                        		<% @offense_heros.each do |key, value| %>
                         		<% no += 1 %>
                             	<tr>
-                                	<td><%= no %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[key]%>"><%= key %></td>
+                                	<td><%= no %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[key]%>"><%= HERO_ENG_TO_KOR[key] %></td>
                                     <td><div class="progress">
-                                    	<% per = ((value / @offense_hero_sum) * 100).round(2) %>
+                                    	<% per = ((value / @offense_playtime_sum) * 100).round(2) %>
 										<div class="progress-bar progress-bar-win" role="progressbar" style="width:<%= per %>%"><%= per %>%</div></div>
                                     </td>
                                 </tr>
@@ -53,12 +53,12 @@
                         <div class="main_chart_content">
                         	<table>
                         		<% no = 0 %>
-                        		<% @hero_defense.each do |key, value| %>
+                        		<% @defense_heros.each do |key, value| %>
                         		<% no += 1 %>
                             	<tr>
-                                	<td><%= no %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[key]%>"><%= key %></td>
+                                	<td><%= no %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[key]%>"><%= HERO_ENG_TO_KOR[key] %></td>
                                     <td><div class="progress">
-                                    	<% per = ((value / @defense_hero_sum) * 100).round(2) %>
+                                    	<% per = ((value / @defense_playtime_sum) * 100).round(2) %>
 										<div class="progress-bar progress-bar-win" role="progressbar" style="width:<%= per %>%"><%= per %>%</div></div>
                                     </td>
                                 </tr>
@@ -73,12 +73,12 @@
                         <div class="main_chart_content">
                         	<table>
                             	<% no = 0 %>
-                        		<% @hero_rush.each do |key, value| %>
+                        		<% @rush_heros.each do |key, value| %>
                         		<% no += 1 %>
                             	<tr>
-                                	<td><%= no %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[key]%>"><%= key %></td>
+                                	<td><%= no %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[key]%>"><%= HERO_ENG_TO_KOR[key] %></td>
                                     <td><div class="progress">
-                                    	<% per = ((value / @rush_hero_sum) * 100).round(2) %>
+                                    	<% per = ((value / @rush_playtime_sum) * 100).round(2) %>
 										<div class="progress-bar progress-bar-win" role="progressbar" style="width:<%= per %>%"><%= per %>%</div></div>
                                     </td>
                                 </tr>
@@ -93,12 +93,12 @@
                         <div class="main_chart_content">
                         	<table>
                             	<% no = 0 %>
-                        		<% @hero_support.each do |key, value| %>
+                        		<% @support_heros.each do |key, value| %>
                         		<% no += 1 %>
                             	<tr>
-                                	<td><%= no %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[key]%>"><%= key %></td>
+                                	<td><%= no %></td><td><img src="/images/hero_square/<%=HERO_SQUARE_IMG[key]%>"><%= HERO_ENG_TO_KOR[key] %></td>
                                     <td><div class="progress">
-                                    	<% per = ((value / @support_hero_sum) * 100).round(2) %>
+                                    	<% per = ((value / @support_playtime_sum) * 100).round(2) %>
 										<div class="progress-bar progress-bar-win" role="progressbar" style="width:<%= per %>%"><%= per %>%</div></div>
                                     </td>
                                 </tr>
