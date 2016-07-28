@@ -64,7 +64,7 @@ class HeroGroup < ActiveRecord::Base
     group_data = user_type.hero_groups.where(name: group_name, play_type: play_type).first
     group_data = HeroGroup.create(over_user_type_id: user_type.id, name: group_name, play_type: play_type, user_type: user_type.user_type) unless group_data
     GROUP_KEYS.each do |key|
-      group_data[key] = offense_hash[key]
+      group_data[key] = offense_hash[key].to_f.nan? ? 0 : offense_hash[key]
     end
     group_data.save
   end

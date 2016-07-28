@@ -66,82 +66,78 @@ class OverTag < ActiveRecord::Base
     # user_type_id_ary.each do |id|
       # self.create_test(id)  
     # end
-    
-      hero_data_array = []
       user_type_id_ary.each_with_index do |user_type_id, i|
         html = html_ary[i]
-        doc = Nokogiri::HTML(html)
-        play_types = []
-        play_types.push id: 1, value:"quick-play"
-        play_types.push id: 2, value:"competitive-play"
-        
-        
-        level = doc.css(".u-vertical-center").text
-        competitive_rank = doc.css(".competitive-rank").text
-        
-        play_types.each do |play_type|
-          play_type_id = play_type[:id]
-          play_type_str = play_type[:value]
-          #quick-play 일반
-          play_type_doc = doc.css("##{play_type_str}")
+        ActiveRecord::Base.transaction do
+          doc = Nokogiri::HTML(html)
+          play_types = []
+          play_types.push id: 1, value:"quick-play"
+          play_types.push id: 2, value:"competitive-play"
           
-          #통계 start
-          # view_group = play_type_doc.css(".content-box.page-wrapper.career-stats-section .h3.header").text
-          stats = play_type_doc.css(".content-box.page-wrapper.career-stats-section .js-stats.toggle-display")
-          stats_names =  play_type_doc.css(".content-box.page-wrapper.career-stats-section .js-career-select option")
           
-          stats.each_with_index do |data, i|
-            hero_name = stats_names[i].text
-            hero_data = Hero.new
-            hero_data["level"] = level.to_i
-            hero_data["competitive_rank"] = competitive_rank.to_i
-            hero_data.over_user_type_id = user_type_id
-            hero_data.play_type = play_type_id
-            hero_data.name = hero_name
-            tables = data.css(".column.xs-12.md-6.xl-4.margin-xs.margin-no-sides table")
-            tables.each do |table|
-              view_group_detail = table.css("thead tr").text
-              trs = table.css("tbody tr")
-                trs.each do |tr|
-                keyword = tr.css("td")[0].text
-                next if keyword.start_with?("overwatch.guid")
-                value = tr.css("td")[1].text
-                
-                if value.include?("hours")
-                  value = value.to_i * 60
-                elsif value.include?("minutes")
-                  value = value.to_i
-                elsif value.include?("seconds")
-                  value = 1
+          level = doc.css(".u-vertical-center").text
+          competitive_rank = doc.css(".competitive-rank").text
+          
+          play_types.each do |play_type|
+            play_type_id = play_type[:id]
+            play_type_str = play_type[:value]
+            #quick-play 일반
+            play_type_doc = doc.css("##{play_type_str}")
+            
+            #통계 start
+            # view_group = play_type_doc.css(".content-box.page-wrapper.career-stats-section .h3.header").text
+            stats = play_type_doc.css(".content-box.page-wrapper.career-stats-section .js-stats.toggle-display")
+            stats_names =  play_type_doc.css(".content-box.page-wrapper.career-stats-section .js-career-select option")
+            
+            stats.each_with_index do |data, i|
+              hero_name = stats_names[i].text
+              hero_data = Hero.new
+              hero_data["level"] = level.to_i
+              hero_data["competitive_rank"] = competitive_rank.to_i
+              hero_data.over_user_type_id = user_type_id
+              hero_data.play_type = play_type_id
+              hero_data.name = hero_name
+              tables = data.css(".column.xs-12.md-6.xl-4.margin-xs.margin-no-sides table")
+              tables.each do |table|
+                view_group_detail = table.css("thead tr").text
+                trs = table.css("tbody tr")
+                  trs.each do |tr|
+                  keyword = tr.css("td")[0].text
+                  next if keyword.start_with?("overwatch.guid")
+                  value = tr.css("td")[1].text
+                  
+                  if value.include?("hours")
+                    value = value.to_i * 60
+                  elsif value.include?("minutes")
+                    value = value.to_i
+                  elsif value.include?("seconds")
+                    value = 1
+                  end
+                  
+                  value = value.to_s.delete(",").to_f
+                  
+                  keyword.gsub!(' - ', '_')
+                  keyword.gsub!('-', '_')
+                  keyword.gsub!(' ', '_')
+                  keyword = self.chk_keyword(keyword)
+                  
+                  hero_data[keyword] = value.to_f
                 end
-                
-                value = value.to_s.delete(",").to_f
-                
-                keyword.gsub!(' - ', '_')
-                keyword.gsub!('-', '_')
-                keyword.gsub!(' ', '_')
-                keyword = self.chk_keyword(keyword)
-                
-                hero_data[keyword] = value.to_f
               end
+              
+              #main_hero_name
+              hero_sort_data = play_type_doc.css(".progress-category.toggle-display")[0]
+              hero_name = hero_sort_data.css(".bar-text .title")[0].text
+              hero_data["main_hero_name"] = hero_name
+              
+              
+              hero_data["KD"] = hero_data["Final_Blows"] / hero_data["Deaths"] if hero_data["Final_Blows"] != 0 && hero_data["Deaths"] != 0
+              hero_data["KDA"] = hero_data["Eliminations"] / hero_data["Deaths"] if  hero_data["Eliminations"] != 0 && hero_data["Deaths"] != 0
+              hero_data["user_type"] = user_type_hash[user_type_id][1]
+              hero_data.save 
             end
-            
-            #main_hero_name
-            hero_sort_data = play_type_doc.css(".progress-category.toggle-display")[0]
-            hero_name = hero_sort_data.css(".bar-text .title")[0].text
-            hero_data["main_hero_name"] = hero_name
-            
-            
-            hero_data["KD"] = hero_data["Final_Blows"] / hero_data["Deaths"] if hero_data["Final_Blows"] != 0 && hero_data["Deaths"] != 0
-            hero_data["KDA"] = hero_data["Eliminations"] / hero_data["Deaths"] if  hero_data["Eliminations"] != 0 && hero_data["Deaths"] != 0
-            hero_data["user_type"] = user_type_hash[user_type_id][1]
-            # hero_data.save
-            hero_data_array.push hero_data 
           end
         end
-      end
-      hero_data_array.each do |data|
-        data.save
       end
     
   end
@@ -252,6 +248,7 @@ class OverTag < ActiveRecord::Base
       user_types = over_tag.over_user_types
       user_types.each do |user_type|
         HeroGroup.set_group_data(user_type)
+        OverDailyDatum.add_data(user_type)
       end
       over_tag.update(data_updated_at: Time.now)
     end
@@ -540,9 +537,8 @@ class OverTag < ActiveRecord::Base
         keyword = "Mech_Deaths"
       when "Turret_Kill" then
         keyword = "Turret_Kills"
-      when "" then
-        keyword = ""
-        
+      when "Armor_Pack_Created" then
+        keyword = "Armor_Packs_Created"
         
         
         

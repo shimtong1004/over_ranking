@@ -63,6 +63,7 @@ class OverTagsController < ApplicationController
     over_user_type = @over_tag.over_user_types.find_by_user_type(session[:user_type])
     OverTag.update_hero_from_bnet(over_user_type)
     HeroGroup.set_group_data(over_user_type)
+    OverDailyDatum.add_data(over_user_type)
     @over_tag.update(data_updated_at: Time.now)
     render json: {status: :ok}
   end

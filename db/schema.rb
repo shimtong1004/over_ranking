@@ -694,26 +694,26 @@ ActiveRecord::Schema.define(version: 20160723042253) do
   add_index "keywords", ["keyword"], name: "index_keywords_on_keyword", using: :btree
 
   create_table "over_daily_data", force: :cascade do |t|
-    t.integer  "over_tag_id",      limit: 4
-    t.string   "hero_name",        limit: 255
-    t.integer  "play_type",        limit: 4
-    t.integer  "games_won",        limit: 4
-    t.integer  "games_lost",       limit: 4
-    t.integer  "games_played",     limit: 4
-    t.float    "games_won_per",    limit: 24
-    t.integer  "time_played",      limit: 4
-    t.integer  "eliminations",     limit: 4
-    t.integer  "deaths",           limit: 4
-    t.integer  "final_blows",      limit: 4
-    t.float    "kd",               limit: 24
-    t.float    "kda",              limit: 24
-    t.float    "healing_done_avr", limit: 24
-    t.float    "damage_done_avr",  limit: 24
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.integer  "over_user_type_id", limit: 4
+    t.string   "hero_name",         limit: 255
+    t.integer  "play_type",         limit: 4
+    t.integer  "games_won",         limit: 4
+    t.integer  "games_lost",        limit: 4
+    t.integer  "games_played",      limit: 4
+    t.float    "games_won_per",     limit: 24
+    t.integer  "time_played",       limit: 4
+    t.integer  "eliminations",      limit: 4
+    t.integer  "deaths",            limit: 4
+    t.integer  "final_blows",       limit: 4
+    t.float    "kd",                limit: 24
+    t.float    "kda",               limit: 24
+    t.float    "healing_done_avr",  limit: 24
+    t.float    "damage_done_avr",   limit: 24
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
-  add_index "over_daily_data", ["over_tag_id", "hero_name", "play_type", "created_at"], name: "tag_id_name_type_date", using: :btree
+  add_index "over_daily_data", ["over_user_type_id", "hero_name", "play_type", "created_at"], name: "type_id_name_type_date", using: :btree
 
   create_table "over_data_histories", force: :cascade do |t|
     t.integer  "over_tag_id", limit: 4

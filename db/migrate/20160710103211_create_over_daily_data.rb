@@ -1,7 +1,7 @@
 class CreateOverDailyData < ActiveRecord::Migration
   def change
     create_table :over_daily_data do |t|
-      t.integer :over_tag_id
+      t.integer :over_user_type_id
       t.string  :hero_name
       t.integer :play_type  #빠른대전/경쟁전
       t.integer :games_won  #승리한 게임
@@ -19,7 +19,7 @@ class CreateOverDailyData < ActiveRecord::Migration
       t.float   :damage_done_avr  #평균피해
       t.timestamps null: false
     end
-    add_index :over_daily_data, [:over_tag_id, :hero_name, :play_type, :created_at], name: "tag_id_name_type_date"
+    add_index :over_daily_data, [:over_user_type_id, :hero_name, :play_type, :created_at], name: "type_id_name_type_date"
     # add_index :over_daily_data, [:play_type, :created_at]
   end
 end
