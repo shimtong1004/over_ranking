@@ -66,17 +66,18 @@ class OverTag < ActiveRecord::Base
     # user_type_id_ary.each do |id|
       # self.create_test(id)  
     # end
+    ActiveRecord::Base.transaction do
       user_type_id_ary.each_with_index do |user_type_id, i|
         html = html_ary[i]
-        ActiveRecord::Base.transaction do
           doc = Nokogiri::HTML(html)
           play_types = []
           play_types.push id: 1, value:"quick-play"
           play_types.push id: 2, value:"competitive-play"
           
           
-          level = doc.css(".u-vertical-center").text
-          competitive_rank = doc.css(".competitive-rank").text
+          # level = doc.css(".u-vertical-center").text
+          level = doc.css(".u-vertical-center")[0].text
+          competitive_rank = doc.css(".competitive-rank")[0].text
           
           play_types.each do |play_type|
             play_type_id = play_type[:id]
@@ -85,9 +86,12 @@ class OverTag < ActiveRecord::Base
             play_type_doc = doc.css("##{play_type_str}")
             
             #통계 start
-            # view_group = play_type_doc.css(".content-box.page-wrapper.career-stats-section .h3.header").text
-            stats = play_type_doc.css(".content-box.page-wrapper.career-stats-section .js-stats.toggle-display")
-            stats_names =  play_type_doc.css(".content-box.page-wrapper.career-stats-section .js-career-select option")
+            type_doc = play_type_doc.css(".content-box.max-width-container.career-stats-section")
+            stats = type_doc.css(".js-stats.toggle-display")
+            stats_names =  type_doc.css(".js-career-select option")
+            # stats = play_type_doc.css(".content-box.page-wrapper.career-stats-section .js-stats.toggle-display")
+            # stats_names =  play_type_doc.css(".content-box.page-wrapper.career-stats-section .js-career-select option")
+                                              
             
             stats.each_with_index do |data, i|
               hero_name = stats_names[i].text
@@ -97,9 +101,9 @@ class OverTag < ActiveRecord::Base
               hero_data.over_user_type_id = user_type_id
               hero_data.play_type = play_type_id
               hero_data.name = hero_name
-              tables = data.css(".column.xs-12.md-6.xl-4.margin-xs.margin-no-sides table")
+              # tables = data.css(".column.xs-12.md-6.xl-4.margin-xs.margin-no-sides table")
+              tables = data.css(".column.xs-12.md-6.xl-4 table")
               tables.each do |table|
-                view_group_detail = table.css("thead tr").text
                 trs = table.css("tbody tr")
                   trs.each do |tr|
                   keyword = tr.css("td")[0].text
@@ -137,9 +141,9 @@ class OverTag < ActiveRecord::Base
               hero_data.save 
             end
           end
-        end
+        
       end
-    
+    end
   end
   
   
@@ -539,6 +543,32 @@ class OverTag < ActiveRecord::Base
         keyword = "Turret_Kills"
       when "Armor_Pack_Created" then
         keyword = "Armor_Packs_Created"
+      when "Barrage_Kill_Most_in_Game" then
+        keyword = "Barrage_Kills_Most_in_Game"
+      when "Barrage_Kill" then
+        keyword = "Barrage_Kills"
+      when "Deadeye_Kill" then
+        keyword = "Deadeye_Kills"
+      when "Deadeye_Kill_Most_in_Game" then
+        keyword = "Deadeye_Kills_Most_in_Game"
+      when "Helix_Rocket_Kills_Most_in_Game" then
+        keyword = "Helix_Rockets_Kills_Most_in_Game"
+      when "Helix_Rocket_Kills" then
+        keyword = "Helix_Rockets_Kills"
+        
+      when "Enemie_Hooked" then
+        keyword = "Enemies_Hooked"
+      when "Enemie_Hooked_Most_in_Game" then
+        keyword = "Enemies_Hooked_Most_in_Game"
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
